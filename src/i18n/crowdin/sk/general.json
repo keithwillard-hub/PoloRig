@@ -1,0 +1,360 @@
+{
+  "general": {
+    "languages": {
+      "names": {
+        "en": "Angličtina",
+        "ar": "Arabčina - العربية",
+        "ast": "Astúrčina - Asturianu",
+        "bn": "Bengálčina - বাংলা",
+        "ca": "Katalánčina - Català",
+        "cs": "Čeština - Čeština",
+        "cy": "Welština - Cymraeg",
+        "da": "Dánčina - Dansk",
+        "de": "Nemčina - Deutsch",
+        "en-PL": "Prasací jazyk",
+        "en-PT": "Pirátsky jazyk",
+        "eo": "Esperanto - Esperanto",
+        "es": "Španielčina - Español",
+        "et": "Estónčina - Eesti",
+        "eu": "Baskičtina - Euskara",
+        "fi": "Fínčina - Suomi",
+        "fr": "Francúzština - Français",
+        "ga": "Írčina - Gaeilge",
+        "gl": "Galícijčina - Galego",
+        "hi": "Hindčina - हिंदी",
+        "id": "Indonézčina - Bahasa Indonesia",
+        "it": "Taliančina - Italiano",
+        "ja": "Japončina - 日本語",
+        "ko": "Kórejčina - 한국어",
+        "lt": "Litovčina - Lietuvių",
+        "lv": "Lotyština - Latvijas",
+        "ms": "Malajčina - Bahasa Melayu",
+        "nb": "Bokmål Nórčina - Norsk bokmål",
+        "nl": "Holandčina - Nederlands",
+        "nn": "Nórčina Nynorsk - Nynorsk",
+        "pl": "Poľština - Polski",
+        "pt-BR": "Portugalčina (Brazília) - Português (Brasil)",
+        "pt-PT": "Portugalčina (Portugalsko) - Português (Portugal)",
+        "pt": "Portugalčina - Português",
+        "ro": "Rumunčina - Română",
+        "ru": "Ruština - Русский",
+        "sk": "Slovenčina",
+        "sv": "Švédčina - Svenska",
+        "th": "Thajčina - ภาษาไทย",
+        "tl": "Tagalčina - Wikang Filipino",
+        "tlh": "Klingončina - ᏣᎳᎩ",
+        "tr": "Turečtina - Türkçe",
+        "uk": "Ukrajinčina - Українська",
+        "ur": "Urdčina - اردو",
+        "vi": "Vietnamčina - Tiếng Việt",
+        "zh": "Čínština - 中文"
+      }
+    },
+    "terms": {
+      "QSO": "QSO",
+      "QSO-a11y": "Spojenie",
+      "QSOs-a11y": "Spojenia",
+      "Operation": "Prevádzka",
+      "generalOperation": "Všeobecná prevádzka"
+    },
+    "formatting": {
+      "thousandsDelimiter": ",",
+      "decimalSeparator": ".",
+      "frequencySeparator": ",",
+      "list": {
+        "separator": ", ",
+        "conjunction": " a "
+      },
+      "time": {
+        "tomorrow": "Zajtra",
+        "today": "Dnes",
+        "yesterday": "Včera",
+        "ago": "pred {{time}}",
+        "fromNow": "za {{time}}",
+        "shortSeconds": "{{s}}s",
+        "shortMinutes": "{{m}}m",
+        "shortMinutesAndSeconds": "{{m}}m {{s}}s",
+        "shortHours": "{{h}}h",
+        "shortHoursAndMinutes": "{{h}}h {{m}}m",
+        "shortDays": "{{d}}d",
+        "shortDaysAndHours": "{{d}}d {{h}}h",
+        "short": "{{hoursZero}}:{{minutesZero}}{{lowerZulu}}"
+      },
+      "date": {
+        "varUnder1Day": "{{weekday}} {{dayOrd}}",
+        "varUnder7Days": "{{weekday}} {{dayOrd}}",
+        "varUnder9Months": "{{monthName}} {{dayOrd}}",
+        "varOver9Months": "{{monthName}} {{year}}",
+        "varShortUnder7Days": "{{weekdayAbbr}} {{day}}",
+        "varShortUnder9Months": "{{monthAbbr}} {{day}}",
+        "varShortOver9Months": "{{monthAbbr}} {{year}}",
+        "ymd": "{{year}}-{{month}}-{{day}}",
+        "nice": "{{monthName}} {{dayOrd}}, {{year}}",
+        "full": "{{weekday}} {{monthName}} {{dayOrd}}, {{year}}",
+        "fullShort": "{{weekdayAbbr}} {{monthAbbr}} {{day}}, {{year}}"
+      },
+      "dateTime": {
+        "varUnder1Day": "{{time}}",
+        "varUnder7Days": "{{time}} {{weekday}} {{dayOrd}}",
+        "varUnder9Months": "{{time}} {{monthName}} {{dayOrd}}",
+        "varOver9Months": "{{time}} {{monthName}} {{dayOrd}} {{year}}",
+        "varShortUnder1Day": "{{time}}",
+        "varShortUnder7Days": "{{time}} {{weekdayAbbr}} {{day}}",
+        "varShortUnder9Months": "{{time}} {{monthAbbr}} {{day}}",
+        "varShortOver9Months": "{{time}} {{monthAbbr}} {{day}} {{year}}",
+        "ymd": "{{year}}-{{month}}-{{day}} {{time}}",
+        "nice": "{{time}} {{monthName}} {{dayOrd}}, {{year}}",
+        "full": "{{time}} {{weekday}} {{monthName}} {{dayOrd}}, {{year}}",
+        "fullShort": "{{time}} {{weekdayAbbr}} {{monthAbbr}} {{day}}, {{year}}",
+        "niceRange": "{{niceTime1}} - {{niceTime2}}"
+      },
+      "month": {
+        "1": "Január",
+        "2": "Február",
+        "3": "Marec",
+        "4": "Apríl",
+        "5": "Máj",
+        "6": "Jún",
+        "7": "Júl",
+        "8": "August",
+        "9": "September",
+        "10": "Október",
+        "11": "November",
+        "12": "December"
+      },
+      "monthAbbr": {
+        "1": "Jan",
+        "2": "Feb",
+        "3": "Mar",
+        "4": "Apr",
+        "5": "Máj",
+        "6": "Jún",
+        "7": "Júl",
+        "8": "Aug",
+        "9": "Sep",
+        "10": "Okt",
+        "11": "Nov",
+        "12": "Dec"
+      },
+      "weekday": {
+        "1": "Pondelok",
+        "2": "Utorok",
+        "3": "Streda",
+        "4": "Štvrtok",
+        "5": "Piatok",
+        "6": "Sobota",
+        "7": "Nedeľa"
+      },
+      "weekdayAbbr": {
+        "1": "Po",
+        "2": "Ut",
+        "3": "St",
+        "4": "Št",
+        "5": "Pi",
+        "6": "So",
+        "7": "Ne"
+      },
+      "ordinalDay": {
+        "1": "1.",
+        "2": "2.",
+        "3": "3.",
+        "4": "4.",
+        "5": "5.",
+        "6": "6.",
+        "7": "7.",
+        "8": "8.",
+        "9": "9.",
+        "10": "10.",
+        "11": "11.",
+        "12": "12.",
+        "13": "13.",
+        "14": "14.",
+        "15": "15.",
+        "16": "16.",
+        "17": "17.",
+        "18": "18.",
+        "19": "19.",
+        "20": "20.",
+        "21": "21.",
+        "22": "22.",
+        "23": "23.",
+        "24": "24.",
+        "25": "25.",
+        "26": "26.",
+        "27": "27.",
+        "28": "28.",
+        "29": "29.",
+        "30": "30.",
+        "31": "31."
+      },
+      "distance": {
+        "away": "{{distance}} ďaleko"
+      }
+    },
+    "buttons": {
+      "cancel": "Zrušiť",
+      "ok": "Ok",
+      "close": "Zatvoriť",
+      "login": "Prihlásiť sa",
+      "logout": "Odhlásiť sa",
+      "delete": "Odstrániť",
+      "refresh": "Obnoviť",
+      "done": "Hotovo",
+      "accept": "Prijať",
+      "accept-a11y": "Prijať zmeny",
+      "revert": "Vrátiť späť",
+      "revert-a11y": "Vrátiť späť zmeny",
+      "save": "Uložiť",
+      "export": "Exportovať"
+    },
+    "version": {
+      "general": "{{month}} '{{year}}",
+      "patch": "oprava {{patch}}",
+      "specific": "{{month}} '{{year}} {{patch}}"
+    },
+    "updates": {
+      "checkingFor": {
+        "generic": "Kontrola aktualizácií…",
+        "stable": "Kontrola stabilných aktualizácií…",
+        "unstable": "Kontrola nestabilných aktualizácií…",
+        "bleedingEdge": "Kontrola najnovších aktualizácií…"
+      },
+      "tracksPlural": {
+        "stable": "Stabilná",
+        "unstable": "Nestabilná",
+        "bleedingEdge": "Najnovšie aktualizácie",
+        "Production": "Stabilná",
+        "Staging": "Nestabilná",
+        "Development": "Najnovšie aktualizácie"
+      },
+      "trackSingular": {
+        "stable": "Stabilná",
+        "unstable": "Nestabilná",
+        "bleedingEdge": "Najnovšia aktualizácia",
+        "Production": "Stabilná",
+        "Staging": "Nestabilná",
+        "Development": "Najnovšia aktualizácia"
+      },
+      "versionIsAvailable-md": "Aktualizácia na {{versionName}} je dostupná.",
+      "updateNow": "Aktualizovať teraz",
+      "newVersionAvailable-md": "Nová verzia PoLo je dostupná!"
+    },
+    "dataFiles": {
+      "loading": "Načítavanie {{name}}",
+      "downloading": "Sťahovanie {{name}}",
+      "dataHasToBeDownloaded-md": "Údaje pre **{{name}}** musia byť stiahnuté.",
+      "dataHasNotBeenUpdatedInAWhile-md": "Údaje pre **{{name}}** neboli už dlho aktualizované.",
+      "downloadNow": "Stiahnuť teraz",
+      "refreshNow": "Aktualizovať teraz"
+    },
+    "notices": {
+      "action": {
+        "ok": "Ok!",
+        "__comment__": "Prekryť špecifické akcie upozornení tu"
+      },
+      "title": {
+        "__comment__": "Prekryť špecifické názvy upozornení tu"
+      },
+      "text": {
+        "__comment__": "Prekryť špecifické texty upozornení tu"
+      },
+      "dialogTitle": {
+        "__comment__": "Prekryť špecifické názvy dialógov tu"
+      },
+      "dialogText": {
+        "__comment__": "Prekryť špecifické texty dialógov tu"
+      },
+      "dataFiles": {
+        "fetching": "Načítavanie {{title}}…",
+        "progress": "Načítavanie {{title}}\n\n{{progress}}",
+        "done": "Načítavanie {{title}} hotové",
+        "error": "Chyba načítavania {{title}}"
+      }
+    },
+    "dataFormats": {
+      "descriptions": {
+        "adif": "ADIF",
+        "cabrillo": "Cabrillo",
+        "qson": "QSON",
+        "json": "JSON",
+        "txt": "Text",
+        "csv": "Hodnoty oddelené čiarkou",
+        "tsv": "Hodnoty oddelené tabulátormi",
+        "other": "Údaje"
+      }
+    },
+    "extensions": {
+      "categories": {
+        "core": "Základné funkcie",
+        "locationBased": "Aktivity založené na polohe",
+        "contestsAndFieldOps": "Súťaže a terénne operácie",
+        "lookup": "Vyhľadávanie údajov",
+        "devmode": "Režim vývojára",
+        "other": "Ostatné funkcie"
+      }
+    },
+    "continents": {
+      "AF": "Afrika",
+      "AS": "Ázia",
+      "EU": "Európa",
+      "NA": "Severná Amerika",
+      "SA": "Južná Amerika",
+      "OC": "Oceánia"
+    },
+    "modes": {
+      "names": {
+        "SSB": "SSB",
+        "SSB-a11y": "Jednostranné pásmo",
+        "USB": "USB",
+        "USB-a11y": "Horné postranné pásmo",
+        "LSB": "LSB",
+        "LSB-a11y": "Spodné postranné pásmo",
+        "RTTY": "RTTY",
+        "RTTY-a11y": "Ritty",
+        "CW": "CW",
+        "CW-a11y": "C.W.",
+        "FM": "FM",
+        "FM-a11y": "F.M.",
+        "AM": "AM",
+        "AM-a11y": "A.M.",
+        "other": "Iné",
+        "other-a11y": "Iný mód"
+      }
+    },
+    "bands": {
+      "names": {
+        "160m-a11y": "160 Metrov",
+        "80m-a11y": "80 Metrov",
+        "60m-a11y": "60 Metrov",
+        "40m-a11y": "40 Metrov",
+        "30m-a11y": "30 Metrov",
+        "20m-a11y": "20 Metrov",
+        "17m-a11y": "17 Metrov",
+        "15m-a11y": "15 Metrov",
+        "12m-a11y": "12 Metrov",
+        "11m-a11y": "11 Metrov",
+        "10m-a11y": "10 Metrov",
+        "6m-a11y": "6 Metrov",
+        "2m-a11y": "2 Metrov",
+        "70cm-a11y": "70 Centimetrov",
+        "23cm-a11y": "23 Centimetrov",
+        "13cm-a11y": "13 Centimetrov",
+        "9cm-a11y": "9 Centimetrov",
+        "6cm-a11y": "6 Centimetrov",
+        "3cm-a11y": "3 Centimetrov",
+        "1-25cm-a11y": "1,25 Centimetrov",
+        "6mm-a11y": "6 Milimetrov",
+        "4mm-a11y": "4 Milimetrov",
+        "2-5mm-a11y": "2,5 Milimetra",
+        "2mm-a11y": "2 Milimetre",
+        "1mm-a11y": "1 Milimeter",
+        "submm-a11y": "Podmilimetrové",
+        "other": "Iné",
+        "other-a11y": "Iné pásmo"
+      }
+    },
+    "misc": {
+      "placeholderCallsign": "N0CALL"
+    }
+  }
+}

@@ -1,0 +1,460 @@
+/*
+ * Copyright ©️ 2024-2025 Sebastian Delmont <sd@ham2k.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Animated, PanResponder, View } from 'react-native'
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import KeepAwake from '@sayem314/react-native-keep-awake'
+import { useTranslation } from 'react-i18next'
+
+import { loadOperation, selectOperation } from '../../store/operations'
+import { loadQSOs, lookupAllQSOs, confirmFromSpots } from '../../store/qsos'
+import { selectSettings, setSettings } from '../../store/settings'
+import { startTickTock, stopTickTock } from '../../store/time'
+import { useThemedStyles } from '../../styles/tools/useThemedStyles'
+import ScreenContainer from '../components/ScreenContainer'
+import HeaderBar from '../components/HeaderBar'
+import OpLoggingTab from './OpLoggingTab/OpLoggingTab'
+import OpSettingsTab from './OpSettingsTab/OpSettingsTab'
+import OpSpotsTab from './OpSpotsTab/OpSpotsTab'
+import OpMapTab from './OpMapTab/OpMapTab'
+import OpInfoTab from './OpInfoTab/OpInfoTab'
+import { trackOperation } from '../../distro'
+import { selectRuntimeOnline } from '../../store/runtime'
+import { useUIState } from '../../store/ui'
+import { Icon, Menu, Text } from 'react-native-paper'
+import { slashZeros } from '../../tools/stringTools'
+import { hasRef } from '../../tools/refTools'
+import { parseCallsign } from '@ham2k/lib-callsigns'
+import GLOBAL from '../../GLOBAL'
+import { selectFeatureFlags } from '../../store/system'
+
+const Tab = createMaterialTopTabNavigator()
+
+const MIN_WIDTH_LEFT = 60
+const MIN_WIDTH_RIGHT = 40
+
+export default function OperationScreen (props) {
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const { navigation, route } = props
+  const safeAreaInsets = useSafeAreaInsets()
+
+  const styles = useThemedStyles()
+
+  const featureFlags = useSelector(selectFeatureFlags)
+
+  const operationSelector = useCallback((state) => selectOperation(state, route.params.operation?.uuid ?? route.params.uuid), [route.params.operation?.uuid, route.params.uuid])
+  const operation = useSelector(operationSelector)
+
+  const suggestedQSO = route?.params?.qso
+  const settings = useSelector(selectSettings)
+  const online = useSelector(selectRuntimeOnline)
+
+  useEffect(() => { // Ensure the clock is ticking
+    dispatch(startTickTock())
+    return () => dispatch(stopTickTock())
+  }, [dispatch])
+
+  useEffect(() => { // When starting, make sure all operation data is loaded
+    setImmediate(async () => {
+      await dispatch(loadOperation(route.params.operation?.uuid ?? route.params.uuid))
+      await dispatch(loadQSOs(route.params.operation.uuid))
+    })
+  }, [route.params?.operation?.uuid, route.params?.uuid, dispatch])
+
+  const [lastTracking, setLastTracking] = useState(0)
+
+  useEffect(() => {
+    if (Date.now() - lastTracking > 1000 * 60 * 5 && online) {
+      trackOperation({ settings, operation })
+      setLastTracking(Date.now())
+    }
+  }, [settings, operation, lastTracking, online])
+
+  const headerOptions = useMemo(() => {
+    let options = {}
+    if (operation?.stationCall) {
+      options = {
+        title: buildTitleForOperation({ operatorCall: operation.local?.operatorCall, stationCall: operation?.stationCallPlus || operation.stationCall, title: operation.title, userTitle: operation.userTitle }),
+        subTitle: operation.subtitle
+      }
+    } else {
+      options = { title: t('general.terms.newOperation', 'New Operation') }
+    }
+    options.leftAction = 'close'
+    options.rightMenuItems = <OperationMenuItems {...{ operation, settings, styles, dispatch, online }} />
+
+    return options
+  }, [dispatch, online, operation, settings, styles, t])
+
+  const dimensions = useSafeAreaFrame()
+  // const dimensions = useWindowDimensions() <-- broken on iOS, no rotation
+
+  const [panesState, , updatePanesState] = useUIState('OperationScreen', 'panes', {
+    mainPaneWidth: settings.loggingPaneWidth ?? dimensions?.width * 0.8,
+    resizingActive: false,
+    mainPaneDelta: 0
+  })
+
+  const splitView = useMemo(() => {
+    return !settings.dontSplitViews && (dimensions.width / styles.oneSpace > 95)
+  }, [dimensions?.width, styles?.oneSpace, settings?.dontSplitViews])
+
+  const mainPaneWidth = useMemo(() => {
+    if (isNaN(panesState.mainPaneWidth) || !panesState.mainPaneWidth) {
+      return (dimensions.width - styles.oneSpace * MIN_WIDTH_LEFT) + (panesState.mainPaneDelta || 0)
+    } else {
+      const width = Math.max(
+        Math.min(
+          panesState.mainPaneWidth + (panesState.mainPaneDelta || 0),
+          dimensions.width - styles.oneSpace * MIN_WIDTH_RIGHT
+        ),
+        styles.oneSpace * MIN_WIDTH_LEFT
+      )
+      return width
+    }
+  }, [dimensions, panesState, styles.oneSpace])
+
+  const panResponder = useMemo(() => {
+    return PanResponder.create({
+      onStartShouldSetPanResponder: (event, gestureState) => true,
+      onStartShouldSetPanResponderCapture: (event, gestureState) => true,
+      onMoveShouldSetPanResponder: (event, gestureState) => true,
+      onMoveShouldSetPanResponderCapture: (event, gestureState) => true,
+      onMoveShouldSetResponderCapture: (event, gestureState) => true,
+
+      onPanResponderGrant: (event, gestureState) => {
+        updatePanesState({ mainPaneDelta: 0, resizingActive: true })
+      },
+
+      onPanResponderMove: (event, gestureState) => {
+        updatePanesState({ mainPaneDelta: gestureState.dx })
+      },
+
+      onPanResponderRelease: (event, gestureState) => {
+        updatePanesState({ resizingActive: false })
+      }
+    })
+  }, [updatePanesState])
+
+  useEffect(() => {
+    if (panesState.resizingActive === false && panesState.mainPaneDelta !== 0) {
+      updatePanesState({ mainPaneWidth, mainPaneDelta: 0 })
+      dispatch(setSettings({ loggingPaneWidth: mainPaneWidth }))
+    }
+  }, [panesState.resizingActive, panesState.mainPaneDelta, mainPaneWidth, updatePanesState, panesState, dispatch])
+
+  if (splitView) {
+    return (
+      <>
+        {settings.keepDeviceAwake && <KeepAwake />}
+        <ScreenContainer>
+          <View style={{ height: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch' }}>
+            <Animated.View
+              style={{
+                width: mainPaneWidth,
+                minWidth: styles.oneSpace * MIN_WIDTH_LEFT,
+                height: '100%'
+              }}
+            >
+              <HeaderBar options={headerOptions} navigation={navigation} back={true} rightAction={'cog'} splitView={splitView} />
+              <OpLoggingTab navigation={navigation} route={{ params: { operation, qso: suggestedQSO, splitView, selectedUUID: route?.params?.selectedUUID } }} splitView={splitView} />
+            </Animated.View>
+            <View
+              style={{
+                backgroundColor: panesState.resizingActive ? styles.colors.primaryLighter : styles.colors.primary,
+                width: styles.oneSpace * 2,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+              accessibilityLabel={t('screens.operationScreen.paneSeparator-a11y', 'Pane Separator')}
+              {...panResponder.panHandlers}
+            >
+              <View style={{ marginLeft: styles.oneSpace * -0.7, opacity: 0.8 }}>
+                <Icon source="dots-vertical" color={styles.colors.onPrimary} size={styles.oneSpace * 3.5} />
+              </View>
+            </View>
+            <Animated.View
+              style={{
+                backgroundColor: styles.colors.primary,
+                flex: 1,
+                minWidth: styles.oneSpace * MIN_WIDTH_RIGHT,
+                height: '100%'
+              }}
+            >
+              <View
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  paddingTop: Math.max(safeAreaInsets.top, styles.oneSpace * 2) - styles.oneSpace * 1,
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  alignItems: 'stretch'
+                }}
+              >
+                <Tab.Navigator
+                  id={'OperationScreen_TabNavigator'}
+                  initialLayout={{ width: (dimensions.width - mainPaneWidth), height: dimensions.height }}
+                  initialRouteName={ operation?.qsoCount > 0 ? 'OpInfo' : 'OpSettings' }
+                  screenOptions={{
+                    tabBarItemStyle: [{ width: (dimensions.width - mainPaneWidth - safeAreaInsets.right) / 4 }, styles.screenTabBarItem, { minHeight: styles.oneSpace * 6, padding: 0 }], // This allows tab titles to be rendered while the screen is transitioning in
+                    tabBarLabelStyle: styles.screenTabBarLabel,
+                    tabBarStyle: [styles.screenTabBar, { paddingRight: safeAreaInsets.right }],
+                    tabBarIndicatorStyle: { backgroundColor: styles.colors.primaryHighlight, height: styles.halfSpace * 1.5 },
+                    animationEnabled: false,
+                    swipeEnabled: false,
+                    freezeOnBlur: true,
+                    lazy: true
+                  }}
+                >
+                  <Tab.Screen
+                    name="OpInfo"
+                    options={{ title: t('screens.operationScreen.infoTab', 'Info'), tabBarAccessibilityLabel: t('screens.operationScreen.infoTab-a11y', 'Info Tab') }}
+                    accessibilityLabel={t('screens.operationScreen.operationInfo-a11y', 'Operation Info')}
+                    component={OpInfoTab}
+                    initialParams={{ uuid: operation.uuid, operation, splitView }}
+                  />
+
+                  <Tab.Screen
+                    name="OpSpots"
+                    options={{ title: t('screens.operationScreen.spotsTab', 'Spots'), tabBarAccessibilityLabel: t('screens.operationScreen.spotsTab-a11y', 'Spots Tab') }}
+                    component={OpSpotsTab}
+                    initialParams={{ uuid: operation.uuid, operation, splitView }}
+                    screenOptions={{ lazy: true }}
+                  />
+
+                  <Tab.Screen
+                    name="OpMap"
+                    options={{ title: t('screens.operationScreen.mapTab', 'Map'), tabBarAccessibilityLabel: t('screens.operationScreen.mapTab-a11y', 'Map Tab') }}
+                    component={OpMapTab}
+                    initialParams={{ uuid: operation.uuid, operation, splitView }}
+                    screenOptions={{ lazy: true }}
+                    splitView={splitView}
+                  />
+
+                  <Tab.Screen
+                    name="OpSettings"
+                    options={{
+                      title: (
+                        ((dimensions.width - mainPaneWidth) / 4) > (styles.oneSpace * 14)
+                          ? featureFlags?.opSettingsTab || t('screens.operationScreen.settingsTab', 'Operation')
+                          : featureFlags?.opSettingsCompactTab || featureFlags?.opSettingsTab || t('screens.operationScreen.settingsCompactTab', 'Oper.')
+                      ),
+                      tabBarAccessibilityLabel: t('screens.operationScreen.settingsTab-a11y', 'Operation Settings Tab')
+                    }}
+                    component={OpSettingsTab}
+                    initialParams={{ uuid: operation.uuid, operation, splitView }}
+                    splitView={splitView}
+                  />
+
+                </Tab.Navigator>
+              </View>
+            </Animated.View>
+
+          </View>
+        </ScreenContainer>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <HeaderBar options={headerOptions} navigation={navigation} back={true} />
+
+        {settings.keepDeviceAwake && <KeepAwake />}
+        <ScreenContainer>
+          <View style={{ height: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch' }}>
+            <Tab.Navigator
+              id={'OperationScreen_TabNavigator'}
+              initialLayout={{ width: dimensions.width, height: dimensions.height }}
+              initialRouteName={ operation?.stationCall && operation?.qsoCount > 0 ? 'OpLog' : 'OpSettings' }
+              screenOptions={{
+                tabBarItemStyle: [{ width: dimensions.width / 4 }, styles.screenTabBarItem, { minHeight: styles.oneSpace * 4, padding: 0 }], // This allows tab titles to be rendered while the screen is transitioning in
+                tabBarLabelStyle: styles.screenTabBarLabel,
+                tabBarStyle: styles.screenTabBar,
+                tabBarIndicatorStyle: { backgroundColor: styles.colors.primaryLighter, height: styles.halfSpace * 1.5 },
+                animationEnabled: false,
+                swipeEnabled: false,
+                freezeOnBlur: true,
+                lazy: true
+              }}
+            >
+              <Tab.Screen
+                name="OpLog"
+                options={{ title: t('screens.operationScreen.qsosTab', 'QSOs'), tabBarAccessibilityLabel: t('screens.operationScreen.qsosTab-a11y', 'Q sos Tab') }}
+                component={OpLoggingTab}
+                initialParams={{ uuid: operation.uuid, operation }}
+              />
+
+              <Tab.Screen
+                name="OpSpots"
+                options={{ title: t('screens.operationScreen.spotsTab', 'Spots'), tabBarAccessibilityLabel: t('screens.operationScreen.spotsTab-a11y', 'Spots Tab') }}
+                component={OpSpotsTab}
+                initialParams={{ uuid: operation.uuid, operation }}
+                screenOptions={ { lazy: true }}
+              />
+
+              <Tab.Screen
+                name="OpMap"
+                options={{ title: t('screens.operationScreen.mapTab', 'Map'), tabBarAccessibilityLabel: t('screens.operationScreen.mapTab-a11y', 'Map Tab') }}
+                component={OpMapTab}
+                initialParams={{ uuid: operation.uuid, operation }}
+                screenOptions={ { lazy: true }}
+              />
+
+              <Tab.Screen
+                name="OpSettings"
+                options={{
+                  title: (
+                    ((dimensions.width - mainPaneWidth) / 4) > (styles.oneSpace * 14)
+                      ? featureFlags?.opSettingsTab || t('screens.operationScreen.settingsTab', 'Operation')
+                      : featureFlags?.opSettingsCompactTab || featureFlags?.opSettingsTab || t('screens.operationScreen.settingsCompactTab', 'Oper.')
+                  ),
+                  tabBarAccessibilityLabel: t('screens.operationScreen.settingsTab-a11y', 'Operation Settings Tab')
+                }}
+                component={OpSettingsTab}
+                initialParams={{ uuid: operation.uuid, operation }}
+              />
+
+            </Tab.Navigator>
+          </View>
+        </ScreenContainer>
+      </>
+    )
+  }
+}
+
+export function buildTitleForOperation (operationAttrs, { includeCall = true } = {}) {
+  if (operationAttrs.stationCall) {
+    let call = operationAttrs.stationCall
+    if (operationAttrs?.operatorCall && operationAttrs.operatorCall !== operationAttrs.stationCall) {
+      const stationCallInfo = parseCallsign(operationAttrs.stationCall)
+      const operatorCallInfo = parseCallsign(operationAttrs.operatorCall)
+      if (stationCallInfo?.baseCall !== operatorCallInfo?.baseCall) {
+        call = `${call} (op ${operationAttrs.operatorCall})`
+      }
+    }
+    const parts = []
+    if (operationAttrs.userTitle) {
+      parts.push(operationAttrs.userTitle)
+    }
+    if (operationAttrs.title && operationAttrs.title !== 'New Operation') {
+      parts.push(operationAttrs.title)
+    }
+    let title = parts.join(' ')
+    title = title || GLOBAL?.t?.('general.terms.generalOperation', 'General Operation') || 'General Operation'
+
+    if (includeCall) {
+      return [call ? slashZeros(call) : '', title].join(' ')
+    } else {
+      return title
+    }
+  } else {
+    return GLOBAL?.t?.('general.terms.newOperation', 'New Operation') || 'New Operation'
+  }
+}
+
+function OperationMenuItems ({ operation, settings, styles, dispatch, online, setShowMenu }) {
+  const { t } = useTranslation()
+
+  const hideAndRun = useCallback((action) => {
+    setShowMenu(false)
+    setTimeout(() => action(), 10)
+  }, [setShowMenu])
+
+  return (
+    <>
+      <Text style={{ minWidth: styles.oneSpace * 28, marginHorizontal: styles.oneSpace * 2, marginVertical: styles.oneSpace * 1, ...styles.text.bold }}>
+        {t('screens.operationScreen.menu.loggingSettings', 'Logging Settings')}
+      </Text>
+      <Menu.Item
+        leadingIcon="signal"
+        trailingIcon={_iconForTernarySetting(settings.showRSTFields)}
+        onPress={() => { hideAndRun(() => dispatch(setSettings({ showRSTFields: _nextTernaryValue(settings.showRSTFields) }))) }}
+        title={t('screens.operationScreen.menu.rstFields', 'RST Fields')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      <Menu.Item
+        leadingIcon="selection-marker"
+        trailingIcon={_iconForTernarySetting(settings.showStateField)}
+        onPress={() => { hideAndRun(() => dispatch(setSettings({ showStateField: _nextTernaryValue(settings.showStateField) }))) }}
+        title={t('screens.operationScreen.menu.stateField', 'State Field')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      <Menu.Item
+        leadingIcon="select-marker"
+        trailingIcon={_iconForTernarySetting(settings.showGridField)}
+        onPress={() => { hideAndRun(() => dispatch(setSettings({ showGridField: _nextTernaryValue(settings.showGridField) }))) }}
+        title={t('screens.operationScreen.menu.gridField', 'Grid Field')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      <Menu.Item
+        leadingIcon="delete-off-outline"
+        trailingIcon={settings.showDeletedQSOs === false ? 'circle-outline' : 'check-circle-outline'}
+        onPress={() => { hideAndRun(() => dispatch(setSettings({ showDeletedQSOs: settings.showDeletedQSOs === false }))) }}
+        title={t('screens.operationScreen.menu.showDeletedQSOs', 'Show Deleted QSOs')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      <Menu.Item
+        leadingIcon="numeric"
+        trailingIcon={settings.showNumbersRow === false ? 'circle-outline' : 'check-circle-outline'}
+        onPress={() => { hideAndRun(() => dispatch(setSettings({ showNumbersRow: settings.showNumbersRow === false }))) }}
+        title={t('screens.operationScreen.menu.numbersRow', 'Numbers Row')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      <View style={{ height: 2, backgroundColor: styles.colors.onSurface, marginHorizontal: styles.oneSpace * 2, marginTop: styles.oneSpace }} />
+      <Text style={{ marginHorizontal: styles.oneSpace * 2, marginVertical: styles.oneSpace * 1, ...styles.text.bold }}>
+        {t('screens.operationScreen.menu.actions', 'Actions')}
+      </Text>
+
+      <Menu.Item
+        leadingIcon="search-web"
+        onPress={() => hideAndRun(() => dispatch(lookupAllQSOs(operation.uuid)))}
+        title={t('screens.operationScreen.menu.lookupAllQSOs', 'Lookup all QSOs')}
+        contentStyle={{ minWidth: styles.oneSpace * 20 }}
+      />
+
+      {hasRef(operation, 'potaActivation') &&
+        <Menu.Item
+          leadingIcon="list-status"
+          onPress={() => hideAndRun(() => {
+            return dispatch(confirmFromSpots({ operation }))
+          })}
+          title={t('screens.operationScreen.menu.confirmSpots', 'Confirm Spots')}
+          contentStyle={{ minWidth: styles.oneSpace * 20 }}
+        />}
+    </>
+  )
+}
+
+function _iconForTernarySetting (value) {
+  if (value === true) {
+    return 'check-circle-outline'
+  } else if (value === false) {
+    return 'circle-outline'
+  } else {
+    return 'alpha-a-circle-outline'
+  }
+}
+
+function _nextTernaryValue (value) {
+  if (value === true) {
+    return false
+  } else if (value === false) {
+    return ''
+  } else {
+    return true
+  }
+}

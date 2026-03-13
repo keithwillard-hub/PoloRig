@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>PoloRig</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(POLO_BASE_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ham2k.polo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.ham2k.polo</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(POLO_BUILD)</string>
+	<key>CodePushDeploymentKey</key>
+	<string>RM65RMaL4D1qa1_EWfl247NSTbN8NJou3zF_Wl</string>
+	<key>CodePushServerURL</key>
+	<string>https://api.revopush.org</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>MBXAccessToken</key>
+	<string>$(MAPBOX_ACCESS_TOKEN)</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>PoloRig uses your local network to connect to your IC-705 radio for rig control and CW operations.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_rsba._udp</string>
+	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Bluetooth will be used to control certain radios and other devices.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your location will be used to determine your Maidenhead Grid Square to include in your own logs.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location will be used to determine your Maidenhead Grid Square to include in your own logs.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photos are not used in this app, but a third party library might use them when sharing to Instagram.</string>
+	<key>RCTNewArchEnabled</key>
+	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Roboto Mono Bold.ttf</string>
+		<string>Roboto Mono Light.ttf</string>
+		<string>Roboto Mono Medium.ttf</string>
+		<string>Roboto Mono Thin.ttf</string>
+		<string>Roboto Mono.ttf</string>
+		<string>Roboto Slab Black.ttf</string>
+		<string>Roboto Slab ExtraBold.ttf</string>
+		<string>Roboto Slab Light.ttf</string>
+		<string>Roboto Slab Medium.ttf</string>
+		<string>Roboto Slab Thin.ttf</string>
+		<string>Roboto Slab.ttf</string>
+		<string>Roboto Black.ttf</string>
+		<string>Roboto Bold.ttf</string>
+		<string>Roboto Condensed Black.ttf</string>
+		<string>Roboto Condensed Bold.ttf</string>
+		<string>Roboto Condensed ExtraBold.ttf</string>
+		<string>Roboto Condensed Light.ttf</string>
+		<string>Roboto Condensed Medium.ttf</string>
+		<string>Roboto Condensed Thin.ttf</string>
+		<string>Roboto Condensed.ttf</string>
+		<string>Roboto Light.ttf</string>
+		<string>Roboto Medium.ttf</string>
+		<string>Roboto Thin.ttf</string>
+		<string>Roboto.ttf</string>
+		<string>FontAwesome6_Brands.ttf</string>
+		<string>FontAwesome6_Regular.ttf</string>
+		<string>FontAwesome6_Solid.ttf</string>
+		<string>MaterialDesignIcons.ttf</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>arm64</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ham2k.polo</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.ham2k.polo</string>
+			</array>
+		</dict>
+	</array>
+	<key>MBXAccessToken</key>
+	<string>$(MAPBOX_ACCESS_TOKEN)</string>
+</dict>
+</plist>

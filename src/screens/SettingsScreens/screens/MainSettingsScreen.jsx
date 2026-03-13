@@ -1,0 +1,407 @@
+/*
+ * Copyright ©️ 2024-2026 Sebastian Delmont <sd@ham2k.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+import React, { useState, useMemo, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Text } from 'react-native-paper'
+import { Linking, ScrollView, View } from 'react-native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { useSafeAreaFrame, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
+
+import packageJson from '../../../../package.json'
+
+import { selectSettings } from '../../../store/settings'
+import { fetchFeatureFlags } from '../../../store/system/fetchFeatureFlags'
+import { useThemedStyles } from '../../../styles/tools/useThemedStyles'
+import { translatedVersionName } from '../../../tools/i18nUtils'
+import { H2kListItem, H2kListSection, H2kListSubheader } from '../../../ui'
+import ScreenContainer from '../../components/ScreenContainer'
+import HeaderBar from '../../components/HeaderBar'
+import { OperatorCallsignDialog } from '../components/OperatorCallsignDialog'
+
+import BandModeSettingsScreen from './BandModeSettingsScreen'
+import CreditsSettingsScreen from './CreditsSettingsScreen'
+import DataSettingsScreen from './DataSettingsScreen'
+import AccountsSettingsScreen from './AccountsSettingsScreen'
+import DevModeSettingsScreen from './DevModeSettingsScreen'
+import ExportSettingsScreen from './ExportSettingsScreen'
+import ExtensionScreen from './ExtensionScreen'
+import FeaturesSettingsScreen from './FeaturesSettingsScreen'
+import GeneralSettingsScreen from './GeneralSettingsScreen'
+import LoggingSettingsScreen from './LoggingSettingsScreen'
+import VersionSettingsScreen from './VersionSettingsScreen'
+import SyncSettingsScreen from './SyncSettingsScreen'
+import WavelogSettingsScreen from './WavelogSettingsScreen'
+import NoticesSettingsScreen from './NoticesSettingsScreen'
+import IC705SettingsScreen from '../../../extensions/other/ic705/IC705SettingsScreen'
+
+import { MainSettingsForDistribution } from '../../../distro'
+
+const Stack = createNativeStackNavigator()
+
+export default function MainSettingsScreen ({ navigation, route }) {
+  const { t } = useTranslation()
+
+  const styles = useThemedStyles()
+
+  const settings = useSelector(selectSettings)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    // Refresh feature flags when the settings screen is opened, or if callsign changes
+    dispatch(fetchFeatureFlags())
+  }, [dispatch, settings?.operatorCall])
+
+  const headerOptions = useMemo(() => {
+    let options = {}
+    options = { title: t('screens.settings.title', 'Settings') }
+    options.leftAction = 'close'
+    return options
+  }, [t])
+
+  const dimensions = useSafeAreaFrame()
+  // const dimensions = useWindowDimensions() <-- broken on iOS, no rotation
+
+  const splitView = useMemo(() => {
+    return !settings.dontSplitViews && (dimensions.width / styles.oneSpace > 95)
+  }, [dimensions?.width, styles?.oneSpace, settings?.dontSplitViews])
+
+  const [splitWidth] = useState(splitView ? Math.max(dimensions.width * 0.40, styles.oneSpace * 40) : dimensions.width)
+
+  if (splitView) {
+    return (
+      <>
+        <ScreenContainer>
+          <View style={{ height: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'stretch' }}>
+            <View
+              style={{
+                width: splitWidth,
+                height: '100%',
+                borderColor: styles.colors.primary,
+                borderRightWidth: styles.oneSpace
+              }}
+            >
+              <HeaderBar options={headerOptions} navigation={navigation} back={true} splitView={splitView} />
+              <MainSettingsOptions settings={settings} styles={styles} navigation={navigation} splitView={splitView} />
+            </View>
+            <View
+              style={{
+                backgroundColor: styles.colors.primary,
+                flex: 1,
+                height: '100%',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                alignItems: 'stretch'
+              }}
+            >
+              <Stack.Navigator
+                id="SettingsNavigator"
+                initialRouteName={route?.params?.screen ?? 'GeneralSettings'}
+                screenOptions={{
+                  header: HeaderBar,
+                  animation: 'slide_from_right',
+                  freezeOnBlur: true
+                }}
+              >
+                {settingsScreensArray({ t, includeMain: false, topLevelBack: false, splitView })}
+              </Stack.Navigator>
+            </View>
+          </View>
+        </ScreenContainer>
+      </>
+    )
+  } else {
+    return (
+      <Stack.Navigator
+        id="SettingsNavigator"
+        initialRouteName={route?.params?.screen ?? 'MainSettingsOptions'}
+        screenOptions={{
+          header: HeaderBar,
+          animation: 'slide_from_right',
+          freezeOnBlur: true
+        }}
+      >
+        {settingsScreensArray({ t, includeMain: true, topLevelBack: true })}
+      </Stack.Navigator>
+    )
+  }
+}
+
+function MainSettingsOptions ({ settings, styles, navigation, splitView }) {
+  const { t } = useTranslation()
+
+  const safeAreaInsets = useSafeAreaInsets()
+  const [currentDialog, setCurrentDialog] = useState()
+
+  return (
+    <ScrollView style={{ flex: 1, marginLeft: safeAreaInsets.left, marginRight: splitView ? 0 : safeAreaInsets.right }}>
+      <H2kListSection>
+
+        <H2kListItem
+          title={t('screens.settings.operatorCallsign.title', 'Operator Callsign')}
+          description={
+            settings.operatorCall ? (
+              <Text style={styles.text.callsign}>{settings.operatorCall ?? t('screens.settings.operatorCallsign.noCall', 'No call')}</Text>
+            ) : (
+              <Text style={{ color: 'red' }}>{t('screens.settings.operatorCallsign.pleaseEnterCallsign', 'Please enter a callsign!')}</Text>
+            )
+          }
+          leftIcon="card-account-details"
+          onPress={() => setCurrentDialog('operatorCall')}
+        />
+        {currentDialog === 'operatorCall' && (
+          <OperatorCallsignDialog
+            settings={settings}
+            styles={styles}
+            visible={true}
+            onDialogDone={() => setCurrentDialog('')}
+          />
+        )}
+
+        <H2kListSubheader>{t('screens.settings.sections.settings', 'Settings')}</H2kListSubheader>
+        <H2kListItem
+          title={t('screens.settings.generalSettings.title', 'General Settings')}
+          description={t('screens.settings.generalSettings.description', 'Dark mode, numbers row, units, and more')}
+          onPress={() => navigation.navigate('Settings', { screen: 'GeneralSettings' })}
+          leftIcon="cogs"
+        />
+
+        <H2kListItem
+          title={t('screens.settings.loggingSettings.title', 'Logging Settings')}
+          description={t('screens.settings.loggingSettings.description', 'Customize the logging experience')}
+          onPress={() => navigation.navigate('Settings', { screen: 'LoggingSettings' })}
+          leftIcon="book-edit-outline"
+        />
+
+        <H2kListItem
+          title={t('screens.settings.dataSettings.title', 'Data Settings')}
+          description={t('screens.settings.dataSettings.description', 'Data files, callsign notes, and more')}
+          onPress={() => navigation.navigate('Settings', { screen: 'DataSettings' })}
+          leftIcon="file-cabinet"
+        />
+
+        <H2kListItem
+          title={t('screens.settings.syncSettings.title', 'Sync Settings')}
+          description={`${t('screens.settings.syncSettings.description', 'Cloud sync and backup')} (Beta)`}
+          onPress={() => navigation.navigate('Settings', { screen: 'SyncSettings' })}
+          leftIcon="sync"
+        />
+
+        <H2kListItem
+          title={t('screens.settings.accountsSettings.title', 'Accounts & Services')}
+          description={t('screens.settings.accountsSettings.description', 'QRZ.com and other services')}
+          onPress={() => navigation.navigate('Settings', { screen: 'AccountsSettings' })}
+          leftIcon="key-chain"
+        />
+
+        <H2kListItem
+          title="IC-705 Rig Control"
+          description="WiFi rig control, CW keying, frequency display"
+          onPress={() => navigation.navigate('Settings', { screen: 'IC705Settings' })}
+          leftIcon="radio-handheld"
+        />
+
+        <H2kListItem
+          title={t('screens.settings.appFeatures.title', 'App Features')}
+          description={t('screens.settings.appFeatures.description', 'Manage features like POTA, SOTA, etc')}
+          onPress={() => navigation.navigate('Settings', { screen: 'FeaturesSettings' })}
+          leftIcon="format-list-bulleted"
+        />
+
+        {settings.devMode && (
+          <H2kListItem
+            title={t('screens.settings.developerSettings.title', 'Developer Settings')}
+            description={t('screens.settings.developerSettings.description', 'Here be dragons')}
+            onPress={() => navigation.navigate('Settings', { screen: 'DevModeSettings' })}
+            leftIcon="fire"
+            leftIconColor={styles.colors.devMode}
+          />
+        )}
+
+      </H2kListSection>
+
+      <MainSettingsForDistribution settings={settings} styles={styles} />
+
+      <H2kListSection>
+        <H2kListSubheader>{t('screens.settings.sections.about', 'About Ham2K')}</H2kListSubheader>
+        <H2kListItem
+          title={translatedVersionName({ t, version: packageJson.version }).full}
+          description={t('screens.settings.versionSettings.description', 'See recent changes')}
+          onPress={() => navigation.navigate('Settings', { screen: 'VersionSettings' })}
+          leftIcon="information-outline"
+        />
+        <H2kListItem
+          title={t('screens.settings.creditsSettings.title', 'Credits')}
+          description={t('screens.settings.creditsSettings.description', 'Sebastián Delmont KI2D & Team PoLo')}
+          onPress={() => navigation.navigate('Settings', { screen: 'CreditsSettings' })}
+          leftIcon="account-group"
+        />
+        <H2kListItem
+          title={t('screens.settings.noticesSettings.title', 'Recent Notices')}
+          description={t('screens.settings.noticesSettings.description', 'Messages you might have missed?')}
+          onPress={() => navigation.navigate('Settings', { screen: 'NoticesSettings' })}
+          leftIcon="bell-outline"
+        />
+      </H2kListSection>
+
+      <H2kListSection style={{ marginBottom: safeAreaInsets.bottom }}>
+        <H2kListSubheader>{t('screens.settings.sections.help', 'Need Help?')}</H2kListSubheader>
+        <H2kListItem
+          title={t('screens.settings.readTheFineManual.title', 'Read The Fine Manual')}
+          description={t('screens.settings.readTheFineManual.description', 'Browse the documentation for PoLo')}
+          onPress={async () => await Linking.openURL('https://polo.ham2k.com/docs/')}
+          leftIcon="file-document-multiple-outline"
+        />
+        <H2kListItem
+          title={t('screens.settings.ham2KForums.title', 'Ham2K Forums')}
+          description={t('screens.settings.ham2KForums.description', 'Find help, give feedback, discuss ideas…')}
+          onPress={async () => await Linking.openURL('https://forums.ham2k.com/')}
+          leftIcon="forum-outline"
+        />
+        <H2kListItem
+          title={t('screens.settings.ham2KChat.title', 'Ham2K Chat')}
+          description={t('screens.settings.ham2KChat.description', 'The discord server for our online community')}
+          onPress={async () => await Linking.openURL('https://discord.gg/c4Th9QkByJ')}
+          leftIcon="chat-outline"
+        />
+        <H2kListItem
+          title={t('screens.settings.ham2KYouTube.title', 'Ham2K YouTube')}
+          description={t('screens.settings.ham2KYouTube.description', 'Videos and Live Streams')}
+          onPress={async () => await Linking.openURL('https://www.youtube.com/@Ham2KApps')}
+          leftIcon="youtube"
+        />
+        <H2kListItem
+          title={t('screens.settings.ham2KInstagram.title', 'Ham2K Instagram')}
+          description={t('screens.settings.ham2KInstagram.description', 'Because you cannot have too many photos…')}
+          onPress={async () => await Linking.openURL('https://www.instagram.com/ham2kapps/')}
+          leftIcon="instagram"
+        />
+        <H2kListItem
+          title={t('screens.settings.ham2KBlueSky.title', 'Ham2K BlueSky')}
+          description={t('screens.settings.ham2KBlueSky.description', 'Follow us for news and updates')}
+          onPress={async () => await Linking.openURL('https://bsky.app/profile/ham2k.com')}
+          leftIcon="butterfly-outline"
+        />
+        <H2kListItem
+          title={t('screens.settings.contactUs.title', 'Contact Us')}
+          description={t('screens.settings.contactUs.description', 'help@ham2k.com\n   (but try the Forums or Chat first!)')}
+          onPress={async () => await Linking.openURL('mailto:help@ham2k.com')}
+          leftIcon="email-alert-outline"
+        />
+      </H2kListSection>
+
+      <View style={{ height: safeAreaInsets.bottom }} />
+
+    </ScrollView>
+  )
+}
+
+function MainSettingsOptionsScreen ({ navigation }) {
+  const styles = useThemedStyles()
+  const settings = useSelector(selectSettings)
+
+  return (
+    <MainSettingsOptions
+      navigation={navigation}
+      settings={settings}
+      styles={styles}
+      splitView={false}
+    />
+  )
+}
+
+function settingsScreensArray ({ t, includeMain, topLevelBack, splitView }) {
+  const screens = [
+    <Stack.Screen name="GeneralSettings" key="GeneralSettings"
+      options={{ title: t('screens.generalSettings.title', 'General Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={GeneralSettingsScreen}
+    />,
+
+    <Stack.Screen name="LoggingSettings" key="LoggingSettings"
+      options={{ title: t('screens.loggingSettings.title', 'Logging Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={LoggingSettingsScreen}
+    />,
+
+    <Stack.Screen name="FeaturesSettings" key="FeaturesSettings"
+      options={{ title: t('screens.featuresSettings.title', 'App Features'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={FeaturesSettingsScreen}
+    />,
+
+    <Stack.Screen name="DataSettings" key="DataSettings"
+      options={{ title: t('screens.dataSettings.title', 'Data Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={DataSettingsScreen}
+    />,
+
+    <Stack.Screen name="SyncSettings" key="SyncSettings"
+      options={{ title: t('screens.syncSettings.title', 'Sync Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={SyncSettingsScreen}
+    />,
+
+    <Stack.Screen name="AccountsSettings" key="AccountsSettings"
+      options={{ title: t('screens.accountsSettings.title', 'Accounts Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={AccountsSettingsScreen}
+    />,
+
+    <Stack.Screen name="VersionSettings" key="VersionSettings"
+      options={{ title: t('screens.versionSettings.title', 'Version Information'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={VersionSettingsScreen}
+    />,
+
+    <Stack.Screen name="CreditsSettings" key="CreditsSettings"
+      options={{ title: t('screens.creditsSettings.title', 'Credits'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={CreditsSettingsScreen}
+    />,
+
+    <Stack.Screen name="DevModeSettings" key="DevModeSettings"
+      options={{ title: t('screens.devModeSettings.title', 'Developer Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={DevModeSettingsScreen}
+    />,
+
+    <Stack.Screen name="BandModeSettings" key="BandModeSettings"
+      options={{ title: t('screens.bandModeSettings.title', 'Bands & Modes') }}
+      component={BandModeSettingsScreen}
+    />,
+
+    <Stack.Screen name="ExportSettings" key="ExportSettings"
+      options={{ title: t('screens.exportSettings.title', 'Export Settings') }}
+      component={ExportSettingsScreen}
+    />,
+
+    <Stack.Screen name="NoticesSettings" key="NoticesSettings"
+      options={{ title: t('screens.noticesSettings.title', 'Recent Notices') }}
+      component={NoticesSettingsScreen}
+    />,
+
+    <Stack.Screen name="ExtensionScreen" key="ExtensionScreen"
+      options={{ title: t('screens.extensionSettings.title', 'Extension') }}
+      component={ExtensionScreen}
+    />,
+
+    <Stack.Screen name="WavelogSettings" key="WavelogSettings"
+      options={{ title: t('screens.wavelogSettings.title', 'Wavelog Settings'), leftAction: topLevelBack ? 'back' : 'none' }}
+      component={WavelogSettingsScreen}
+    />,
+
+    <Stack.Screen name="IC705Settings" key="IC705Settings"
+      options={{ title: 'IC-705 Rig Control', leftAction: topLevelBack ? 'back' : 'none' }}
+      component={IC705SettingsScreen}
+    />
+
+  ]
+
+  if (includeMain) {
+    screens.unshift(
+      <Stack.Screen name="MainSettingsOptions" key="MainSettings"
+        options={{ title: t('screens.settings.title', 'Settings') }}
+        component={MainSettingsOptionsScreen}
+      />
+    )
+  }
+
+  return screens
+}

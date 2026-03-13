@@ -1,0 +1,104 @@
+/*
+ * Copyright ©️ 2024 Sebastian Delmont <sd@ham2k.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+import React, { useMemo } from 'react'
+
+import { timeControl } from './SecondaryExchangePanel/TimeControl'
+import { radioControl } from './SecondaryExchangePanel/RadioControl'
+import { notesControl } from './SecondaryExchangePanel/NotesControl'
+import { powerControl } from './SecondaryExchangePanel/TxPowerControl'
+import { SecondaryControlManagementSubPanel } from './SecondaryExchangePanel/SecondaryControlManagementSubPanel'
+import { SecondaryControlSelectionsubPanel } from './SecondaryExchangePanel/SecondaryControlSelectionSubPanel'
+import { findHooks } from '../../../../../extensions/registry'
+import { findRef } from '../../../../../tools/refTools'
+import { spotterControl } from './SecondaryExchangePanel/SpotterControl'
+import { editQSOControl } from '../../../EditQSOScreen'
+
+export const SecondaryExchangePanel = (props) => {
+  const { currentSecondaryControl, operation, vfo, settings } = props
+
+  const secondaryControlSettings = useMemo(() => (
+    operation?.local?.secondaryControls ?? settings?.secondaryControls ?? {}
+  ), [operation?.local?.secondaryControls, settings?.secondaryControls])
+
+  const allControls = useMemo(() => {
+    const newControls = {
+      time: timeControl,
+      radio: radioControl,
+      notes: notesControl,
+      edit: editQSOControl,
+      power: powerControl
+    }
+
+    const activityHooks = findHooks('activity')
+    const spottingHooks = findHooks('spots')
+
+    const activityHooksWithSelfSpotting = activityHooks.filter((x) => (
+      findRef(operation, x.activationType) && x.postSelfSpot &&
+      (!x.isSelfSpotEnabled || (x.isSelfSpotEnabled && x.isSelfSpotEnabled({ operation, settings })))
+    ))
+
+    const spottingHooksWithSelfSpotting = spottingHooks.filter((x) => (
+      x.postSelfSpot &&
+      (!x.isSelfSpotEnabled || (x.isSelfSpotEnabled && x.isSelfSpotEnabled({ operation, settings })))
+    ))
+
+    if (activityHooksWithSelfSpotting.length + spottingHooksWithSelfSpotting.length > 0) {
+      newControls[spotterControl.key] = spotterControl
+    } else {
+      // If the current operation has no activities with self-spotting,
+      // lets see if there is a chance that other activities or spotting hooks
+      // might potentially be available, and if so, we'll show the control
+      // even if it gets marked as disabled based on other conditions.
+      const activityHooksWithOtherSpotting = activityHooks.filter((x) => (
+        x.postOtherSpot
+      ))
+      const spottingHooksWithOtherSpotting = spottingHooks.filter((x) => (
+        x.postOtherSpot
+      ))
+      if (activityHooksWithOtherSpotting.length + spottingHooksWithOtherSpotting.length > 0) {
+        newControls[spotterControl.key] = { ...spotterControl, labelAsGeneralSpotting: true }
+      }
+    }
+
+    activityHooks.forEach(activity => {
+      const activityControls = activity.loggingControls ? activity.loggingControls({ operation, vfo, settings }) : []
+      for (const control of activityControls) {
+        newControls[control.key] = control
+      }
+      if (activityControls.length > 0 && !newControls[spotterControl.key]) {
+        if (activity.postOtherSpot &&
+        (!activity.isOtherSpotEnabled || (activity.isOtherSpotEnabled && activity.isOtherSpotEnabled({ operation, settings })))) {
+          newControls[spotterControl.key] = { ...spotterControl, labelAsGeneralSpotting: true }
+        }
+      }
+    })
+    return newControls
+  }, [operation, vfo, settings])
+
+  const enabledControls = useMemo(() => {
+    let keys = Object.keys(allControls)
+
+    keys = keys.filter(key => allControls[key].optionType === 'mandatory' || secondaryControlSettings[key])
+
+    return keys.map(key => allControls[key]).sort((a, b) => a.order - b.order)
+  }, [allControls, secondaryControlSettings])
+
+  const moreControls = useMemo(() => {
+    let keys = Object.keys(allControls)
+
+    keys = keys.filter(key => !(allControls[key].optionType === 'mandatory' || secondaryControlSettings[key]))
+
+    return keys.map(key => allControls[key]).sort((a, b) => a.order - b.order)
+  }, [allControls, secondaryControlSettings])
+
+  if (currentSecondaryControl === 'manage-controls') {
+    return <SecondaryControlManagementSubPanel {...props} secondaryControlSettings={secondaryControlSettings} allControls={allControls} enabledControls={enabledControls} moreControls={moreControls} />
+  } else {
+    return <SecondaryControlSelectionsubPanel {...props} secondaryControlSettings={secondaryControlSettings} allControls={allControls} enabledControls={enabledControls} moreControls={moreControls} />
+  }
+}

@@ -1,0 +1,318 @@
+/*
+ * Copyright ©️ 2024-2025 Sebastian Delmont <sd@ham2k.com>
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0.
+ * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+import { parseCallsign } from '@ham2k/lib-callsigns'
+import { annotateFromCountryFile } from '@ham2k/lib-country-files'
+import { gridToLocation } from '@ham2k/lib-maidenhead-grid'
+import { bandForFrequency } from '@ham2k/lib-operation-data'
+import GLOBAL from '../../../GLOBAL'
+
+import { loadDataFile, removeDataFile } from '../../../store/dataFiles/actions/dataFileFS'
+import { filterRefs, findRef, refsToString } from '../../../tools/refTools'
+import { apiWWFF } from '../../../store/apis/apiWWFF'
+import { LOCATION_ACCURACY } from '../../constants'
+import { distanceOnEarth } from '../../../tools/geoTools'
+import { generateActivityOperationAccumulator, generateActivityScorer, generateActivitySumarizer } from '../../shared/activityScoring'
+
+import { Info } from './WWFFInfo'
+import { registerWWFFDataFile, wwffFindAllByLocation, wwffFindOneByReference } from './WWFFDataFile'
+import { WWFFActivityOptions } from './WWFFActivityOptions'
+import { WWFFLoggingControl } from './WWFFLoggingControl'
+import { WWFFPostSelfSpot } from './WWFFPostSelfSpot'
+import { WWFFPostOtherSpot } from './WWFFPostOtherSpot'
+
+const Extension = {
+  ...Info,
+  category: 'locationBased',
+  onActivationDispatch: ({ registerHook }) => async (dispatch) => {
+    registerHook('activity', { hook: ActivityHook })
+    registerHook('spots', { hook: SpotsHook })
+    registerHook(`ref:${Info.huntingType}`, { hook: ReferenceHandler })
+    registerHook(`ref:${Info.activationType}`, { hook: ReferenceHandler })
+
+    registerWWFFDataFile()
+    await dispatch(loadDataFile('wwff-all-parks', { noticesInsteadOfFetch: true }))
+  },
+  onDeactivationDispatch: () => async (dispatch) => {
+    await dispatch(removeDataFile('wwff-all-parks'))
+  }
+}
+export default Extension
+
+const ActivityHook = {
+  ...Info,
+  MainExchangePanel: null,
+  loggingControls: ({ operation, settings }) => {
+    if (findRef(operation, Info.activationType)) {
+      return [ActivatorLoggingControl]
+    } else {
+      return [HunterLoggingControl]
+    }
+  },
+  postOtherSpot: WWFFPostOtherSpot,
+  postSelfSpot: WWFFPostSelfSpot,
+  Options: WWFFActivityOptions,
+
+  generalHuntingType: ({ operation }) => Info.huntingType,
+
+  sampleOperations: ({ settings, callInfo, t }) => {
+    return [
+      // Regular Activation
+      { refs: [{ type: Info.activationType, ref: 'XXWW-1234', name: t('extensions.wwff.exampleRefName', 'Example National Park'), shortName: t('extensions.wwff.activityOptions.exampleNP', 'Example NP'), program: Info.shortName, label: `${Info.shortName} XXWW-1234: Example NationalPark`, shortLabel: `${Info.shortName} XXWW-1234` }] }
+    ]
+  }
+}
+
+const SpotsHook = {
+  ...Info,
+  sourceName: 'WWFF Spotline',
+  fetchSpots: async ({ online, settings, dispatch, t }) => {
+    if (GLOBAL?.flags?.services?.wwff === false) return []
+
+    let spots = []
+    if (online) {
+      const apiPromise = await dispatch(apiWWFF.endpoints.spots.initiate({}, { forceRefetch: true }))
+      await Promise.all(dispatch(apiWWFF.util.getRunningQueriesThunk()))
+      const apiResults = await dispatch((_dispatch, getState) => apiWWFF.endpoints.spots.select({})(getState()))
+
+      apiPromise.unsubscribe && apiPromise.unsubscribe()
+      spots = apiResults.data || []
+    }
+
+    const today = new Date()
+    const qsos = []
+    for (const spot of spots) {
+      if (!spot) continue
+      const spotTime = spot.spot_time * 1000
+      if ((today - spotTime) > 1000 * 60 * 60) {
+        continue // Some spots can be several hours old: cut off at 1 hour
+      }
+      const refDetails = await wwffFindOneByReference(spot.reference)
+      const qso = {
+        their: { call: spot.activator?.toUpperCase() },
+        freq: spot.frequency_khz,
+        band: spot.frequency_khz ? bandForFrequency(spot.frequency_khz) : 'other',
+        mode: spot.mode?.toUpperCase(),
+        refs: [{
+          ref: spot.reference,
+          type: Info.huntingType
+        }],
+        spot: {
+          timeInMillis: spotTime,
+          source: Info.key,
+          icon: Info.icon,
+          label: `${spot.reference}: ${refDetails?.name ?? t('extensions.wwff.unknownRefName', 'Unknown Park')}`,
+          type: spot.remarks.match(/QRT/i) ? 'QRT' : undefined,
+          sourceInfo: {
+            comments: spot.remarks,
+            spotter: spot.spotter?.toUpperCase()
+          }
+        }
+      }
+      qsos.push(qso)
+    }
+    const dedupedQSOs = []
+    const includedCalls = {}
+    for (const qso of qsos) {
+      if (!includedCalls[qso.their.call]) {
+        includedCalls[qso.their.call] = true
+        if (qso.spot.type !== 'QRT') dedupedQSOs.push(qso)
+      }
+    }
+    return dedupedQSOs
+  }
+}
+
+const HunterLoggingControl = {
+  key: `${Info.key}/hunter`,
+  order: 10,
+  icon: Info.icon,
+  label: ({ operation, qso }) => {
+    const parts = [Info.shortName]
+    if (findRef(qso, Info.huntingType)) parts.unshift('✓')
+    return parts.join(' ')
+  },
+  InputComponent: WWFFLoggingControl,
+  optionType: 'optional'
+}
+
+const ActivatorLoggingControl = {
+  key: `${Info.key}/activator`,
+  order: 10,
+  icon: Info.icon,
+  label: ({ operation, qso }) => {
+    const parts = [Info.shortNameDoubleContact]
+    if (findRef(qso, Info.huntingType)) parts.unshift('✓')
+    return parts.join(' ')
+  },
+  InputComponent: WWFFLoggingControl,
+  optionType: 'mandatory'
+}
+
+const ReferenceHandler = {
+  ...Info,
+
+  shortDescription: (operation) => refsToString(operation, Info.activationType),
+
+  description: (operation) => {
+    const ref = findRef(operation, Info.activationType)
+    return [ref.ref, ref.name].filter(x => x).join(' • ')
+  },
+
+  iconForQSO: Info.icon,
+
+  decorateRefWithDispatch: (ref) => async () => {
+    if (ref.ref) {
+      const data = await wwffFindOneByReference(ref.ref)
+      if (data) {
+        return {
+          ...ref,
+          name: data.name,
+          location: data.region,
+          grid: data.grid,
+          accuracy: LOCATION_ACCURACY.REASONABLE,
+          label: `${Info.shortName} ${ref.ref}: ${data.name}`,
+          shortLabel: `${Info.shortName} ${ref.ref}`,
+          program: Info.shortName
+        }
+      } else {
+        return { ...ref, name: Info.unknownReferenceName ?? GLOBAL?.t?.('extensions.wwff.unknownRefName', 'Unknown reference') ?? 'Unknown reference' }
+      }
+    }
+  },
+
+  extractTemplate: ({ ref, operation }) => {
+    return { type: ref.type }
+  },
+
+  updateFromTemplateWithDispatch: ({ t, ref, operation }) => async (dispatch) => {
+    if (operation?.grid) {
+      let info = parseCallsign(operation.stationCall || '')
+      info = annotateFromCountryFile(info)
+      const [lat, lon] = gridToLocation(operation.grid)
+
+      let nearby = await wwffFindAllByLocation(info.dxccCode, lat, lon, 0.25)
+      nearby = nearby.map(result => ({
+        ...result,
+        distance: distanceOnEarth(result, { lat, lon })
+      })).sort((a, b) => (a.distance ?? 9999999999) - (b.distance ?? 9999999999))
+
+      if (nearby.length > 0) return { type: ref.type, ref: nearby[0]?.ref }
+      else return { type: ref.type, name: t('extensions.wwff.noRefsNearby', 'No parks nearby!') }
+    } else {
+      return { type: ref.type }
+    }
+  },
+
+  suggestOperationTitle: (ref) => {
+    if (ref.type === Info.activationType && ref.ref) {
+      return { at: ref.ref, subtitle: ref.name }
+    } else {
+      return null
+    }
+  },
+
+  suggestExportOptions: ({ operation, ref, settings }) => {
+    if (ref?.type === Info.activationType && ref?.ref) {
+      return [{
+        format: 'adif',
+        exportData: { refs: [ref] }, // exports only see this one ref
+        // Note that compact format uses a space instead of - because of WWFF requirements
+        nameTemplate: '{{log.station}}@{{log.ref}} {{compact op.date}}',
+        titleTemplate: '{{>RefActivityTitle}}',
+        // WWFF prefers ADIF files with no notes, comments, or QSL messages
+        ADIFNotesTemplate: '',
+        ADIFCommentTemplate: '',
+        ADIFQslMsgTemplate: ''
+      }]
+    }
+  },
+
+  adifFieldsForOneQSO: ({ qso, operation, exportType }) => {
+    const huntingRef = findRef(qso, Info.huntingType)
+    const activationRef = findRef(operation, Info.activationType)
+    const fields = []
+    if (activationRef) fields.push({ MY_SIG: 'WWFF' }, { MY_SIG_INFO: activationRef.ref }, { MY_WWFF_REF: activationRef.ref })
+    if (huntingRef) fields.push({ SIG: 'WWFF' }, { SIG_INFO: huntingRef.ref }, { WWFF_REF: huntingRef.ref })
+
+    if (exportType === 'wwff') {
+      // Delete POTA references, since some WWFF admins will reject logs that include them.
+      fields.push({ POTA_REF: false }, { MY_POTA_REF: false })
+      if (!huntingRef) fields.push({ SIG: false }, { SIG_INFO: false })
+    }
+    return fields
+  },
+
+  scoringForQSO: generateActivityScorer({ info: Info }),
+  accumulateScoreForOperation: generateActivityOperationAccumulator({ info: Info }),
+  summarizeScore: generateActivitySumarizer({ info: Info }),
+
+  originalScoringForQSO: ({ qso, qsos, operation, ref }) => {
+    const { band, mode, uuid, startAtMillis } = qso
+    const refs = filterRefs(qso, Info.huntingType).filter(x => x.ref)
+
+    if (refs.length === 0 && !ref?.ref) return { value: 0, refCount: 0 } // If not activating, only counts if other QSO has a WWFF ref
+
+    const nearDupes = (qsos || []).filter(q => !q.deleted && (startAtMillis ? q.startAtMillis < startAtMillis : true) && q.their.call === qso.their.call && q.uuid !== uuid)
+
+    if (nearDupes.length === 0) {
+      return { value: 1, refCount: 0, type: Info.activationType }
+    } else {
+      const thisQSOTime = qso.startAtMillis ?? Date.now()
+
+      const sameBand = nearDupes.filter(q => q.band === band).length !== 0
+      const sameMode = nearDupes.filter(q => q.mode === mode).length !== 0
+      const sameBandMode = nearDupes.filter(q => q.band === band && q.mode === mode).length !== 0
+      if (sameBandMode) {
+        return { value: 0, refCount: 0, alerts: ['duplicate'], type: Info.activationType }
+      } else {
+        const notices = []
+        if (!sameMode) notices.push('newMode')
+        if (!sameBand) notices.push('newBand')
+
+        return { value: 1, refCount: refs.length, notices, type: Info.activationType }
+      }
+    }
+  },
+
+  originalAccumulateScoreForOperation: ({ qsoScore, score, operation, ref }) => {
+    if (!ref?.ref) return score // No scoring if not activating
+    if (!score?.key) score = undefined // Reset if score doesn't have the right shape
+    score = score ?? {
+      key: ref?.type,
+      icon: Info.icon,
+      label: Info.shortName,
+      value: 0,
+      refCount: 0,
+      summary: ''
+    }
+
+    score.value = score.value + qsoScore.value
+
+    score.refCount = score.refCount + (qsoScore.refCount ?? 0)
+
+    return score
+  },
+
+  originalSummarizeScore: ({ score, operation, ref, section }) => {
+    const activationRef = findRef(operation, Info.activationType)
+
+    score.activated = score.value >= 44
+    if (score.activated) {
+      score.summary = '✓'
+    } else {
+      score.summary = `${score.value}/44`
+    }
+
+    if (score.refCount > 0) {
+      const label = activationRef?.ref ? 'P2P' : 'P'
+      score.summary = [score.summary, `${score.refCount} ${label}`].filter(x => x).join(' • ')
+    }
+
+    return score
+  }
+}

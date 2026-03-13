@@ -1,0 +1,926 @@
+{
+  "26.2.0": {
+    "name": "February '26",
+    "photoCaption": "HB9/OK1PTR/P at CH-0165",
+    "changes": [
+      "Ham2K Log Filer Cloud Sync (beta testing)",
+      "Support for FT2 mode",
+      "Towers on the Air (TOTA)",
+      "ParksnPeaks Spotting (by M1SDH)",
+      "Reorder call notes (by W6JSV)",
+      "Show multiple emoji from call notes (by NA7DO)",
+      "Portuguese (Brazil) translations, thanks to PY2MP Eduardo",
+      "Turkish translations, thanks to Uğur TA1SW",
+      "Performance and stability improvements",
+      "Assorted bug fixes"
+    ]
+  },
+  "25.12.8": {
+    "name": "December '25 (patch 8)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Fixed bug in scoring for Winter Field Day",
+      "Chinese translations, thanks to Hanshen Liu BG4JIN"
+    ]
+  },
+  "25.12.7": {
+    "name": "December '25 (patch 7)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Include grid in SOTA Hunter ADIF exports",
+      "Assorted tweaks and fixes"
+    ]
+  },
+  "25.12.6": {
+    "name": "December '25 (patch 6)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Fixed bugs in Cabrillo exports",
+      "Assorted tweaks and fixes"
+    ]
+  },
+  "25.12.5": {
+    "name": "December '25 (patch 5)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Lakes and Lagoons on the Air (LLOTA)",
+      "Assorted bug fixes"
+    ]
+  },
+  "25.12.4": {
+    "name": "December '25 (patch 4)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Fixed accessibility issues for users with vision impairments"
+    ]
+  },
+  "25.12.3": {
+    "name": "December '25 (patch 3)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Japanese and Czech translations",
+      "Fixed issues in sync service",
+      "Assorted tweaks and fixes"
+    ]
+  },
+  "25.12.2": {
+    "name": "December '25 (patch 2)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Fixed bug in SOTA ADIF exports"
+    ]
+  },
+  "25.12.1": {
+    "name": "December '25 (patch 1)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Fixed crash on Android",
+      "Translation updates"
+    ]
+  },
+  "25.12.0": {
+    "name": "December '25 (11)",
+    "photoCaption": "NG2B and KC2OQV with K2SUL for WFD '22",
+    "changes": [
+      "Internationalization!!! (French, German, Spanish, Dutch, Slovak, and Norwegian Bokmål, to start)",
+      "World Castles Awards (WCA) - Replaces ECA and BCA and adds the rest of the world",
+      "State and county for operations, included in ADIF exports",
+      "Optional Grid field",
+      "SOTA 2026 Challenge support",
+      "Added a setting to disable operation template suggestions",
+      "Layout and font size tweaks"
+    ]
+  },
+  "25.10.7": {
+    "name": "October '25 (patch 7)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "More accessibility improvements, better text contrast in input fields",
+      "Don't mix references in ADIF exports for specific activities",
+      "Layout improvements for Call Info"
+    ]
+  },
+  "25.10.6": {
+    "name": "October '25 (patch 6)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Fixed bugs in sync service"
+    ]
+  },
+  "25.10.5": {
+    "name": "October '25 (patch 5)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Added font scale settings"
+    ]
+  },
+  "25.10.4": {
+    "name": "October '25 (patch 4)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Adjust RST values when changing modes for existing QSOs",
+      "Accessibility improvements for screen readers and larger fonts",
+      "Option in Spots to filter out digital modes and show only Phone & CW",
+      "Fixed escaping of quotes in ADIF exports",
+      "Fixed bugs in sync service"
+    ]
+  },
+  "25.10.3": {
+    "name": "October '25 (patch 3)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Properly show spotting controls, even in General Operations",
+      "Fixed bugs in sync service"
+    ]
+  },
+  "25.10.2": {
+    "name": "October '25 (patch 2)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Fixed bug in scrolling to last QSO",
+      "Adjusted list layout for smaller screens"
+    ]
+  },
+  "25.10.1": {
+    "name": "October '25 (patch 1)",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Added advanced settings commands",
+      "Advanced setting for default signal reports (try 'SET DEFAULTREPORTCW 559')",
+      "Advanced setting to show and restore deleted operations (try 'SET DELETEDOPS Y')"
+    ]
+  },
+  "25.10.0": {
+    "name": "October '25",
+    "photoCaption": "NK2Y as N2Y with KI2D for NYQP at US-2010",
+    "changes": [
+      "Ham2K Log Filer Cloud Sync (alpha testing)",
+      "Annotations in the log (try 'NOTE', 'TODO', 'WEATHER' or 'SOLAR')",
+      "Auto self-spotting every 10 minutes",
+      "Allow spaces in commands (try 'SPOT HERE')",
+      "Fix missing keystrokes on Android when pressing 'send' too fast",
+      "Note expansion now works with callsign stacking",
+      "Better layout of QSO lists"
+    ]
+  },
+  "25.9.3": {
+    "name": "September '25 (patch 3)",
+    "photoCaption": "2M0LVY and LB5JJ operating 5P0TA at DK-0188",
+    "changes": [
+      "New York & Illinois QSO Parties",
+      "QSO Party spotting, with qsopartyhq.com and mobiletracker.stateqso.com",
+      "Comma key, because K0GR wanted it",
+      "Group spots by frequency, special calls, mults, etc",
+      "Support logging 'their power'",
+      "Fixed bug in WWFF duplicate checking, include P2P in summary",
+      "Fixed bug in POTA duplicates on multi-day operations",
+      "Some shortcut commands are now available on the Home Screen",
+      "Ham2K Log Filer Cloud Sync (pre-alpha)",
+      "Improve number keys on larger screens",
+      "Remember if secondary controls are open or not"
+    ]
+  },
+  "25.9.2": {
+    "name": "September '25 (patch 2)",
+    "photoCaption": "2M0LVY and LB5JJ operating 5P0TA at DK-0188",
+    "changes": [
+      "Fixed bug in NH QP handling"
+    ]
+  },
+  "25.9.1": {
+    "name": "September '25 (patch 1)",
+    "photoCaption": "2M0LVY and LB5JJ operating 5P0TA at DK-0188",
+    "changes": [
+      "Last minute fixes for New Hampshire & Salmon Run QSO Parties"
+    ]
+  },
+  "25.9.0": {
+    "name": "September '25",
+    "photoCaption": "2M0LVY and LB5JJ operating 5P0TA at DK-0188",
+    "changes": [
+      "NH, WA, CA QSO Parties",
+      "Fixed bug in scoring for duplicates",
+      "Fixed popup menu in Operation Screen",
+      "Fixed bug with settings switches",
+      "Fixed bug in history count",
+      "Fixed bug in map missing lines",
+      "Work around SOTA API frequency issues",
+      "Internal framework updates"
+    ]
+  },
+  "25.8.2": {
+    "name": "August '25 (patch 2)",
+    "photoCaption": "W2UD with N2PTA at US-6462 for FD",
+    "changes": [
+      "Fixed bug in handling of default operator and added new setting to control it",
+      "Fixed handling of duplicates when importing ADIF records",
+      "Extra key in numbers row for Android",
+      "Fixed bug in Kansas QSO Party scoring",
+      "More tweaks to handling of virtual numeric keys"
+    ]
+  },
+  "25.8.1": {
+    "name": "August '25 (patch 1)",
+    "photoCaption": "W2UD with N2PTA at US-6462 for FD",
+    "changes": [
+      "Fixed bug on Android where maps would not show markers after changing views",
+      "Fixed bug in handling of virtual numeric keys",
+      "Various fixes for spots with SiOTA and ZLOTA"
+    ]
+  },
+  "25.8.0": {
+    "name": "August '25",
+    "photoCaption": "W2UD with N2PTA at US-6462 for FD",
+    "changes": [
+      "Fixed crashes on 32-bit Android devices",
+      "North American QSO Party (NAQP)",
+      "Experimental support for WaveLog (by K0UWU)",
+      "Performance improvements (by NA7DO)",
+      "Allow WWBOTA across borders",
+      "Fix 'unknown park' for new POTA references",
+      "Add SiOTA spots support via ParksnPeaks (by M1SDH)",
+      "Add Canadian Historical Sites on the Air (by M1SDH)"
+    ]
+  },
+  "25.7.3": {
+    "name": "July '25 (patch 3)",
+    "photoCaption": "LB4FH/MM at NO-2619",
+    "changes": [
+      "Adjusted styles in spots filter controls",
+      "Fixed error in maps for QSOs with incomplete location data"
+    ]
+  },
+  "25.7.2": {
+    "name": "July '25 (patch 2)",
+    "photoCaption": "LB4FH/MM at NO-2619",
+    "changes": [
+      "Fixed bug in export for Satellite activities",
+      "Tweaks to WWFF Spotline API",
+      "Fixed missing points on map",
+      "Fixed taps on QSO list headers"
+    ]
+  },
+  "25.7.1": {
+    "name": "July '25 (patch 1)",
+    "photoCaption": "LB4FH/MM at NO-2619",
+    "changes": [
+      "Include grid in SOTA exports",
+      "Thirteen Colonies ADIF export",
+      "Fixed ADIF export for FREQ field (caused problems in SOTA site and 40m QSOs)"
+    ]
+  },
+  "25.7.0": {
+    "name": "July '25",
+    "photoCaption": "LB4FH/MM at NO-2619",
+    "changes": [
+      "ARRL Field Day 2025",
+      "Thirteen Colonies Special Event",
+      "New Zealand On The Air (by M1SDH)",
+      "Spot other operators (by DL9PK)",
+      "Better handling of screen padding and safe areas",
+      "Assorted bug fixes"
+    ]
+  },
+  "25.5.2": {
+    "name": "May '25 (patch 2)",
+    "photoCaption": "G1JPV at POTA GB-1012",
+    "changes": [
+      "Corrected WWFF Spots service name",
+      "Tweaks to Map and Spots"
+    ]
+  },
+  "25.5.1": {
+    "name": "May '25 (patch 1)",
+    "photoCaption": "G1JPV at POTA GB-1012",
+    "changes": [
+      "New WWFF Spotline API (by M1SDH)",
+      "Better scoring for Field Day"
+    ]
+  },
+  "25.5.0": {
+    "name": "May '25",
+    "photoCaption": "G1JPV at POTA GB-1012",
+    "changes": [
+      "ARRL Field Day 2025",
+      "QSO Parties: KY, WV, MD/DC, HI, OH, CO, KS",
+      "Fixed errors in time calculations",
+      "Fixed split view resizing",
+      "Fixed number key input and field clearing errors",
+      "Fixed ADIF export errors",
+      "List formatting tweaks",
+      "Hide RST in list if fields are hidden",
+      "Map improvements, including signal strength",
+      "Filter out QRT POTA spots",
+      "Show warning/error message when SOTA account not logged in for self-spotting",
+      "Add Polish Gmina Award (by M1SDH, as suggested by SP9MKP)",
+      "Add self-spotting for Bunkers on the Air (WWBOTA) programme (by M1SDH)",
+      "Add new WWFF Spotline API (by M1SDH)"
+    ]
+  },
+  "25.4.2": {
+    "name": "April '25 (patch 2)",
+    "photoCaption": "VK4KC at POTA AU-8817",
+    "changes": [
+      "Added option to disable smart keyboard features for some Android devices",
+      "Assorted bug fixes"
+    ]
+  },
+  "25.4.1": {
+    "name": "April '25 (patch 1)",
+    "photoCaption": "VK4KC at POTA AU-8817",
+    "changes": [
+      "Fixed crash when selecting POTA references",
+      "Fixed file selection in dev mode",
+      "Fixed command message clearing",
+      "Better handling of safe areas in split mode screens"
+    ]
+  },
+  "25.4.0": {
+    "name": "April '25",
+    "photoCaption": "VK4KC at POTA AU-8817",
+    "changes": [
+      "Upgraded core framework to latest version (React Native 0.78)",
+      "New Maps engine (Mapbox) that can fully zoom out now!",
+      "Improved Export Settings, and moved them under General Settings",
+      "Better handling of bad Internet service",
+      "Mills on the Air (MOTA) programme (by M1SDH)",
+      "QSO Parties: AR, IN, TN, NEQP, 7QP, AL, NM, DE, KY, WV, ACQP, CPQP (with contributions from W1GRL, W1BOY, W8NI, KQ4URU, W1WC)",
+      "Georgia State Parks On The Air (as suggested by KO4GBB)",
+      "Assorted bug fixes (with contributions from NA7DO)"
+    ]
+  },
+  "25.3.0": {
+    "name": "March '25",
+    "photoCaption": "KE8PZN, WD4DAN & Friends at POTA US-8353",
+    "changes": [
+      "QSO Parties: OK, ID, WI, VA, LA, MS, MO, NM, ND, GA, NE, MI, FL, OH, PA",
+      "Generic Simple Contest activity",
+      "Export settings, with templates",
+      "Stacking partial calls (use `//` or `..` to stack calls)",
+      "Use spots to prefill QSO references",
+      "Option to hide deleted QSOs (as suggested by many)",
+      "Add Worked All Ireland squares (as suggested by EI2LH)",
+      "Guess correct WWBOTA default prefix, and other WWBOTA fixes",
+      "Fixed exports to GMail and other apps on Android",
+      "RST input auto-complete on single digit entry (as suggested by HB9BRJ)",
+      "Assorted fixes and improvements",
+      "Contributions from M1SDH, NA7DO, M0TRT, W8NI, KC1VOP"
+    ]
+  },
+  "25.2.4": {
+    "name": "February '25",
+    "photoCaption": "LB4FH at POTA NO-2526, LABOTA B/LA-0004",
+    "changes": [
+      "Idaho QSO Party counties",
+      "Fixed display of time elapsed in operation",
+      "Fixed missing history messages"
+    ]
+  },
+  "25.2.3": {
+    "name": "February '25",
+    "changes": [
+      "Fixed problem with layout of notices in call info panel"
+    ]
+  },
+  "25.2.2": {
+    "name": "February '25",
+    "changes": [
+      "Bug fixes for QSO Parties (Early Access)"
+    ]
+  },
+  "25.2.1": {
+    "name": "February '25",
+    "changes": [
+      "QSO Parties: NC, SC, OK, ID and WI (Early Access)"
+    ]
+  },
+  "25.2.0": {
+    "name": "February '25",
+    "changes": [
+      "Operation Templates",
+      "Belgian Lighthouses and Lightships (by M1SDH)",
+      "Belgium Castles and Fortresses (by M1SDH)",
+      "Better handling and display of QRZ errors",
+      "POTA self-spotting tweaks and fixes",
+      "Exclude private information from most ADIF exports (hat tip to OH3CUF)",
+      "Text expansion for callsign notes (prepend with `..` or `//`)"
+    ]
+  },
+  "25.1.3": {
+    "name": "January '25",
+    "changes": [
+      "Fixed callsign lookup issues",
+      "Fixed ADIF logs for multi-operator operations"
+    ]
+  },
+  "25.1.2": {
+    "name": "January '25",
+    "changes": [
+      "Fixed ADIF export for Winter Field Day"
+    ]
+  },
+  "25.1.1": {
+    "name": "January '25",
+    "changes": [
+      "Fixed missing RST in log display",
+      "Fixed bad frequencies in ADIF when only band was specified",
+      "Fixed history lookups not excluding deleted QSOs"
+    ]
+  },
+  "25.1.0": {
+    "name": "January '25",
+    "changes": [
+      "Activate with more than one operator",
+      "Support for Winter Field Day 2025",
+      "Allow toggling of QRZ images (happy Dan?)",
+      "Better handling of operator callsign in operation title",
+      "Include base frequency in ADIF export when only band was specified",
+      "Include contest exchange in ADIF export",
+      "Fixed lookup of callsign notes when offline",
+      "Fixed WWBOTA spots",
+      "Fixed historic ADIF and QSON imports"
+    ]
+  },
+  "24.12.2": {
+    "name": "December '24",
+    "changes": [
+      "Fixed WWBOTA input and grid",
+      "Fixed colors in location screen in forced dark mode",
+      "Fixed missing dates for historic records"
+    ]
+  },
+  "24.12.1": {
+    "name": "December '24",
+    "changes": [
+      "Fixed issue with spots for multi-operator activations"
+    ]
+  },
+  "24.12.0": {
+    "name": "December '24",
+    "changes": [
+      "First steps at making the app more accessible for sight-impaired users",
+      "Add HamQTH callsign lookup (by M1SDH)",
+      "Merge spots of multi-operator activations (by M1SDH)",
+      "Use spot comments to confirm POTA contacts (by NA7DO)",
+      "WWBOTA cluster spots (by M1SDH)",
+      "Improve operation title handling",
+      "Faster data downloads for POTA, SOTA and WWFF",
+      "Ignore grid AA00aa",
+      "Operation Location screen",
+      "Preliminary work for Sync Service",
+      "Make Anna happy and allow using number keys on spotting comments",
+      "Fix problems with external keyboards on Android",
+      "Fix bugs in various input fields",
+      "Fix lookup of portable calls",
+      "Fix reference prefix for ITABOTA (by M1SDH)",
+      "Fix SOTA self-spot reliability (by M1SDH)"
+    ]
+  },
+  "24.11.2": {
+    "name": "November '24",
+    "changes": [
+      "Fix crash for some devices when opening an operation"
+    ]
+  },
+  "24.11.1": {
+    "name": "November '24",
+    "changes": [
+      "Fix problems with name lookups and POTA references"
+    ]
+  },
+  "24.11.0": {
+    "name": "November '24",
+    "changes": [
+      "New Operation Data Screen, for exports, imports and sharing",
+      "SOTA Hunter log export",
+      "Updated SOTA APIs",
+      "Combining spots from different sources as one",
+      "HamDB lookups (free, but US, Canada and Germany only)",
+      "Link to our new Forums",
+      "Cleaned up app internals for better performance",
+      "Menu option to 'Lookup all QSOs' in an Operation",
+      "Changing activity references (POTA, SOTA, etc) updates grid unless set manually",
+      "Fixed crash when loading data files on devices with limited RAM",
+      "Fixed Cabrillo export bug",
+      "Fixed call lookup, notes and history bugs",
+      "Fixed `QRT` spotting command"
+    ]
+  },
+  "24.10.3": {
+    "name": "October '24",
+    "changes": [
+      "NY QSO Party (Experimental)"
+    ]
+  },
+  "24.10.2": {
+    "name": "October '24",
+    "changes": [
+      "Fixed bugs related to retrieval of GPS locations",
+      "Fixed ADIF export comments field name",
+      "Fixed band plan for Australia and South Africa to include all modes in 30m"
+    ]
+  },
+  "24.10.1": {
+    "name": "October '24",
+    "changes": [
+      "Fixed crash on operations where all QSOs are deleted"
+    ]
+  },
+  "24.10.0": {
+    "name": "October '24",
+    "changes": [
+      "Count DXCC entities, US States and Canadian Provinces",
+      "Map markers now use colors for bands",
+      "Self-spotting shortcuts `QRV`, `QSY` and `QRT`",
+      "Use the [send] button to trigger shortcuts",
+      "Added vibration to number keys",
+      "Fixes for GMA spotting and log file name",
+      "Improvements in SOTA and WWFF log exports",
+      "Scoring summaries for ECA, ELA and WWBOTA",
+      "Guess modes based on frequency",
+      "General Setting to use 8-digit grids"
+    ]
+  },
+  "24.9.7": {
+    "name": "September '24 (24.9.7)",
+    "changes": [
+      "Fixed bug when doing for calls with multiple aliases on QRZ.com"
+    ]
+  },
+  "24.9.6": {
+    "name": "September '24 (24.9.6)",
+    "changes": [
+      "More… yes, you guessed it… spotting fixes. This time in split view mode."
+    ]
+  },
+  "24.9.5": {
+    "name": "September '24 (24.9.5)",
+    "changes": [
+      "More spotting fixes",
+      "Include notes in ADIF, even when there is no title"
+    ]
+  },
+  "24.9.4": {
+    "name": "September '24 (24.9.4)",
+    "changes": [
+      "Fixed crash when selecting certain spotted calls"
+    ]
+  },
+  "24.9.3": {
+    "name": "September '24 (24.9.3)",
+    "changes": [
+      "Further fixes for crash in Callsign Notes Settings"
+    ]
+  },
+  "24.9.2": {
+    "name": "September '24 (24.9.2)",
+    "changes": [
+      "Fixed crash in Callsign Notes Settings",
+      "Fixed crash when looking up certain callsigns",
+      "Fixed bug preventing clearing of callsigns"
+    ]
+  },
+  "24.9.1": {
+    "name": "September '24 (24.9.1)",
+    "changes": [
+      "Fixed bug where QSO names and locations were not being saved."
+    ]
+  },
+  "24.9.0": {
+    "name": "September '24",
+    "changes": [
+      "Counting and scoring QSOs for an Operation",
+      "Access to spots from Home Screen",
+      "Filter spots by Continent",
+      "Split view can now be resized",
+      "Add QSOs to an operation from an ADIF file",
+      "Operation Title and Notes",
+      "Fixed bugs related to loading Callsign Notes",
+      "Date and time input fields now accept shorter formats"
+    ]
+  },
+  "24.8.0": {
+    "name": "August '24",
+    "changes": [
+      "Much improved Spots Screen",
+      "SOTA Spots!!!",
+      "SOTA Self-spotting (by M1SDH)",
+      "WWFF Spots (by M1SDH)",
+      "Input for TX Power (by NA7DO)",
+      "Self-spotting command shortcut (‘SPOTME’)",
+      "Add QSOs to an operation from an ADIF file (Dev Mode only, for now)",
+      "Miscelaneous bug fixes"
+    ]
+  },
+  "24.7.0": {
+    "name": "July '24",
+    "changes": [
+      "Hide self-spotting after successfully posting",
+      "Tweaked layout of Call Info Panel",
+      "Bearing display is now optional",
+      "Leftie Mode",
+      "Fix bugs where notes were not being shown",
+      "Fix bugs with stray lookup data",
+      "Fix bug with onboarding dialog",
+      "Option to clear Historical Data (contributed by NA7DO)",
+      "Include seconds in ADIF times (contributed by NA7DO)",
+      "Bunkers on the air is now Worldwide! (contributed by M1SDH)"
+    ]
+  },
+  "0.7.10.1": {
+    "changes": [
+      "More Field Day tweaks",
+      "Allow changing operator call mid-operation",
+      "Dim QSOs from other operators",
+      "OP/{call} command to change operator call",
+      "Fixed missing call info in split views"
+    ]
+  },
+  "0.7.10": {
+    "changes": [
+      "Fixes for Field Day",
+      "Satellite QSOs",
+      "Fixed problem deleting multiple QSOs",
+      "Ignore taps on your own spots",
+      "Changes to the Credits Screen",
+      "Scoring (dupes and such) for ELA and ECA",
+      "Share operation activity"
+    ]
+  },
+  "0.7.9": {
+    "changes": [
+      "Logging info now persists between screen changes",
+      "Quick call lookup in Home Screen",
+      "Added a control to edit full QSO details in a separate screen",
+      "Add ECA/ELA self-spotting to GMA cluster (contributed by M1SDH)",
+      "Add Silos on the Air (SiOTA) (contributed by M1SDH)",
+      "Include bearing alongisde distance for callsign info",
+      "Allow entering incomplete callsigns or references that include a `?`",
+      "When logging multiple POTA references, allow the field to grow",
+      "Refactored how callsign settings are entered",
+      "Fixed crash when looking up certain callsigns on QRZ.com",
+      "Various fixes for Spotting control",
+      "Various fixes for Call Notes"
+    ]
+  },
+  "0.7.8": {
+    "changes": [
+      "Better handling of history counts",
+      "Link to Online Manual",
+      "Fixed QSON imports",
+      "Fixed ADIF export of submodes like FT4, and bands like 1.25m",
+      "Fixed map issues on Android",
+      "Fixed QRZ links",
+      "Global Mountain Activity (contributed by M1SDH)",
+      "Use numeric keyboard when appropriate (iOS only)",
+      "Ensure QRZ password is never capitalized (KE8PZN's bug)",
+      "Add placeholder name in search when reference unknown (M1SDH)",
+      "Use a screen instead of a dialog for showing callsign info",
+      "Improvements for RST inputs",
+      "Keep track of VFO band and mode globally",
+      "Allow entering incomplete callsigns or references that include a `?`",
+      "Various fixes for Spotting control",
+      "Various fixes for Call Notes"
+    ]
+  },
+  "0.7.7": {
+    "changes": [
+      "Better handling of offline data, faster startup",
+      "Added slash or period to number key row",
+      "UK Bunkers On The Air (contributed by M1SDH)",
+      "English Castles Award (contributed by M1SDH)",
+      "English Lighthouses Award (contributed by M1SDH)",
+      "Better layout and styles for large font sizes",
+      "Better handling of duplicates and QSO scoring",
+      "Use high-accuracy location when available",
+      "Link to App Features from Operation Settings",
+      "Make it easier to use Dropbox, iCloud, Google Docs or Google Drive links for Callsign Notes",
+      "Fixed bug with stale call info data",
+      "Fixed bug in frequency input",
+      "Fixed bug importing files on Android",
+      "Fixed bug with ADIF export sub modes"
+    ]
+  },
+  "0.7.6": {
+    "changes": [
+      "Log multiple QSOs at once",
+      "Include POTA references in spot comment for multi-park activations (contributed by M1SDH)"
+    ]
+  },
+  "0.7.5": {
+    "changes": [
+      "PoLo is now officialy Open Source",
+      "Theme tweaks, colors, sizes, maps colors",
+      "Use a split screen for operations on tablets",
+      "Support for spotting multiple activities at once (contributed by M1SDH)",
+      "WWFF Spotting (contributed by M1SDH)",
+      "Worked All Britain Squares (contributed by M1SDH)",
+      "Removed Solar Eclipse QSO Party",
+      "Show POTA names in Operation Settings screen",
+      "Show call notes emoji in log and spots"
+    ]
+  },
+  "0.7.4": {
+    "changes": [
+      "Full-screen Map View",
+      "Use data from past log entries if QRZ is not available",
+      "Import ADIF into historical data",
+      "Made numbers row larger",
+      "Map performance improvements",
+      "Fixed display of icons in Operations",
+      "Fixed the use of the 'send' or 'return' key to save QSOs",
+      "Fixed missing log info when not activating anything",
+      "Fixed call info lookup bugs",
+      "Fixed picking grid info from POTA references"
+    ]
+  },
+  "0.7.3": {
+    "changes": [
+      "Eclipse QSO Party",
+      "Performance fixes",
+      "Fixed POTA offline references"
+    ]
+  },
+  "0.7.2": {
+    "changes": [
+      "Callsign Notes ⭐️",
+      "Band & Mode settings",
+      "Fixed SOTA reference entry for 3-letter prefixes",
+      "Fixed WWFF Logging (contributed by M1SDH)",
+      "New 'Custom' Extension for SIG_INFO Activations (contributed by M1SDH)",
+      "Ensure ADIF exports are free of UTF-8 extended characters"
+    ]
+  },
+  "0.7.1": {
+    "changes": [
+      "Minor style tweaks"
+    ]
+  },
+  "0.7.0": {
+    "changes": [
+      "New Base Release",
+      "Updated fonts"
+    ]
+  },
+  "0.6.7": {
+    "changes": [
+      "Fixed SOTA reference entry for 3-character prefixes"
+    ]
+  },
+  "0.6.6": {
+    "changes": [
+      "Shortcut Commands",
+      "Developer Menu (ask on Discord how to enable it)"
+    ]
+  },
+  "0.6.5": {
+    "changes": [
+      "Fixed ADIF export for General Operation",
+      "Fixed wiggle in radio controls",
+      "Manage separate update tracks",
+      "Onboarding!"
+    ]
+  },
+  "0.6.4": {
+    "changes": [
+      "Refactored log exporting code",
+      "Fixed frequency and mode control layout on small screens",
+      "Show distances in QSOs and activity searches",
+      "POTA name abbreviations"
+    ]
+  },
+  "0.6.3": {
+    "changes": [
+      "Added support and discord links",
+      "Manage App Features",
+      "Setting for auto-jump on rst entry",
+      "Performance fixes"
+    ]
+  },
+  "0.6.2": {
+    "changes": [
+      "Fixed issues with Date & Time inputs",
+      "Enter relative dates and times (try appending `-1d` to the date, or `+1h` to the time)"
+    ]
+  },
+  "0.6.1": {
+    "changes": [
+      "Operation Map!!!",
+      "Enable or disable offline data files"
+    ]
+  },
+  "0.6.0": {
+    "changes": [
+      "POTA Spotting (thanks to info from VK1AO)",
+      "Added State Field",
+      "Capture data from QRZ.com and export to ADIF",
+      "Option to keep device awake",
+      "WWFF (contributed by M1SDH)",
+      "Option to switch Sent/Rcvd field order (contributed by M1SDH)",
+      "Added crash reporting",
+      "Fixed Number Keys",
+      "Fixed proper exporting of station callsign to ADIF"
+    ]
+  },
+  "0.5.3": {
+    "changes": [
+      "Fixed bugs in frequency input",
+      "Fixed bugs when exporting logs"
+    ]
+  },
+  "0.5.2": {
+    "changes": [
+      "Make secondary controls appear above, instead of below the selector chips",
+      "Fixed a few crashing bugs"
+    ]
+  },
+  "0.5.1": {
+    "changes": [
+      "Sort POTA results by rough proximity to current location",
+      "Refactored Secondary Fields (notes, p2p, etc) panel",
+      "Ensure filenames are valid (contributed by M1SDH)",
+      "Summits On The Air (SOTA) support",
+      "Better Startup experience",
+      "Potentially fix crash when searching POTA references while offline"
+    ]
+  },
+  "0.5.0": {
+    "changes": [
+      "GPS Location!",
+      "Show nearby parks when searching for POTA references",
+      "Jump to activity settings when adding a new activity to an operation",
+      "Update operation title after removing all POTA references"
+    ]
+  },
+  "0.4.13": {
+    "changes": [
+      "Corrected QSO counts to account for deleted QSOs",
+      "Fixed problems with enterinsg bands and frequencies"
+    ]
+  },
+  "0.4.12": {
+    "changes": [
+      "Improved time and frequency formats in operation screen",
+      "Fixed wiping QSO info that came from spots",
+      "Sort spot filter dropdown by band",
+      "On spots list, show worked before (strikethru); new band, mode or park (green); or own spot (orange)",
+      "Added a setting to control showing of DX flags in log"
+    ]
+  },
+  "0.4.11": {
+    "changes": [
+      "Dark Mode settings",
+      "Fixed dark mode colors"
+    ]
+  },
+  "0.4.10": {
+    "changes": [
+      "New version information screen"
+    ]
+  },
+  "0.4.9": {
+    "changes": [
+      "Internal changes and bug fixes"
+    ]
+  },
+  "0.4.8": {
+    "changes": [
+      "Internal changes and bug fixes"
+    ]
+  },
+  "0.4.7": {
+    "changes": [
+      "Refactored Operation settings and activity options",
+      "Added POTA search by name",
+      "Update POTA database daily, while they transition all their references",
+      "Allow entering unknown POTA references",
+      "Fixed grids in ADIF exports"
+    ]
+  },
+  "0.4.6": {
+    "changes": [
+      "Secondary fields should be focused after opening them",
+      "Switch report fields after two (or three) digits",
+      "Better handling of downloaded data files (e.g. POTA database)",
+      "Offline POTA lookups"
+    ]
+  },
+  "0.4.5": {
+    "changes": [
+      "Deleted QSOs are not exported as ADIF",
+      "Exporting ADIF for a POTA activation with multiple parks now generates one file per park"
+    ]
+  },
+  "0.4.4": {
+    "changes": [
+      "Deleted QSOs are now ignored when looking for dupes",
+      "Delete a QSO",
+      "Wipe an unlogged QSO",
+      "Fixed exporting ADIF with notes",
+      "Use 599 as default report for RTTY",
+      "Dupe checks now also consider band and mode",
+      "Fixed frequency input",
+      "Cannot start logging until band and mode are specified"
+    ]
+  }
+}

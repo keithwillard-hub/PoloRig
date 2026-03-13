@@ -1,0 +1,1867 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0196DA8A1B8F4BCA8481AEDB /* PacketBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD88D587AFFE4803B07BB3F5 /* PacketBuilder.swift */; };
+		07A0902DFB974D1CB3152257 /* Roboto Condensed Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD16A78FD39D4B129049E76A /* Roboto Condensed Light.ttf */; };
+		0A22A3007B4E477BB0B7A498 /* Roboto Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F99153778C1418285DADE13 /* Roboto Light.ttf */; };
+		0F80D62E977D4D87ADC28752 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 136015CF8403421FA231F743 /* Roboto.ttf */; };
+		10EEB63DF35249D4BB815FE2 /* UDPBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B789CC354F7C4E0AB602C6F4 /* UDPBase.swift */; };
+		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		17AA7B9063DA4E6C8920B82A /* Roboto Condensed Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD2495B3B1DD4FD5AD92CE01 /* Roboto Condensed Bold.ttf */; };
+		193F1C968C304118B80AA47C /* Roboto Condensed Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10BDDF29EBA2446999C4DDED /* Roboto Condensed Thin.ttf */; };
+		25027BB41CF84D1E8D9E7A2B /* Roboto Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9BBC9CE4DC36464AAA683059 /* Roboto Medium.ttf */; };
+		2742EA15C87246DBBFDE1281 /* Roboto Mono Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5AF322C92F54A8898C60664 /* Roboto Mono Light.ttf */; };
+		338C874E957D494590B61D27 /* Roboto Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */; };
+		35451DE812E14517B56C86EC /* CWSidetone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */; };
+		456A42C3E6052EE69BD37B21 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */; };
+		4941F40FC5A6497DB2D1F76C /* UDPControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A600B462649EEBB7B44D2 /* UDPControl.swift */; };
+		547C6D2E8A864A0EA2664E86 /* Roboto Condensed ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52E51D689542480FA9E55C4C /* Roboto Condensed ExtraBold.ttf */; };
+		594668748840B97B93F0B172 /* UDPBaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F374BC0A000F218AEC03576E /* UDPBaseTests.swift */; };
+		5C2AFBACD3C741EEA619B61D /* Roboto Condensed Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C66C002B48D24A32BC280E2D /* Roboto Condensed Medium.ttf */; };
+		5D4E02844FE930FB2D9E4BE3 /* CIVConstantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5B55DF2DD4C0A2DB6EA5D7 /* CIVConstantsTests.swift */; };
+		6C77CB69AB8A41BC8B6A080C /* Roboto Mono Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83A8D54793464474BD06F48F /* Roboto Mono Bold.ttf */; };
+		722871022D79DD9F00B9131B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722871012D79DD9F00B9131B /* AppDelegate.swift */; };
+		736695BBBAA64298A7D00C37 /* CWKeyer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF33566A74A140C5948D8B2B /* CWKeyer.swift */; };
+		7427ED05EA1549F59C396A02 /* CIVConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C955A045DD46DEABCB2E23 /* CIVConstants.swift */; };
+		7889B4E4799A496E8CF794F7 /* Roboto Mono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0CD45E9F2B3048D58AC8061C /* Roboto Mono.ttf */; };
+		78B29C969CDF496D904681BF /* CIVController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3714B58987304C97932F7783 /* CIVController.swift */; };
+		7CA305F2855D449B9A256B79 /* IC705RigControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED76896A178D4A9485F116E7 /* IC705RigControl.swift */; };
+		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8CF6FA2617FF48DA86F38D8F /* IC705RigControlBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F73F48D4ED48A8BF3C0656 /* IC705RigControlBridge.m */; };
+		8E4494A97A481B80893E0AA4 /* PacketDefinitionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1EA03BA1774CCB606F777F /* PacketDefinitionsTests.swift */; };
+		90D83B5736CA4A8E9B72F795 /* Roboto Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C7F72824C3B04653AF0F08A0 /* Roboto Thin.ttf */; };
+		924284A9F903466B8A14673C /* PacketDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321F0F1202EB49E897CBD707 /* PacketDefinitions.swift */; };
+		926EE64DDE9F46908A85DE3B /* Roboto Slab Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C0B5909F8BC4EDA8E81F330 /* Roboto Slab Medium.ttf */; };
+		A0C46A3953964C91BD928C19 /* Roboto Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A09E710A695D4C2EA0A456BF /* Roboto Bold.ttf */; };
+		A44D9C796C934860B5E4F42D /* Roboto Slab Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C18DD4ABE0104CD9AFAA7268 /* Roboto Slab Thin.ttf */; };
+		B28CF98D3DBB41418418AC37 /* Roboto Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 502D040F51B64A87AD743CAB /* Roboto Black.ttf */; };
+		BD0A8CDB92C5D9DDF2B317D4 /* Pods_polorig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B598674A58BB350F179F8918 /* Pods_polorig.framework */; };
+		C2694A223EC6492BB7EFB7D2 /* Roboto Slab ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59232FB52CBE4FBEA9C17B56 /* Roboto Slab ExtraBold.ttf */; };
+		C3F0087C76764661A46C5B97 /* Roboto Slab Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20CFD5EF5FB847249CAAC60D /* Roboto Slab Black.ttf */; };
+		C63A2E24A2314ED9859FEFA4 /* Roboto Slab.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3CCFF619A2EB40EBB2E7D3CF /* Roboto Slab.ttf */; };
+		C77C37E33887BE2ACCE4F500 /* CWKeyerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F410DAE6C14CC378864E07 /* CWKeyerTests.swift */; };
+		CB228788D572B3BF190FAF7F /* CWSidetoneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B31DA1EAE0CBDA4B0A7BAA7 /* CWSidetoneTests.swift */; };
+		CB5344E0200B447D8C4B736A /* Roboto Mono Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43F5401195AA47C6BA7612F4 /* Roboto Mono Medium.ttf */; };
+		CD956DD48DDC41D680238B17 /* Roboto Slab Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CD4EAF24819403291711A40 /* Roboto Slab Light.ttf */; };
+		D677E0E3A71C4F2E9C59F30B /* CWTemplateEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B9E03F4B1E4123AF56FE3D /* CWTemplateEngine.swift */; };
+		DA856BC03D83464E878B711C /* UDPSerial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C715537336AC4BBDB485479F /* UDPSerial.swift */; };
+		DAF1C72FE953463D9308D4A4 /* Roboto Mono Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DEB1B947A9040BC81142CDB /* Roboto Mono Thin.ttf */; };
+		DC5806A540891094570E4D23 /* CIVControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94294DCEAA59D49A1D615F49 /* CIVControllerTests.swift */; };
+		DDF5AFEEF06B4A009A694BD1 /* Roboto Condensed Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F01A4B0548424FF59FDD0947 /* Roboto Condensed Black.ttf */; };
+		E63ECB5203F5D2974DD33B22 /* CWTemplateEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750DAF980A43F4CF7AAADBA3 /* CWTemplateEngineTests.swift */; };
+		F889C2FBD9D01C7960DC6DC6 /* UDPSerialTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0A1027DEB4914702723677 /* UDPSerialTests.swift */; };
+		FF41358C34EE865A9906D95F /* PacketBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6565519BE756064EB78E13 /* PacketBuilderTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DED4E960DFC02C86A33FA03D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
+			remoteInfo = polorig;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01ADCF23075EB4C25894D688 /* Pods-polo.prodrelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.prodrelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.prodrelease.xcconfig"; sourceTree = "<group>"; };
+		0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWSidetone.swift; sourceTree = "<group>"; };
+		0CD45E9F2B3048D58AC8061C /* Roboto Mono.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono.ttf"; path = "../assets/fonts/Roboto Mono.ttf"; sourceTree = "<group>"; };
+		0F99153778C1418285DADE13 /* Roboto Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Light.ttf"; path = "../assets/fonts/Roboto Light.ttf"; sourceTree = "<group>"; };
+		10BDDF29EBA2446999C4DDED /* Roboto Condensed Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed Thin.ttf"; path = "../assets/fonts/Roboto Condensed Thin.ttf"; sourceTree = "<group>"; };
+		136015CF8403421FA231F743 /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = ../assets/fonts/Roboto.ttf; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* PoloRig.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PoloRig.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = polorig/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = polorig/Info.plist; sourceTree = "<group>"; };
+		1C9746486FD59ECA88E77FF4 /* Pods-polo.devrelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.devrelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.devrelease.xcconfig"; sourceTree = "<group>"; };
+		20CFD5EF5FB847249CAAC60D /* Roboto Slab Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab Black.ttf"; path = "../assets/fonts/Roboto Slab Black.ttf"; sourceTree = "<group>"; };
+		25BC5363E51D62604EED3167 /* Pods-polorig.betadebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.betadebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.betadebug.xcconfig"; sourceTree = "<group>"; };
+		27B9E03F4B1E4123AF56FE3D /* CWTemplateEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWTemplateEngine.swift; sourceTree = "<group>"; };
+		2908BA1A9DF8FB525A4E57EF /* Pods-polo.betarelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.betarelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.betarelease.xcconfig"; sourceTree = "<group>"; };
+		2C5B55DF2DD4C0A2DB6EA5D7 /* CIVConstantsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CIVConstantsTests.swift; sourceTree = "<group>"; };
+		2DEB1B947A9040BC81142CDB /* Roboto Mono Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono Thin.ttf"; path = "../assets/fonts/Roboto Mono Thin.ttf"; sourceTree = "<group>"; };
+		321F0F1202EB49E897CBD707 /* PacketDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketDefinitions.swift; sourceTree = "<group>"; };
+		3714B58987304C97932F7783 /* CIVController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIVController.swift; sourceTree = "<group>"; };
+		396C1B2583C8A960412D7D70 /* Pods-polorig.betarelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.betarelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.betarelease.xcconfig"; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-polo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.debug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.debug.xcconfig"; sourceTree = "<group>"; };
+		3CCFF619A2EB40EBB2E7D3CF /* Roboto Slab.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab.ttf"; path = "../assets/fonts/Roboto Slab.ttf"; sourceTree = "<group>"; };
+		43F5401195AA47C6BA7612F4 /* Roboto Mono Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono Medium.ttf"; path = "../assets/fonts/Roboto Mono Medium.ttf"; sourceTree = "<group>"; };
+		44EEF3D4BD0F0DC3A0AC7B94 /* Pods-polorig.devdebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.devdebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.devdebug.xcconfig"; sourceTree = "<group>"; };
+		502D040F51B64A87AD743CAB /* Roboto Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Black.ttf"; path = "../assets/fonts/Roboto Black.ttf"; sourceTree = "<group>"; };
+		52E51D689542480FA9E55C4C /* Roboto Condensed ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed ExtraBold.ttf"; path = "../assets/fonts/Roboto Condensed ExtraBold.ttf"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-polo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.release.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.release.xcconfig"; sourceTree = "<group>"; };
+		57C955A045DD46DEABCB2E23 /* CIVConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIVConstants.swift; sourceTree = "<group>"; };
+		59232FB52CBE4FBEA9C17B56 /* Roboto Slab ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab ExtraBold.ttf"; path = "../assets/fonts/Roboto Slab ExtraBold.ttf"; sourceTree = "<group>"; };
+		59F410DAE6C14CC378864E07 /* CWKeyerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CWKeyerTests.swift; sourceTree = "<group>"; };
+		5B31DA1EAE0CBDA4B0A7BAA7 /* CWSidetoneTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CWSidetoneTests.swift; sourceTree = "<group>"; };
+		5C0B5909F8BC4EDA8E81F330 /* Roboto Slab Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab Medium.ttf"; path = "../assets/fonts/Roboto Slab Medium.ttf"; sourceTree = "<group>"; };
+		66A83A3C388A49C3490A0D78 /* Pods-polorig.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.debug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.debug.xcconfig"; sourceTree = "<group>"; };
+		720996792BA85FB5002C388D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		7223333C2D7C5F4500D75C8F /* polorig-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "polorig/polorig-Bridging-Header.h"; sourceTree = "<group>"; };
+		722871012D79DD9F00B9131B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = polorig/AppDelegate.swift; sourceTree = "<group>"; };
+		72A0D32B2B162706007E568A /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		72A0D32C2B162706007E568A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		72A0D32D2B162706007E568A /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
+		72DF941A2DDB74C700C58922 /* polorig-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "polorig-Bridging-Header.h"; sourceTree = "<group>"; };
+		72F73F48D4ED48A8BF3C0656 /* IC705RigControlBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = polorig/IC705RigControlBridge.m; sourceTree = "<group>"; };
+		750DAF980A43F4CF7AAADBA3 /* CWTemplateEngineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CWTemplateEngineTests.swift; sourceTree = "<group>"; };
+		7ACE30561292103DE02A4688 /* Pods-polorig.devrelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.devrelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.devrelease.xcconfig"; sourceTree = "<group>"; };
+		7C1EA03BA1774CCB606F777F /* PacketDefinitionsTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PacketDefinitionsTests.swift; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = polorig/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		83A8D54793464474BD06F48F /* Roboto Mono Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono Bold.ttf"; path = "../assets/fonts/Roboto Mono Bold.ttf"; sourceTree = "<group>"; };
+		93BFC4D6977FCB70D3609E51 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		94294DCEAA59D49A1D615F49 /* CIVControllerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CIVControllerTests.swift; sourceTree = "<group>"; };
+		9B7A9A648EECA029024A1016 /* Pods-polo.betadebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.betadebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.betadebug.xcconfig"; sourceTree = "<group>"; };
+		9BBC9CE4DC36464AAA683059 /* Roboto Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Medium.ttf"; path = "../assets/fonts/Roboto Medium.ttf"; sourceTree = "<group>"; };
+		9CD4EAF24819403291711A40 /* Roboto Slab Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab Light.ttf"; path = "../assets/fonts/Roboto Slab Light.ttf"; sourceTree = "<group>"; };
+		A09E710A695D4C2EA0A456BF /* Roboto Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Bold.ttf"; path = "../assets/fonts/Roboto Bold.ttf"; sourceTree = "<group>"; };
+		A5AF322C92F54A8898C60664 /* Roboto Mono Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono Light.ttf"; path = "../assets/fonts/Roboto Mono Light.ttf"; sourceTree = "<group>"; };
+		A8EAA903020E384C8E58F3C1 /* polorigTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = polorigTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD0A1027DEB4914702723677 /* UDPSerialTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UDPSerialTests.swift; sourceTree = "<group>"; };
+		AD2495B3B1DD4FD5AD92CE01 /* Roboto Condensed Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed Bold.ttf"; path = "../assets/fonts/Roboto Condensed Bold.ttf"; sourceTree = "<group>"; };
+		AD6565519BE756064EB78E13 /* PacketBuilderTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PacketBuilderTests.swift; sourceTree = "<group>"; };
+		AD88D587AFFE4803B07BB3F5 /* PacketBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketBuilder.swift; sourceTree = "<group>"; };
+		B598674A58BB350F179F8918 /* Pods_polorig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_polorig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B789CC354F7C4E0AB602C6F4 /* UDPBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPBase.swift; sourceTree = "<group>"; };
+		BAE1CD349DD33E70D01BB837 /* Pods-polorig.prodrelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.prodrelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.prodrelease.xcconfig"; sourceTree = "<group>"; };
+		BD16A78FD39D4B129049E76A /* Roboto Condensed Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed Light.ttf"; path = "../assets/fonts/Roboto Condensed Light.ttf"; sourceTree = "<group>"; };
+		BF33566A74A140C5948D8B2B /* CWKeyer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWKeyer.swift; sourceTree = "<group>"; };
+		BF3A600B462649EEBB7B44D2 /* UDPControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPControl.swift; sourceTree = "<group>"; };
+		C18DD4ABE0104CD9AFAA7268 /* Roboto Slab Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Slab Thin.ttf"; path = "../assets/fonts/Roboto Slab Thin.ttf"; sourceTree = "<group>"; };
+		C66C002B48D24A32BC280E2D /* Roboto Condensed Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed Medium.ttf"; path = "../assets/fonts/Roboto Condensed Medium.ttf"; sourceTree = "<group>"; };
+		C715537336AC4BBDB485479F /* UDPSerial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPSerial.swift; sourceTree = "<group>"; };
+		C7615E2F1FC804946A9A6576 /* Pods-polorig.proddebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.proddebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.proddebug.xcconfig"; sourceTree = "<group>"; };
+		C7F72824C3B04653AF0F08A0 /* Roboto Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Thin.ttf"; path = "../assets/fonts/Roboto Thin.ttf"; sourceTree = "<group>"; };
+		D3C0AACBADED1145A6C4DF2D /* Pods-polo.proddebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.proddebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.proddebug.xcconfig"; sourceTree = "<group>"; };
+		DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed.ttf"; path = "../assets/fonts/Roboto Condensed.ttf"; sourceTree = "<group>"; };
+		DEC8A649BE8FF2B0624B01C9 /* Pods-polorig.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.release.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.release.xcconfig"; sourceTree = "<group>"; };
+		EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = polorig/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		ED76896A178D4A9485F116E7 /* IC705RigControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = polorig/IC705RigControl.swift; sourceTree = "<group>"; };
+		EDCB747124D4D5E23AC68F85 /* Pods-polo.devdebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.devdebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.devdebug.xcconfig"; sourceTree = "<group>"; };
+		F01A4B0548424FF59FDD0947 /* Roboto Condensed Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed Black.ttf"; path = "../assets/fonts/Roboto Condensed Black.ttf"; sourceTree = "<group>"; };
+		F374BC0A000F218AEC03576E /* UDPBaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UDPBaseTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		13B07F8C1A680F5B00A75B9A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD0A8CDB92C5D9DDF2B317D4 /* Pods_polorig.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B9D11BD86B147D39A94188F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		13B07FAE1A68108700A75B9A /* polorig */ = {
+			isa = PBXGroup;
+			children = (
+				722871012D79DD9F00B9131B /* AppDelegate.swift */,
+				72DF941A2DDB74C700C58922 /* polorig-Bridging-Header.h */,
+				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
+				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
+				720996792BA85FB5002C388D /* Config.xcconfig */,
+				EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */,
+				7223333C2D7C5F4500D75C8F /* polorig-Bridging-Header.h */,
+				17DF39BCBBB649918B7D07C8 /* RigControl */,
+				ED76896A178D4A9485F116E7 /* IC705RigControl.swift */,
+				72F73F48D4ED48A8BF3C0656 /* IC705RigControlBridge.m */,
+			);
+			name = polorig;
+			sourceTree = "<group>";
+		};
+		17DF39BCBBB649918B7D07C8 /* RigControl */ = {
+			isa = PBXGroup;
+			children = (
+				321F0F1202EB49E897CBD707 /* PacketDefinitions.swift */,
+				AD88D587AFFE4803B07BB3F5 /* PacketBuilder.swift */,
+				B789CC354F7C4E0AB602C6F4 /* UDPBase.swift */,
+				BF3A600B462649EEBB7B44D2 /* UDPControl.swift */,
+				C715537336AC4BBDB485479F /* UDPSerial.swift */,
+				57C955A045DD46DEABCB2E23 /* CIVConstants.swift */,
+				3714B58987304C97932F7783 /* CIVController.swift */,
+				BF33566A74A140C5948D8B2B /* CWKeyer.swift */,
+				27B9E03F4B1E4123AF56FE3D /* CWTemplateEngine.swift */,
+				0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */,
+			);
+			path = polorig/RigControl;
+			sourceTree = "<group>";
+		};
+		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				B598674A58BB350F179F8918 /* Pods_polorig.framework */,
+				B8CB51B01FA20EA9833AD00C /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		72A0D32F2B162732007E568A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				72A0D32C2B162706007E568A /* MaterialCommunityIcons.ttf */,
+				72A0D32B2B162706007E568A /* MaterialIcons.ttf */,
+				72A0D32D2B162706007E568A /* FontAwesome6_Solid.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		83CBB9F61A601CBA00E9B192 = {
+			isa = PBXGroup;
+			children = (
+				13B07FAE1A68108700A75B9A /* polorig */,
+				832341AE1AAA6A7D00B99B32 /* Libraries */,
+				83CBBA001A601CBA00E9B192 /* Products */,
+				72A0D32F2B162732007E568A /* Fonts */,
+				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				B9E8171AC7DE400C88476DD8 /* Resources */,
+				EBE253266845F59C4F4E785D /* polorigTests */,
+			);
+			indentWidth = 2;
+			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
+		};
+		83CBBA001A601CBA00E9B192 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				13B07F961A680F5B00A75B9A /* PoloRig.app */,
+				A8EAA903020E384C8E58F3C1 /* polorigTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B8CB51B01FA20EA9833AD00C /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				93BFC4D6977FCB70D3609E51 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		B9E8171AC7DE400C88476DD8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				83A8D54793464474BD06F48F /* Roboto Mono Bold.ttf */,
+				A5AF322C92F54A8898C60664 /* Roboto Mono Light.ttf */,
+				43F5401195AA47C6BA7612F4 /* Roboto Mono Medium.ttf */,
+				2DEB1B947A9040BC81142CDB /* Roboto Mono Thin.ttf */,
+				0CD45E9F2B3048D58AC8061C /* Roboto Mono.ttf */,
+				20CFD5EF5FB847249CAAC60D /* Roboto Slab Black.ttf */,
+				59232FB52CBE4FBEA9C17B56 /* Roboto Slab ExtraBold.ttf */,
+				9CD4EAF24819403291711A40 /* Roboto Slab Light.ttf */,
+				5C0B5909F8BC4EDA8E81F330 /* Roboto Slab Medium.ttf */,
+				C18DD4ABE0104CD9AFAA7268 /* Roboto Slab Thin.ttf */,
+				3CCFF619A2EB40EBB2E7D3CF /* Roboto Slab.ttf */,
+				502D040F51B64A87AD743CAB /* Roboto Black.ttf */,
+				A09E710A695D4C2EA0A456BF /* Roboto Bold.ttf */,
+				F01A4B0548424FF59FDD0947 /* Roboto Condensed Black.ttf */,
+				AD2495B3B1DD4FD5AD92CE01 /* Roboto Condensed Bold.ttf */,
+				52E51D689542480FA9E55C4C /* Roboto Condensed ExtraBold.ttf */,
+				BD16A78FD39D4B129049E76A /* Roboto Condensed Light.ttf */,
+				C66C002B48D24A32BC280E2D /* Roboto Condensed Medium.ttf */,
+				10BDDF29EBA2446999C4DDED /* Roboto Condensed Thin.ttf */,
+				DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */,
+				0F99153778C1418285DADE13 /* Roboto Light.ttf */,
+				9BBC9CE4DC36464AAA683059 /* Roboto Medium.ttf */,
+				C7F72824C3B04653AF0F08A0 /* Roboto Thin.ttf */,
+				136015CF8403421FA231F743 /* Roboto.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B4392A12AC88292D35C810B /* Pods-polo.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-polo.release.xcconfig */,
+				D3C0AACBADED1145A6C4DF2D /* Pods-polo.proddebug.xcconfig */,
+				9B7A9A648EECA029024A1016 /* Pods-polo.betadebug.xcconfig */,
+				EDCB747124D4D5E23AC68F85 /* Pods-polo.devdebug.xcconfig */,
+				01ADCF23075EB4C25894D688 /* Pods-polo.prodrelease.xcconfig */,
+				2908BA1A9DF8FB525A4E57EF /* Pods-polo.betarelease.xcconfig */,
+				1C9746486FD59ECA88E77FF4 /* Pods-polo.devrelease.xcconfig */,
+				66A83A3C388A49C3490A0D78 /* Pods-polorig.debug.xcconfig */,
+				C7615E2F1FC804946A9A6576 /* Pods-polorig.proddebug.xcconfig */,
+				25BC5363E51D62604EED3167 /* Pods-polorig.betadebug.xcconfig */,
+				44EEF3D4BD0F0DC3A0AC7B94 /* Pods-polorig.devdebug.xcconfig */,
+				DEC8A649BE8FF2B0624B01C9 /* Pods-polorig.release.xcconfig */,
+				BAE1CD349DD33E70D01BB837 /* Pods-polorig.prodrelease.xcconfig */,
+				396C1B2583C8A960412D7D70 /* Pods-polorig.betarelease.xcconfig */,
+				7ACE30561292103DE02A4688 /* Pods-polorig.devrelease.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		EBE253266845F59C4F4E785D /* polorigTests */ = {
+			isa = PBXGroup;
+			children = (
+				2C5B55DF2DD4C0A2DB6EA5D7 /* CIVConstantsTests.swift */,
+				94294DCEAA59D49A1D615F49 /* CIVControllerTests.swift */,
+				59F410DAE6C14CC378864E07 /* CWKeyerTests.swift */,
+				5B31DA1EAE0CBDA4B0A7BAA7 /* CWSidetoneTests.swift */,
+				750DAF980A43F4CF7AAADBA3 /* CWTemplateEngineTests.swift */,
+				AD6565519BE756064EB78E13 /* PacketBuilderTests.swift */,
+				7C1EA03BA1774CCB606F777F /* PacketDefinitionsTests.swift */,
+				F374BC0A000F218AEC03576E /* UDPBaseTests.swift */,
+				AD0A1027DEB4914702723677 /* UDPSerialTests.swift */,
+			);
+			name = polorigTests;
+			path = polorigTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		13B07F861A680F5B00A75B9A /* polorig */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "polorig" */;
+			buildPhases = (
+				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
+				13B07F871A680F5B00A75B9A /* Sources */,
+				13B07F8C1A680F5B00A75B9A /* Frameworks */,
+				13B07F8E1A680F5B00A75B9A /* Resources */,
+				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
+				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = polorig;
+			productName = polorig;
+			productReference = 13B07F961A680F5B00A75B9A /* PoloRig.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9DA664F76EF6B9903F84A6AC /* polorigTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DB955FFE5EDB8D7B2804016 /* Build configuration list for PBXNativeTarget "polorigTests" */;
+			buildPhases = (
+				9FEF1E9C76B5262607041AC0 /* Sources */,
+				4B9D11BD86B147D39A94188F /* Frameworks */,
+				B3297F5AB5C5266F581AC1F4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2F81ACE6530A727B9A429073 /* PBXTargetDependency */,
+			);
+			name = polorigTests;
+			productName = polorigTests;
+			productReference = A8EAA903020E384C8E58F3C1 /* polorigTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		83CBB9F71A601CBA00E9B192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1620;
+					};
+				};
+			};
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "polorig" */;
+			compatibilityVersion = "Xcode 12.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				es,
+				fr,
+				de,
+				nl,
+				nb,
+				sk,
+				cs,
+				ja,
+				"zh-Hans",
+				tr,
+				"pt-BR",
+			);
+			mainGroup = 83CBB9F61A601CBA00E9B192;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				13B07F861A680F5B00A75B9A /* polorig */,
+				9DA664F76EF6B9903F84A6AC /* polorigTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		13B07F8E1A680F5B00A75B9A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				6C77CB69AB8A41BC8B6A080C /* Roboto Mono Bold.ttf in Resources */,
+				2742EA15C87246DBBFDE1281 /* Roboto Mono Light.ttf in Resources */,
+				CB5344E0200B447D8C4B736A /* Roboto Mono Medium.ttf in Resources */,
+				DAF1C72FE953463D9308D4A4 /* Roboto Mono Thin.ttf in Resources */,
+				7889B4E4799A496E8CF794F7 /* Roboto Mono.ttf in Resources */,
+				C3F0087C76764661A46C5B97 /* Roboto Slab Black.ttf in Resources */,
+				C2694A223EC6492BB7EFB7D2 /* Roboto Slab ExtraBold.ttf in Resources */,
+				CD956DD48DDC41D680238B17 /* Roboto Slab Light.ttf in Resources */,
+				926EE64DDE9F46908A85DE3B /* Roboto Slab Medium.ttf in Resources */,
+				A44D9C796C934860B5E4F42D /* Roboto Slab Thin.ttf in Resources */,
+				C63A2E24A2314ED9859FEFA4 /* Roboto Slab.ttf in Resources */,
+				B28CF98D3DBB41418418AC37 /* Roboto Black.ttf in Resources */,
+				A0C46A3953964C91BD928C19 /* Roboto Bold.ttf in Resources */,
+				DDF5AFEEF06B4A009A694BD1 /* Roboto Condensed Black.ttf in Resources */,
+				17AA7B9063DA4E6C8920B82A /* Roboto Condensed Bold.ttf in Resources */,
+				547C6D2E8A864A0EA2664E86 /* Roboto Condensed ExtraBold.ttf in Resources */,
+				07A0902DFB974D1CB3152257 /* Roboto Condensed Light.ttf in Resources */,
+				5C2AFBACD3C741EEA619B61D /* Roboto Condensed Medium.ttf in Resources */,
+				193F1C968C304118B80AA47C /* Roboto Condensed Thin.ttf in Resources */,
+				338C874E957D494590B61D27 /* Roboto Condensed.ttf in Resources */,
+				0A22A3007B4E477BB0B7A498 /* Roboto Light.ttf in Resources */,
+				25027BB41CF84D1E8D9E7A2B /* Roboto Medium.ttf in Resources */,
+				90D83B5736CA4A8E9B72F795 /* Roboto Thin.ttf in Resources */,
+				0F80D62E977D4D87ADC28752 /* Roboto.ttf in Resources */,
+				456A42C3E6052EE69BD37B21 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B3297F5AB5C5266F581AC1F4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-polorig-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-polorig/Pods-polorig-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		13B07F871A680F5B00A75B9A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				722871022D79DD9F00B9131B /* AppDelegate.swift in Sources */,
+				924284A9F903466B8A14673C /* PacketDefinitions.swift in Sources */,
+				0196DA8A1B8F4BCA8481AEDB /* PacketBuilder.swift in Sources */,
+				10EEB63DF35249D4BB815FE2 /* UDPBase.swift in Sources */,
+				4941F40FC5A6497DB2D1F76C /* UDPControl.swift in Sources */,
+				DA856BC03D83464E878B711C /* UDPSerial.swift in Sources */,
+				7427ED05EA1549F59C396A02 /* CIVConstants.swift in Sources */,
+				78B29C969CDF496D904681BF /* CIVController.swift in Sources */,
+				736695BBBAA64298A7D00C37 /* CWKeyer.swift in Sources */,
+				D677E0E3A71C4F2E9C59F30B /* CWTemplateEngine.swift in Sources */,
+				35451DE812E14517B56C86EC /* CWSidetone.swift in Sources */,
+				7CA305F2855D449B9A256B79 /* IC705RigControl.swift in Sources */,
+				8CF6FA2617FF48DA86F38D8F /* IC705RigControlBridge.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9FEF1E9C76B5262607041AC0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D4E02844FE930FB2D9E4BE3 /* CIVConstantsTests.swift in Sources */,
+				DC5806A540891094570E4D23 /* CIVControllerTests.swift in Sources */,
+				C77C37E33887BE2ACCE4F500 /* CWKeyerTests.swift in Sources */,
+				CB228788D572B3BF190FAF7F /* CWSidetoneTests.swift in Sources */,
+				E63ECB5203F5D2974DD33B22 /* CWTemplateEngineTests.swift in Sources */,
+				FF41358C34EE865A9906D95F /* PacketBuilderTests.swift in Sources */,
+				8E4494A97A481B80893E0AA4 /* PacketDefinitionsTests.swift in Sources */,
+				594668748840B97B93F0B172 /* UDPBaseTests.swift in Sources */,
+				F889C2FBD9D01C7960DC6DC6 /* UDPSerialTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2F81ACE6530A727B9A429073 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = polorig;
+			target = 13B07F861A680F5B00A75B9A /* polorig */;
+			targetProxy = DED4E960DFC02C86A33FA03D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08648D7C9E3F5BE9FCC4D819 /* DevDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+			};
+			name = DevDebug;
+		};
+		13B07F941A680F5B00A75B9A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66A83A3C388A49C3490A0D78 /* Pods-polorig.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo _";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.prod;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		13B07F951A680F5B00A75B9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DEC8A649BE8FF2B0624B01C9 /* Pods-polorig.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Prod";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo _";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.prod;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		479AACF1C9F94C0912029861 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4C44379E471A42A2F93D6767 /* BetaDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+			};
+			name = BetaDebug;
+		};
+		6CBC66548FFE3B3917DE98D0 /* DevRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = DevRelease;
+		};
+		72A472082B2FBBE8002E100B /* DevDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CXX = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+			};
+			name = DevDebug;
+		};
+		72A472092B2FBBE8002E100B /* DevDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 44EEF3D4BD0F0DC3A0AC7B94 /* Pods-polorig.devdebug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo 𝛼";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.dev;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = DevDebug;
+		};
+		72A4720B2B2FBBFA002E100B /* BetaDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CXX = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+			};
+			name = BetaDebug;
+		};
+		72A4720C2B2FBBFA002E100B /* BetaDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 25BC5363E51D62604EED3167 /* Pods-polorig.betadebug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo β";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.beta;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = BetaDebug;
+		};
+		72A4720E2B2FBC00002E100B /* ProdDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CXX = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+			};
+			name = ProdDebug;
+		};
+		72A4720F2B2FBC00002E100B /* ProdDebug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7615E2F1FC804946A9A6576 /* Pods-polorig.proddebug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Prod";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				ENABLE_BITCODE = NO;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.dev;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = ProdDebug;
+		};
+		72A472112B2FBC06002E100B /* DevRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CXX = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = DevRelease;
+		};
+		72A472122B2FBC06002E100B /* DevRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7ACE30561292103DE02A4688 /* Pods-polorig.devrelease.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo 𝛼";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.dev;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = DevRelease;
+		};
+		72A472142B2FBC0D002E100B /* BetaRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CXX = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = BetaRelease;
+		};
+		72A472152B2FBC0D002E100B /* BetaRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 396C1B2583C8A960412D7D70 /* Pods-polorig.betarelease.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Dev";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo β";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.beta;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = BetaRelease;
+		};
+		72A472172B2FBC12002E100B /* ProdRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CXX = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = ProdRelease;
+		};
+		72A472182B2FBC12002E100B /* ProdRelease */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAE1CD349DD33E70D01BB837 /* Pods-polorig.prodrelease.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Prod";
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				INFOPLIST_FILE = polorig/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.prod;
+				PRODUCT_NAME = PoloRig;
+				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = ProdRelease;
+		};
+		83CBBA201A601CBA00E9B192 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CXX = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				USE_HERMES = true;
+			};
+			name = Debug;
+		};
+		83CBBA211A601CBA00E9B192 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 720996792BA85FB5002C388D /* Config.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CXX = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-Fabric/React_Fabric.framework/Headers/react/renderer/components/view/platform/cxx",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-runtimeexecutor/React_runtimeexecutor.framework/Headers/platform/ios",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-DRN_FABRIC_ENABLED",
+				);
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				SDKROOT = iphoneos;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9549C7D160A8F9EB491F5057 /* ProdRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = ProdRelease;
+		};
+		AB163FA484F25044A52DF623 /* BetaRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = BetaRelease;
+		};
+		F4A50A1D8B2A617C79D80ACD /* ProdDebug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+			};
+			name = ProdDebug;
+		};
+		FE554DBF87C07A76076A7FBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = T56H72Q4W5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorigTests;
+				PRODUCT_NAME = polorigTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PoloRig.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PoloRig";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "polorig" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13B07F941A680F5B00A75B9A /* Debug */,
+				72A4720F2B2FBC00002E100B /* ProdDebug */,
+				72A4720C2B2FBBFA002E100B /* BetaDebug */,
+				72A472092B2FBBE8002E100B /* DevDebug */,
+				13B07F951A680F5B00A75B9A /* Release */,
+				72A472182B2FBC12002E100B /* ProdRelease */,
+				72A472152B2FBC0D002E100B /* BetaRelease */,
+				72A472122B2FBC06002E100B /* DevRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "polorig" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83CBBA201A601CBA00E9B192 /* Debug */,
+				72A4720E2B2FBC00002E100B /* ProdDebug */,
+				72A4720B2B2FBBFA002E100B /* BetaDebug */,
+				72A472082B2FBBE8002E100B /* DevDebug */,
+				83CBBA211A601CBA00E9B192 /* Release */,
+				72A472172B2FBC12002E100B /* ProdRelease */,
+				72A472142B2FBC0D002E100B /* BetaRelease */,
+				72A472112B2FBC06002E100B /* DevRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DB955FFE5EDB8D7B2804016 /* Build configuration list for PBXNativeTarget "polorigTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				479AACF1C9F94C0912029861 /* Release */,
+				FE554DBF87C07A76076A7FBC /* Debug */,
+				F4A50A1D8B2A617C79D80ACD /* ProdDebug */,
+				4C44379E471A42A2F93D6767 /* BetaDebug */,
+				08648D7C9E3F5BE9FCC4D819 /* DevDebug */,
+				9549C7D160A8F9EB491F5057 /* ProdRelease */,
+				AB163FA484F25044A52DF623 /* BetaRelease */,
+				6CBC66548FFE3B3917DE98D0 /* DevRelease */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 83CBB9F71A601CBA00E9B192 /* Project object */;
+}
