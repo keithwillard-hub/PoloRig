@@ -19,6 +19,7 @@ class IC705RigControl: RCTEventEmitter {
     private let sidetone = CWSidetone()
     private var activeDirectCWSender: DirectCWSender?
     private var activeDirectStatusReader: DirectStatusReader?
+    private var directOperationBusyUntil: Date = .distantPast
     private var isConnected = false
     private var hasListeners = false
     private var connectTimeoutWorkItem: DispatchWorkItem?
@@ -206,11 +207,9 @@ class IC705RigControl: RCTEventEmitter {
                       rejecter reject: @escaping RCTPromiseRejectBlock) {
         logger.debug("sendCW: ENTER text=\"\(text)\"")
         DebugTrace.write("IC705RigControl", "sendCW enter text=\(text)")
-        guard isConnected else {
-            logger.warning("sendCW: Rejecting - not connected")
-            DebugTrace.write("IC705RigControl", "sendCW reject NOT_CONNECTED")
-            reject("NOT_CONNECTED", "Not connected to radio", nil)
-            return
+        if !isConnected {
+            logger.warning("sendCW: Continuing without persistent connection")
+            DebugTrace.write("IC705RigControl", "sendCW continuing without persistent connection")
         }
 
         sendCWViaDirectSession(text: text, source: "direct") { [weak self] success in
@@ -236,11 +235,9 @@ class IC705RigControl: RCTEventEmitter {
                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
         logger.debug("sendTemplatedCW: ENTER template=\"\(templateStr)\" variables=\(variables)")
         DebugTrace.write("IC705RigControl", "sendTemplatedCW enter template=\(templateStr)")
-        guard isConnected else {
-            logger.warning("sendTemplatedCW: Rejecting - not connected")
-            DebugTrace.write("IC705RigControl", "sendTemplatedCW reject NOT_CONNECTED")
-            reject("NOT_CONNECTED", "Not connected to radio", nil)
-            return
+        if !isConnected {
+            logger.warning("sendTemplatedCW: Continuing without persistent connection")
+            DebugTrace.write("IC705RigControl", "sendTemplatedCW continuing without persistent connection")
         }
 
         // Convert NSDictionary to [String: String]
@@ -312,6 +309,18 @@ class IC705RigControl: RCTEventEmitter {
 
     @objc func refreshStatus(_ resolve: @escaping RCTPromiseResolveBlock,
                              rejecter reject: @escaping RCTPromiseRejectBlock) {
+        if activeDirectCWSender != nil || Date() < directOperationBusyUntil {
+            resolve([
+                "isConnected": isConnected,
+                "frequencyHz": civController.frequencyHz,
+                "mode": civController.operatingMode?.label ?? NSNull(),
+                "cwSpeed": civController.cwSpeed,
+                "isSending": keyer.isSending,
+                "radioName": control?.radioName ?? NSNull(),
+            ])
+            return
+        }
+
         guard isConnected else {
             resolve([
                 "isConnected": false,
@@ -516,6 +525,7 @@ class IC705RigControl: RCTEventEmitter {
         }
 
         DebugTrace.write("IC705RigControl", "sendCWViaDirectSession source=\(source) text=\(text)")
+        directOperationBusyUntil = Date().addingTimeInterval(2.5)
 
         // Release the persistent session first; the radio accepts only one client at a time.
         disconnectSync()
@@ -527,32 +537,39 @@ class IC705RigControl: RCTEventEmitter {
             text: text
         )
         activeDirectCWSender = sender
-
-        sender.start { [weak self] success in
+        DebugTrace.write("IC705RigControl", "sendCWViaDirectSession waiting for radio release")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
             guard let self else {
-                completion(success)
+                completion(false)
                 return
             }
 
-            self.activeDirectCWSender = nil
+            sender.start { [weak self] success in
+                guard let self else {
+                    completion(success)
+                    return
+                }
 
-            logger.debug("sendCWViaDirectSession: success=\(success) source=\(source) text=\"\(text)\"")
-            self.emitEvent("onCWResult", body: [
-                "text": text,
-                "success": success,
-                "source": source
-            ])
-            completion(success)
+                self.activeDirectCWSender = nil
 
-            // Restore the persistent session for normal app behavior.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.connect(
-                    host,
-                    username: username,
-                    password: password,
-                    resolver: { _ in },
-                    rejecter: { _, _, _ in }
-                )
+                logger.debug("sendCWViaDirectSession: success=\(success) source=\(source) text=\"\(text)\"")
+                self.emitEvent("onCWResult", body: [
+                    "text": text,
+                    "success": success,
+                    "source": source
+                ])
+                completion(success)
+
+                // Restore the persistent session for normal app behavior.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.connect(
+                        host,
+                        username: username,
+                        password: password,
+                        resolver: { _ in },
+                        rejecter: { _, _, _ in }
+                    )
+                }
             }
         }
     }
