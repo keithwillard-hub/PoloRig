@@ -112,15 +112,18 @@ Mode is now read reliably through the direct-status path:
 
 CW uses a direct session, not the persistent status session:
 
-1. temporarily disconnect the persistent session
-2. open fresh control + serial session
-3. send serial `OpenClose(isOpen: true)`
-4. send CI-V `0x17` with ASCII text payload
-5. wait briefly for the radio to act on it
-6. close temporary session
-7. reconnect the persistent app session
+1. accept the CW request even if the persistent `isConnected` flag is stale
+2. temporarily disconnect the persistent session
+3. block direct status refresh while the CW direct session is active
+4. wait briefly for the radio to release the prior session
+5. open fresh control + serial session
+6. send serial `OpenClose(isOpen: true)`
+7. send CI-V `0x17` with ASCII text payload
+8. wait briefly for the radio to act on it
+9. close temporary session
+10. reconnect the persistent app session
 
-This mirrors the standalone Swift script because that path proved reliable against the radio.
+This path is based on the standalone Swift script because that path proved reliable against the radio, but the working app implementation is not a byte-for-byte clone of the script. The important property is the direct one-shot session lifecycle, not literal source parity.
 
 ## Architectural Diagram
 
@@ -204,6 +207,8 @@ The corrected architecture is:
 
 - keep the persistent session for app presence
 - use direct script-style sessions for correctness-sensitive operations
+- do not let status refresh contend with a CW direct session
+- treat a stale persistent `isConnected` flag as advisory for CW, not authoritative
 - treat the direct-session path as the trusted source when the persistent path is incomplete or stale
 
 ## Why The Direct Session Works Better
@@ -214,7 +219,11 @@ The standalone script demonstrated three important facts:
 - the radio responds correctly to one-shot `0x03` and `0x04` requests
 - the radio cleans up cleanly when the temporary client explicitly closes and disconnects
 
-That means the app’s most reliable strategy for the implemented subset is not “keep everything on the persistent session.” It is “reproduce the known-good one-shot flow for each correctness-sensitive operation.”
+That means the app’s most reliable strategy for the implemented subset is not “keep everything on the persistent session.” It is “use a known-good one-shot flow for each correctness-sensitive operation, and keep other direct operations out of its way while it runs.”
+
+## Working Baseline
+
+The currently verified working CW baseline is commit `d7b9cec` on `main`.
 
 ## Code Areas That Define The Current Architecture
 
