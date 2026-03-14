@@ -7,6 +7,7 @@ APP_BUNDLE_ID="${APP_BUNDLE_ID:-com.ac0vw.polorig.prod}"
 SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 17 Pro}"
 METRO_PORT="${METRO_PORT:-8081}"
 METRO_LOG="${ROOT_DIR}/tmp/metro-start.log"
+ENVFILE="${ENVFILE:-.env.local}"
 
 ensure_tmp_dir() {
   mkdir -p "${ROOT_DIR}/tmp"
@@ -55,10 +56,10 @@ launch_app() {
   echo "Launching ${APP_BUNDLE_ID}"
 
   if ! xcrun simctl launch booted "${APP_BUNDLE_ID}" >/dev/null 2>&1; then
-    echo "App is not installed in the booted simulator. Building/installing it now."
+    echo "App is not installed in the booted simulator. Building/installing it now with ${ENVFILE}."
     (
       cd "${ROOT_DIR}"
-      npx react-native run-ios --simulator "${SIMULATOR_NAME}" --no-packager
+      ENVFILE="${ENVFILE}" npx react-native run-ios --simulator "${SIMULATOR_NAME}" --no-packager
     )
 
     if ! xcrun simctl launch booted "${APP_BUNDLE_ID}" >/dev/null 2>&1; then
