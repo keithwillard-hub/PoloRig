@@ -40,13 +40,15 @@ export const stationSlice = createSlice({
       state.devices[name].vfo = state.devices[name].vfo || {}
       mode = state.devices[name].vfo.mode
 
-      if (mode === 'USB') {
-        if (data.band === '160m' || data.band === '80m' || data.band === '40m') {
-          data.mode = 'LSB'
-        }
-      } else if (mode === 'LSB') {
-        if (data.band !== '160m' && data.band !== '80m' && data.band !== '40m') {
-          data.mode = 'USB'
+      if (!data.mode) {
+        if (mode === 'USB') {
+          if (data.band === '160m' || data.band === '80m' || data.band === '40m') {
+            data.mode = 'LSB'
+          }
+        } else if (mode === 'LSB') {
+          if (data.band !== '160m' && data.band !== '80m' && data.band !== '40m') {
+            data.mode = 'USB'
+          }
         }
       }
       state.devices[name].vfo = { ...state.devices[name].vfo, ...data }

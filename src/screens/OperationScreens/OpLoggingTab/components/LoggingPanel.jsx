@@ -13,7 +13,7 @@ import cloneDeep from 'clone-deep'
 import { useDispatch } from 'react-redux'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import UUID from 'react-native-uuid'
-import { useNavigation } from '@react-navigation/native'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import { useTranslation } from 'react-i18next'
 
 import { parseCallsign } from '@ham2k/lib-callsigns'
@@ -42,8 +42,8 @@ import { EventInfo } from './LoggingPanel/EventInfo'
 import { MainExchangePanel } from './LoggingPanel/MainExchangePanel'
 import { annotateQSO, resetCallLookupCache } from './LoggingPanel/useCallLookup'
 import EventEditingPanel from './LoggingPanel/EventEditingPanel/EventEditingPanel'
-import IC705StatusBar from '../../../../extensions/other/ic705/IC705StatusBar'
 import { useIC705 } from '../../../../hooks/useIC705'
+import { traceIC705UI } from '../../../../extensions/other/ic705/trace'
 
 const DEBUG = false
 
@@ -51,10 +51,11 @@ let commandInfoTimeout
 let submitTimeout
 
 export default function LoggingPanel ({
-  style, operation, vfo, qsos, sections, activeQSOs, settings, online, ourInfo, splitView
+  style, operation, vfo, qsos, sections, activeQSOs, selectedUUID, settings, online, ourInfo, splitView
 }) {
   const { t, i18n } = useTranslation()
   const navigation = useNavigation()
+  const isFocused = useIsFocused()
   const [loggingState, setLoggingState, updateLoggingState] = useUIState('OpLoggingTab', 'loggingState', {})
 
   const [allowSpacesInCallField, setAllowSpacesInCallField] = useState(false)
@@ -90,7 +91,13 @@ export default function LoggingPanel ({
   const styles = useThemedStyles(prepareStyles, { style, themeColor, leftieMode: settings.leftieMode, isKeyboardVisible, keyboardExtraStyles })
 
   const dispatch = useDispatch()
-  const { isConnected: isIC705Connected, getStatus: getIC705Status } = useIC705()
+  const {
+    isConnected: isIC705Connected,
+    frequency: ic705FrequencyHz,
+    mode: ic705Mode,
+    getStatus: getIC705Status,
+    refreshStatus: refreshIC705Status
+  } = useIC705()
 
   const mainFieldRef = useRef()
   const lastRadioSyncRef = useRef({})
@@ -158,7 +165,7 @@ export default function LoggingPanel ({
       } else {
         nextQSO = qsos.find(q => q.uuid === loggingState?.selectedUUID)
         if (nextQSO) nextQSO = prepareExistingQSO(nextQSO)
-        else nextQSO = prepareNewQSO(operation, qsos, settings)
+        else nextQSO = prepareNewQSO(operation, qsos, vfo, settings)
       }
 
       if (qso?._isNew && !qso?._isSuggested) {
@@ -189,16 +196,119 @@ export default function LoggingPanel ({
   }, [qso?.their?.call, qso?.event])
 
   useEffect(() => {
-    if (!qso?._isNew || qso?.event || !isIC705Connected) return
+    if (!isFocused || !isIC705Connected) return
 
-    const syncKey = `${qso.uuid}:${qso.freq ?? 'none'}:${qso.mode ?? 'none'}`
+    const freq = ic705FrequencyHz ? ic705FrequencyHz / 1000 : undefined
+    const mode = ic705Mode || undefined
+    const changes = {}
+
+    if (freq && vfo?.freq !== freq) {
+      changes.freq = freq
+      changes.band = bandForFrequency(freq)
+    }
+    if (mode && vfo?.mode !== mode) {
+      changes.mode = mode
+    }
+
+    if (Object.keys(changes).length > 0) {
+      traceIC705UI('ui.logging.radio.sync.vfo', {
+        freq,
+        mode,
+        nextFreq: changes.freq,
+        nextMode: changes.mode,
+        prevFreq: vfo?.freq,
+        prevMode: vfo?.mode
+      })
+      dispatch(setVFO(changes))
+    }
+  }, [isFocused, isIC705Connected, ic705FrequencyHz, ic705Mode, vfo?.freq, vfo?.mode, dispatch])
+
+  useEffect(() => {
+    if (!isFocused || !qso?.uuid || qso?.event || !qso?._isNew || !isIC705Connected) return
+
+    const syncKey = `${qso.uuid}:${qso.freq ?? 'none'}:${qso.mode ?? 'none'}:${ic705FrequencyHz ?? 'none'}:${ic705Mode ?? 'none'}`
     if (lastRadioSyncRef.current[qso.uuid] === syncKey) return
 
     let cancelled = false
 
     setImmediate(async () => {
       try {
-        const status = await getIC705Status()
+        let frequencyHz = ic705FrequencyHz
+        let mode = ic705Mode
+
+        if (!frequencyHz || !mode) {
+          let status = await getIC705Status()
+          if (status?.isConnected && !status?.mode) {
+            status = await refreshIC705Status()
+          }
+          if (!status?.isConnected || cancelled) return
+          frequencyHz = frequencyHz || status.frequencyHz
+          mode = mode || status.mode
+          traceIC705UI('ui.logging.radio.status.fetch', {
+            statusConnected: status?.isConnected,
+            statusFreqHz: status?.frequencyHz,
+            statusMode: status?.mode,
+            mergedFreqHz: frequencyHz,
+            mergedMode: mode
+          })
+        }
+
+        if (cancelled) return
+
+        const freq = frequencyHz ? frequencyHz / 1000 : undefined
+        const changes = {}
+
+        if (freq && qso.freq !== freq) {
+          changes.freq = freq
+          changes.band = bandForFrequency(freq)
+        }
+        if (mode && qso.mode !== mode) {
+          changes.mode = mode
+        }
+
+        if (Object.keys(changes).length === 0) {
+          traceIC705UI('ui.logging.radio.sync.qso.nochange', {
+            qsoFreq: qso.freq,
+            qsoMode: qso.mode,
+            freq,
+            mode
+          })
+          lastRadioSyncRef.current[qso.uuid] = syncKey
+          return
+        }
+
+        traceIC705UI('ui.logging.radio.sync.qso', {
+          qsoFreq: qso.freq,
+          qsoMode: qso.mode,
+          nextFreq: changes.freq,
+          nextMode: changes.mode,
+          sourceFreqHz: frequencyHz,
+          sourceMode: mode
+        })
+        updateQSO(changes)
+        lastRadioSyncRef.current[qso.uuid] = `${qso.uuid}:${changes.freq ?? qso.freq ?? 'none'}:${changes.mode ?? qso.mode ?? 'none'}`
+      } catch {}
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [isFocused, qso?._isNew, qso?.event, qso?.uuid, qso?.freq, qso?.mode, isIC705Connected, ic705FrequencyHz, ic705Mode, getIC705Status, refreshIC705Status, updateQSO])
+
+  useEffect(() => {
+    if (!isFocused || !isIC705Connected || !qso?.uuid || qso?.event) return
+    delete lastRadioSyncRef.current[qso.uuid]
+  }, [isFocused, isIC705Connected, selectedUUID, qso?.uuid, qso?.event])
+
+  useEffect(() => {
+    if (!isFocused || !isIC705Connected || !qso?.uuid || qso?.event) return
+
+    let cancelled = false
+
+    setImmediate(async () => {
+      try {
+        const status = await refreshIC705Status()
+
         if (cancelled || !status?.isConnected) return
 
         const freq = status.frequencyHz ? status.frequencyHz / 1000 : undefined
@@ -213,21 +323,26 @@ export default function LoggingPanel ({
           changes.mode = mode
         }
 
-        if (Object.keys(changes).length === 0) {
-          lastRadioSyncRef.current[qso.uuid] = syncKey
-          return
-        }
+        traceIC705UI('ui.logging.radio.focus.refresh', {
+          qsoFreq: qso.freq,
+          qsoMode: qso.mode,
+          statusFreqHz: status.frequencyHz,
+          statusMode: status.mode,
+          nextFreq: changes.freq,
+          nextMode: changes.mode
+        })
 
-        updateQSO(changes)
-        dispatch(setVFO(changes))
-        lastRadioSyncRef.current[qso.uuid] = `${qso.uuid}:${changes.freq ?? qso.freq ?? 'none'}:${changes.mode ?? qso.mode ?? 'none'}`
+        if (Object.keys(changes).length > 0) {
+          updateQSO(changes)
+          dispatch(setVFO(changes))
+        }
       } catch {}
     })
 
     return () => {
       cancelled = true
     }
-  }, [qso?._isNew, qso?.event, qso?.uuid, qso?.freq, qso?.mode, isIC705Connected, getIC705Status, updateQSO, dispatch])
+  }, [isFocused, isIC705Connected, selectedUUID, qso?.uuid, qso?.event, qso?.freq, qso?.mode, refreshIC705Status, updateQSO, dispatch])
 
   const [commandInfo, actualSetCommandInfo] = useState()
   const setCommandInfo = useCallback((info) => {
@@ -509,7 +624,6 @@ export default function LoggingPanel ({
       <SafeAreaView edges={[isKeyboardVisible ? '' : 'bottom', 'left', splitView ? '' : 'right'].filter(x => x)}>
 
         <View style={styles.innerContainer}>
-          <IC705StatusBar />
           <SecondaryExchangePanel
             style={styles.secondary.container}
             styles={styles}

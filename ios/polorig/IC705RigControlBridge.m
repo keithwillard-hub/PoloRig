@@ -38,6 +38,9 @@ RCT_EXTERN_METHOD(cancelCW)
 RCT_EXTERN_METHOD(getStatus:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(refreshStatus:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(logUIEvent:(NSString *)name
                   detail:(NSString *)detail
                   resolver:(RCTPromiseResolveBlock)resolve

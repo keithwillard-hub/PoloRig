@@ -18,6 +18,7 @@ class IC705RigControl: RCTEventEmitter {
     private let keyer = CWKeyer()
     private let sidetone = CWSidetone()
     private var activeDirectCWSender: DirectCWSender?
+    private var activeDirectStatusReader: DirectStatusReader?
     private var isConnected = false
     private var hasListeners = false
     private var connectTimeoutWorkItem: DispatchWorkItem?
@@ -307,6 +308,78 @@ class IC705RigControl: RCTEventEmitter {
             "isSending": keyer.isSending,
             "radioName": control?.radioName ?? NSNull(),
         ])
+    }
+
+    @objc func refreshStatus(_ resolve: @escaping RCTPromiseResolveBlock,
+                             rejecter reject: @escaping RCTPromiseRejectBlock) {
+        guard isConnected else {
+            resolve([
+                "isConnected": false,
+                "frequencyHz": civController.frequencyHz,
+                "mode": civController.operatingMode?.label ?? NSNull(),
+                "cwSpeed": civController.cwSpeed,
+                "isSending": keyer.isSending,
+                "radioName": control?.radioName ?? NSNull(),
+            ])
+            return
+        }
+
+        let host = currentHost
+        let username = currentUsername.isEmpty ? (control?.userName ?? "") : currentUsername
+        let password = currentPassword.isEmpty ? (control?.password ?? "") : currentPassword
+
+        guard !host.isEmpty, !username.isEmpty else {
+            resolve([
+                "isConnected": isConnected,
+                "frequencyHz": civController.frequencyHz,
+                "mode": civController.operatingMode?.label ?? NSNull(),
+                "cwSpeed": civController.cwSpeed,
+                "isSending": keyer.isSending,
+                "radioName": control?.radioName ?? NSNull(),
+            ])
+            return
+        }
+
+        DebugTrace.write("IC705RigControl", "refreshStatus start")
+        disconnectSync()
+
+        let reader = DirectStatusReader(host: host, userName: username, password: password)
+        activeDirectStatusReader = reader
+        reader.start { [weak self] frequencyHz, mode in
+            guard let self else { return }
+            self.activeDirectStatusReader = nil
+
+            if let frequencyHz {
+                self.civController.frequencyHz = frequencyHz
+            }
+            if let mode, let civMode = CIV.Mode.allCases.first(where: { $0.label == mode }) {
+                self.civController.operatingMode = civMode
+            }
+
+            let payload: [String: Any] = [
+                "isConnected": true,
+                "frequencyHz": self.civController.frequencyHz,
+                "mode": self.civController.operatingMode?.label ?? NSNull(),
+                "cwSpeed": self.civController.cwSpeed,
+                "isSending": self.keyer.isSending,
+                "radioName": self.control?.radioName ?? NSNull(),
+            ]
+
+            DispatchQueue.main.async {
+                self.checkAndEmitStateChanges()
+                resolve(payload)
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.connect(
+                    host,
+                    username: username,
+                    password: password,
+                    resolver: { _ in },
+                    rejecter: { _, _, _ in }
+                )
+            }
+        }
     }
 
     // MARK: - State Polling (CI-V values → JS events)

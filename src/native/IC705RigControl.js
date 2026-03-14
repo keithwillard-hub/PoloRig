@@ -57,6 +57,10 @@ export const IC705 = {
   getStatus: () =>
     NativeIC705?.getStatus() ?? Promise.resolve({ isConnected: false }),
 
+  /** Refresh status through a direct one-shot radio query. */
+  refreshStatus: () =>
+    NativeIC705?.refreshStatus() ?? Promise.resolve({ isConnected: false }),
+
   /** Write a UI trace marker into the native iOS log stream. */
   logUIEvent: (name, detail = '') =>
     typeof NativeIC705?.logUIEvent === 'function'

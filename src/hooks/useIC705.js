@@ -19,13 +19,35 @@ export function useIC705 () {
   const [radioName, setRadioName] = useState('')
   const [cwResult, setCWResult] = useState(null)
 
+  const hydrateStatus = useCallback(async () => {
+    if (!IC705.isAvailable) return
+
+    try {
+      const status = await IC705.getStatus()
+      if (!status) return
+
+      setConnectionState(status.isConnected ? 'connected' : 'disconnected')
+      setFrequency(status.frequencyHz || 0)
+      setFrequencyDisplay(status.frequencyHz ? `${status.frequencyHz / 1000000}` : '')
+      setMode(status.mode || null)
+      setCWSpeed(status.cwSpeed || 0)
+      setIsSending(!!status.isSending)
+      setRadioName(status.radioName || '')
+    } catch {}
+  }, [])
+
   useEffect(() => {
     if (!IC705.isAvailable) return
+
+    hydrateStatus()
 
     const subs = [
       IC705.onConnectionStateChanged(e => {
         setConnectionState(e.state)
         setConnectionDetail(e.detail || '')
+        if (e.state === 'connected') {
+          hydrateStatus()
+        }
       }),
       IC705.onFrequencyChanged(e => {
         setFrequency(e.frequencyHz)
@@ -39,7 +61,7 @@ export function useIC705 () {
     ].filter(Boolean)
 
     return () => subs.forEach(s => s.remove())
-  }, [])
+  }, [hydrateStatus])
 
   const connect = useCallback(async (host, username, password) => {
     const timeoutMs = 14000
@@ -88,6 +110,7 @@ export function useIC705 () {
     setCWSpeed: IC705.setCWSpeed,
     cancelCW: IC705.cancelCW,
     getStatus: IC705.getStatus,
+    refreshStatus: IC705.refreshStatus,
 
     // Availability
     isAvailable: IC705.isAvailable

@@ -158,6 +158,7 @@ export default function OpLoggingTab ({ navigation, route, splitView }) {
         qsos={qsos}
         sections={sections}
         activeQSOs={activeQSOs}
+        selectedUUID={loggingState?.selectedUUID}
         vfo={vfo}
         settings={settings}
         ourInfo={ourInfo}
