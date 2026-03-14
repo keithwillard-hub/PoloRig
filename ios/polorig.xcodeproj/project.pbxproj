@@ -19,6 +19,8 @@
 		2742EA15C87246DBBFDE1281 /* Roboto Mono Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A5AF322C92F54A8898C60664 /* Roboto Mono Light.ttf */; };
 		338C874E957D494590B61D27 /* Roboto Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */; };
 		35451DE812E14517B56C86EC /* CWSidetone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */; };
+		3E4B7B98A1334F4E8F722331 /* DebugTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D4C0C18D946F2AB0F56D1 /* DebugTrace.swift */; };
+		4E63A85C3A444C0DA627D6C4 /* DirectCWSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B152FE605543D7844F49D0 /* DirectCWSender.swift */; };
 		456A42C3E6052EE69BD37B21 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */; };
 		4941F40FC5A6497DB2D1F76C /* UDPControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A600B462649EEBB7B44D2 /* UDPControl.swift */; };
 		547C6D2E8A864A0EA2664E86 /* Roboto Condensed ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52E51D689542480FA9E55C4C /* Roboto Condensed ExtraBold.ttf */; };
@@ -71,6 +73,7 @@
 
 /* Begin PBXFileReference section */
 		01ADCF23075EB4C25894D688 /* Pods-polo.prodrelease.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.prodrelease.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.prodrelease.xcconfig"; sourceTree = "<group>"; };
+		0A8D4C0C18D946F2AB0F56D1 /* DebugTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugTrace.swift; sourceTree = "<group>"; };
 		0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CWSidetone.swift; sourceTree = "<group>"; };
 		0CD45E9F2B3048D58AC8061C /* Roboto Mono.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Mono.ttf"; path = "../assets/fonts/Roboto Mono.ttf"; sourceTree = "<group>"; };
 		0F99153778C1418285DADE13 /* Roboto Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Light.ttf"; path = "../assets/fonts/Roboto Light.ttf"; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 		D3C0AACBADED1145A6C4DF2D /* Pods-polo.proddebug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polo.proddebug.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polo.proddebug.xcconfig"; sourceTree = "<group>"; };
 		DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto Condensed.ttf"; path = "../assets/fonts/Roboto Condensed.ttf"; sourceTree = "<group>"; };
 		DEC8A649BE8FF2B0624B01C9 /* Pods-polorig.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-polorig.release.xcconfig"; path = "Target Support Files/Pods-polorig/Pods-polorig.release.xcconfig"; sourceTree = "<group>"; };
+		E4B152FE605543D7844F49D0 /* DirectCWSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCWSender.swift; sourceTree = "<group>"; };
 		EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = polorig/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED76896A178D4A9485F116E7 /* IC705RigControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = polorig/IC705RigControl.swift; sourceTree = "<group>"; };
@@ -196,6 +200,8 @@
 				C715537336AC4BBDB485479F /* UDPSerial.swift */,
 				57C955A045DD46DEABCB2E23 /* CIVConstants.swift */,
 				3714B58987304C97932F7783 /* CIVController.swift */,
+				0A8D4C0C18D946F2AB0F56D1 /* DebugTrace.swift */,
+				E4B152FE605543D7844F49D0 /* DirectCWSender.swift */,
 				BF33566A74A140C5948D8B2B /* CWKeyer.swift */,
 				27B9E03F4B1E4123AF56FE3D /* CWTemplateEngine.swift */,
 				0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */,
@@ -552,6 +558,8 @@
 				DA856BC03D83464E878B711C /* UDPSerial.swift in Sources */,
 				7427ED05EA1549F59C396A02 /* CIVConstants.swift in Sources */,
 				78B29C969CDF496D904681BF /* CIVController.swift in Sources */,
+				3E4B7B98A1334F4E8F722331 /* DebugTrace.swift in Sources */,
+				4E63A85C3A444C0DA627D6C4 /* DirectCWSender.swift in Sources */,
 				736695BBBAA64298A7D00C37 /* CWKeyer.swift in Sources */,
 				D677E0E3A71C4F2E9C59F30B /* CWTemplateEngine.swift in Sources */,
 				35451DE812E14517B56C86EC /* CWSidetone.swift in Sources */,

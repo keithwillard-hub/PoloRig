@@ -197,10 +197,12 @@ public final class CIVController {
     /// Send raw CW text without appending "?"
     public func sendRawCW(text: String, completion: ((Bool) -> Void)? = nil) {
         logger.debug("sendRawCW: ENTER text=\"\(text)\"")
+        DebugTrace.write("CIVController", "sendRawCW enter text=\(text)")
 
         let upper = text.uppercased()
         guard !upper.isEmpty, upper.count <= 30 else {
             logger.warning("sendRawCW: Invalid text (empty or >30 chars)")
+            DebugTrace.write("CIVController", "sendRawCW invalid text")
             completion?(false)
             return
         }
@@ -213,12 +215,19 @@ public final class CIVController {
         let frame = CIV.buildFrame(command: CIV.Command.sendCW, data: asciiBytes)
         let frameHex = frame.map { String(format: "%02X", $0) }.joined(separator: " ")
         logger.debug("sendRawCW: Built CI-V frame: [\(frameHex)]")
+        DebugTrace.write("CIVController", "sendRawCW frame=[\(frameHex)]")
         logger.debug("sendRawCW: Frame analysis: preamble=\(String(format: "%02X", frame[0])) \(String(format: "%02X", frame[1])), radioAddr=\(String(format: "%02X", frame[2])), ctrlAddr=\(String(format: "%02X", frame[3])), cmd=\(String(format: "%02X", frame[4])), dataLen=\(frame.count-6), terminator=\(String(format: "%02X", frame[frame.count-1]))")
+        let resumeDelay = max(MorseTiming.estimateDuration(upper, wpm: cwSpeed) * 1.15, 0.8)
+        logger.debug("sendRawCW: Scheduling polling resume after \(resumeDelay, privacy: .public)s for \"\(upper)\"")
+        DebugTrace.write("CIVController", "sendRawCW resumeDelay=\(resumeDelay)")
 
-        serial?.sendCIV(data: frame) { [weak self] success in
+        serial?.sendCIV(data: frame, expectsReply: false) { [weak self] success in
             logger.debug("sendRawCW: sendCIV completion called with success=\(success)")
             NSLog("[CIVController] sendCIV completion: success=%d", success)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DebugTrace.write("CIVController", "sendRawCW completion success=\(success)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + resumeDelay) {
+                DebugTrace.write("CIVController", "sendRawCW resuming background traffic + polling")
+                self?.serial?.resumeDeferredBackgroundTraffic()
                 self?.startFrequencyPolling()
             }
             logger.debug("sendRawCW: Calling completion with \(success)")

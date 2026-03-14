@@ -41,6 +41,11 @@ public class UDPBase {
 
     let queue = DispatchQueue(label: "com.ic705cwlogger.udp", qos: .userInitiated)
 
+    var socketLabel: String {
+        let localLabel = preferredLocalPort == 0 ? "ephemeral" : String(preferredLocalPort)
+        return "\(type(of: self))(remote:\(port.rawValue), local:\(localLabel))"
+    }
+
     public init(host: String, port: UInt16, localPort: UInt16 = 0) {
         // Trim whitespace — JS may pass padded strings
         let host = host.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -63,24 +68,30 @@ public class UDPBase {
         if preferredLocalPort != 0 {
             params.requiredLocalEndpoint = .hostPort(host: .ipv4(.any), port: NWEndpoint.Port(rawValue: preferredLocalPort)!)
         }
+        NSLog("[UDPBase:%@] connect host=%@ remotePort=%u localPort=%u",
+              socketLabel, "\(host)", port.rawValue, preferredLocalPort)
         connection = NWConnection(host: host, port: port, using: params)
 
         connection?.stateUpdateHandler = { [weak self] state in
             guard let self else { return }
             switch state {
             case .ready:
+                NSLog("[UDPBase:%@] state=ready", self.socketLabel)
                 self.onStage?("UDP ready on port \(self.port.rawValue)")
                 self.startReceiving()
                 self.beginHandshake()
             case .waiting(let error):
                 logger.debug("Connection waiting: \(error.localizedDescription)")
+                NSLog("[UDPBase:%@] state=waiting error=%@", self.socketLabel, error.localizedDescription)
                 self.onStage?("UDP waiting on port \(self.port.rawValue): \(error.localizedDescription)")
             case .failed(let error):
                 logger.error("Connection failed: \(error.localizedDescription)")
+                NSLog("[UDPBase:%@] state=failed error=%@", self.socketLabel, error.localizedDescription)
                 self.onStage?("UDP failed on port \(self.port.rawValue): \(error.localizedDescription)")
                 self.handleDisconnect()
             case .cancelled:
                 logger.debug("Connection cancelled")
+                NSLog("[UDPBase:%@] state=cancelled", self.socketLabel)
             default:
                 break
             }
@@ -145,10 +156,11 @@ public class UDPBase {
         connection?.receiveMessage { [weak self] content, _, isComplete, error in
             guard let self else { return }
             if let data = content, !data.isEmpty {
-                NSLog("[UDPBase] Received %d bytes", data.count)
+                NSLog("[UDPBase:%@] Received %d bytes", self.socketLabel, data.count)
                 self.handlePacket(data)
             } else {
-                NSLog("[UDPBase] No data received (isComplete=%d, error=%@)", isComplete, error?.localizedDescription ?? "nil")
+                NSLog("[UDPBase:%@] No data received (isComplete=%d, error=%@)",
+                      self.socketLabel, isComplete, error?.localizedDescription ?? "nil")
             }
             if error == nil {
                 self.startReceiving()
@@ -158,13 +170,17 @@ public class UDPBase {
 
     func handlePacket(_ data: Data) {
         guard data.count >= Int(PacketSize.control) else {
-            NSLog("[UDPBase] Packet too short: %d bytes", data.count)
+            NSLog("[UDPBase:%@] Packet too short: %d bytes", socketLabel, data.count)
             return
         }
 
         let type = data.readUInt16(at: ControlOffset.type)
         let hexType = String(format: "0x%04X", type)
-        NSLog("[UDPBase] Received packet type: %@", hexType)
+        let seq = data.readUInt16(at: ControlOffset.sequence)
+        let sendId = data.readUInt32(at: ControlOffset.sendId)
+        let recvId = data.readUInt32(at: ControlOffset.recvId)
+        NSLog("[UDPBase:%@] Received packet type=%@ seq=%u sendId=%u recvId=%u",
+              socketLabel, hexType, seq, sendId, recvId)
 
         switch type {
         case PacketType.iAmHere:
@@ -196,7 +212,7 @@ public class UDPBase {
     func handleIAmHere(_ data: Data) {
         remoteId = data.readUInt32(at: ControlOffset.sendId)
         logger.info("Got IAmHere, remoteId=\(self.remoteId)")
-        NSLog("[UDPBase] Got IAmHere, remoteId=%u", remoteId)
+        NSLog("[UDPBase:%@] Got IAmHere, remoteId=%u", socketLabel, remoteId)
         onStage?("Received IAmHere on port \(port.rawValue)")
 
         cancelResendTimer()
@@ -218,7 +234,7 @@ public class UDPBase {
         connectTimer?.cancel()
         connectTimer = nil
         onStage?("Received AreYouReady on port \(port.rawValue)")
-        NSLog("[UDPBase] Handshake complete, calling onReady()")
+        NSLog("[UDPBase:%@] Handshake complete, calling onReady()", socketLabel)
         onReady()
     }
 
@@ -263,6 +279,11 @@ public class UDPBase {
         pingTimer?.resume()
     }
 
+    func stopPingTimer() {
+        pingTimer?.cancel()
+        pingTimer = nil
+    }
+
     private func sendPing() {
         let dataA = UInt16.random(in: 0...UInt16.max)
         pingSequence &+= 1
@@ -293,6 +314,22 @@ public class UDPBase {
             }
         }
         idleTimer?.resume()
+    }
+
+    func cancelIdleTimer() {
+        idleTimer?.cancel()
+        idleTimer = nil
+    }
+
+    func suspendBackgroundTraffic() {
+        stopPingTimer()
+        cancelIdleTimer()
+    }
+
+    func resumeBackgroundTraffic() {
+        guard isConnected, !disconnecting else { return }
+        startPingTimer()
+        armIdleTimer()
     }
 
     private func sendIdle() {
@@ -348,6 +385,10 @@ public class UDPBase {
     // MARK: - Send
 
     func send(_ data: Data) {
+        let type = data.count >= Int(PacketSize.control) ? data.readUInt16(at: ControlOffset.type) : 0
+        let seq = data.count >= Int(PacketSize.control) ? data.readUInt16(at: ControlOffset.sequence) : 0
+        NSLog("[UDPBase:%@] Sending %d bytes type=0x%04X seq=%u",
+              socketLabel, data.count, type, seq)
         connection?.send(content: data, completion: .contentProcessed { error in
             if let error {
                 logger.error("Send error: \(error)")

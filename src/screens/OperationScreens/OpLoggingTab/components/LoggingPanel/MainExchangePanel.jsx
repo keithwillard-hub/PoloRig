@@ -17,11 +17,13 @@ import { valueOrFunction } from '../../../../../tools/valueOrFunction'
 import { IC705 } from '../../../../../native/IC705RigControl'
 import { useIC705 } from '../../../../../hooks/useIC705'
 import { Text } from 'react-native-paper'
+import { traceIC705UI } from '../../../../../extensions/other/ic705/trace'
+import { interpolateCWTemplate } from '../../../../../extensions/other/ic705/interpolateCWTemplate'
 
 export const MainExchangePanel = ({
   qso, qsos, operation, vfo, settings, style, styles, themeColor, disabled,
   onSubmitEditing, handleFieldChange, setQSO, updateQSO, mainFieldRef, focusedRef,
-  allowSpacesInCallField
+  allowSpacesInCallField, onCallCommitted
 }) => {
   const { t } = useTranslation()
   const { cwResult } = useIC705()
@@ -97,7 +99,12 @@ export const MainExchangePanel = ({
   const handleCallBlur = useCallback(() => {
     const call = qso?.their?.call?.trim()
     console.log('[IC705] callCommit blur:', call, 'guess:', qso?.their?.guess?.name)
+    onCallCommitted && onCallCommitted()
     if (!call || call.length < 3) return
+    traceIC705UI('ui.logging.call.commit', {
+      call,
+      guessedName: qso?.their?.guess?.name ? 'yes' : 'no'
+    })
 
     const callCommitHooks = findHooks('callCommit')
     for (const hook of callCommitHooks) {
@@ -109,7 +116,7 @@ export const MainExchangePanel = ({
         })
       }
     }
-  }, [qso?.their?.call, qso?.their?.guess, qso?.their?.lookup, settings])
+  }, [qso?.their?.call, qso?.their?.guess, qso?.their?.lookup, settings, onCallCommitted])
 
   let fields = []
   fields.push(
@@ -138,10 +145,25 @@ export const MainExchangePanel = ({
     const sendCWQuery = () => {
       const call = qso?.their?.call?.trim()
       const template = settings?.ic705?.cwTemplate || '$callsign?'
-      IC705.sendTemplatedCW(template, {
+      const text = interpolateCWTemplate(template, {
         callsign: call,
         mycall: settings.operatorCall || ''
-      }).catch(e => console.warn('IC-705 CW send failed:', e))
+      })
+      console.log('[IC705] sendCWQuery tap', { call, template, text })
+      traceIC705UI('ui.logging.cw.manual.tap', {
+        call,
+        template,
+        text
+      })
+      IC705.sendCW(text).catch(e => {
+        console.warn('[IC705] sendCWQuery rejected', e)
+        traceIC705UI('ui.logging.cw.manual.fail', {
+          call,
+          text,
+          error: e?.message || 'send failed'
+        })
+        console.warn('IC-705 CW send failed:', e)
+      })
     }
     const keySize = styles.oneSpace * 4
     fields.push(

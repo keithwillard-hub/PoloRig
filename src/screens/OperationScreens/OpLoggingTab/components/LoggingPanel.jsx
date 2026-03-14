@@ -43,6 +43,7 @@ import { MainExchangePanel } from './LoggingPanel/MainExchangePanel'
 import { annotateQSO, resetCallLookupCache } from './LoggingPanel/useCallLookup'
 import EventEditingPanel from './LoggingPanel/EventEditingPanel/EventEditingPanel'
 import IC705StatusBar from '../../../../extensions/other/ic705/IC705StatusBar'
+import { useIC705 } from '../../../../hooks/useIC705'
 
 const DEBUG = false
 
@@ -57,6 +58,7 @@ export default function LoggingPanel ({
   const [loggingState, setLoggingState, updateLoggingState] = useUIState('OpLoggingTab', 'loggingState', {})
 
   const [allowSpacesInCallField, setAllowSpacesInCallField] = useState(false)
+  const [callLookupEnabled, setCallLookupEnabled] = useState(true)
 
   const [qso, setQSO, updateQSO] = useMemo(() => {
     const qsoValue = loggingState?.qso
@@ -88,8 +90,10 @@ export default function LoggingPanel ({
   const styles = useThemedStyles(prepareStyles, { style, themeColor, leftieMode: settings.leftieMode, isKeyboardVisible, keyboardExtraStyles })
 
   const dispatch = useDispatch()
+  const { isConnected: isIC705Connected, getStatus: getIC705Status } = useIC705()
 
   const mainFieldRef = useRef()
+  const lastRadioSyncRef = useRef({})
 
   const [currentSecondaryControl, reallySetCurrentSecondaryControl] = useState({})
   const setCurrentSecondaryControl = useCallback((control) => {
@@ -140,6 +144,7 @@ export default function LoggingPanel ({
 
       setQSO(nextQSO, { otherStateChanges })
       dispatch(resetCallLookupCache())
+      setCallLookupEnabled(true)
       setTimeout(() => { // On android, if the field was disabled and then reenabled, it won't focus without a timeout
         mainFieldRef?.current?.focus()
       }, 100)
@@ -161,6 +166,7 @@ export default function LoggingPanel ({
       }
 
       setQSO(nextQSO, { otherStateChanges })
+      setCallLookupEnabled(true)
 
       setTimeout(() => { // On android, if the field was disabled and then reenabled, it won't focus without a timeout
         mainFieldRef?.current?.focus()
@@ -181,6 +187,47 @@ export default function LoggingPanel ({
       setIsValidQSO(false)
     }
   }, [qso?.their?.call, qso?.event])
+
+  useEffect(() => {
+    if (!qso?._isNew || qso?.event || !isIC705Connected) return
+
+    const syncKey = `${qso.uuid}:${qso.freq ?? 'none'}:${qso.mode ?? 'none'}`
+    if (lastRadioSyncRef.current[qso.uuid] === syncKey) return
+
+    let cancelled = false
+
+    setImmediate(async () => {
+      try {
+        const status = await getIC705Status()
+        if (cancelled || !status?.isConnected) return
+
+        const freq = status.frequencyHz ? status.frequencyHz / 1000 : undefined
+        const mode = status.mode || undefined
+        const changes = {}
+
+        if (freq && qso.freq !== freq) {
+          changes.freq = freq
+          changes.band = bandForFrequency(freq)
+        }
+        if (mode && qso.mode !== mode) {
+          changes.mode = mode
+        }
+
+        if (Object.keys(changes).length === 0) {
+          lastRadioSyncRef.current[qso.uuid] = syncKey
+          return
+        }
+
+        updateQSO(changes)
+        dispatch(setVFO(changes))
+        lastRadioSyncRef.current[qso.uuid] = `${qso.uuid}:${changes.freq ?? qso.freq ?? 'none'}:${changes.mode ?? qso.mode ?? 'none'}`
+      } catch {}
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [qso?._isNew, qso?.event, qso?.uuid, qso?.freq, qso?.mode, isIC705Connected, getIC705Status, updateQSO, dispatch])
 
   const [commandInfo, actualSetCommandInfo] = useState()
   const setCommandInfo = useCallback((info) => {
@@ -209,6 +256,7 @@ export default function LoggingPanel ({
     }
 
     if (fieldId === 'theirCall') {
+      setCallLookupEnabled(false)
       const { description, allowSpaces, matchingCommand } = checkAndDescribeCommands(value, { qso, originalQSO: loggingState?.originalQSO, operation, vfo, qsos, dispatch, settings, t, i18n, online, ourInfo, setCommandInfo })
       setCommandInfo({ message: description || undefined, matchingCommand, match: !!matchingCommand })
       setAllowSpacesInCallField(allowSpaces)
@@ -489,6 +537,7 @@ export default function LoggingPanel ({
                 styles={styles}
                 themeColor={themeColor}
                 opMessage={opMessage}
+                lookupEnabled={callLookupEnabled}
                 qso={qso}
                 qsos={qsos}
                 operation={operation}
@@ -533,6 +582,7 @@ export default function LoggingPanel ({
                   mainFieldRef={mainFieldRef}
                   focusedRef={focusedRef}
                   allowSpacesInCallField={allowSpacesInCallField}
+                  onCallCommitted={() => setCallLookupEnabled(true)}
                 />
               )}
             </View>

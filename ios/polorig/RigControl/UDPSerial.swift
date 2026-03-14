@@ -9,9 +9,10 @@ public final class UDPSerial: UDPBase {
 
     private var civSequence: UInt16 = 0
     private var waitingForReply = false
+    private var keepaliveSuspendedForCIV = false
 
     /// Queue of CI-V commands waiting to be sent.
-    private var commandQueue: [(data: Data, completion: ((Bool) -> Void)?)] = []
+    private var commandQueue: [(data: Data, expectsReply: Bool, completion: ((Bool) -> Void)?)] = []
 
     /// Called when a CI-V response is received from the radio.
     public var onCIVReceived: ((Data) -> Void)?
@@ -33,7 +34,14 @@ public final class UDPSerial: UDPBase {
             self.commandQueue.removeAll()
             self.waitingForReply = false
             self.pendingCompletion = nil
+            self.resumeBackgroundTrafficIfNeeded()
             logger.debug("flushQueue: Queue flushed, state reset")
+        }
+    }
+
+    public func resumeDeferredBackgroundTraffic() {
+        queue.async { [weak self] in
+            self?.resumeBackgroundTrafficIfNeeded()
         }
     }
 
@@ -50,9 +58,7 @@ public final class UDPSerial: UDPBase {
         NSLog("[UDPSerial] onReady called, sending OpenClose(isOpen: true)")
         onStage?("Serial socket ready; sending OpenClose")
         sendOpenClose(isOpen: true)
-        startPingTimer()
         isConnected = true
-        armIdleTimer()
         DispatchQueue.main.async { [weak self] in
             NSLog("[UDPSerial] Calling onSerialReady callback")
             self?.onSerialReady?()
@@ -72,21 +78,23 @@ public final class UDPSerial: UDPBase {
         )
         let packetHex = packet.map { String(format: "%02X", $0) }.joined(separator: " ")
         NSLog("[UDPSerial] sendOpenClose(isOpen: %d): [%@]", isOpen, packetHex)
-        sendTracked(packet)
+        DebugTrace.write("UDPSerial", "sendOpenClose isOpen=\(isOpen) packet=[\(packetHex)]")
+        send(packet)
     }
 
     // MARK: - Send CI-V
 
     /// Queue a CI-V frame for transmission. The completion handler is called
     /// with `true` on ACK, `false` on NAK or timeout.
-    public func sendCIV(data: Data, completion: ((Bool) -> Void)? = nil) {
+    public func sendCIV(data: Data, expectsReply: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let hexString = data.map { String(format: "%02X", $0) }.joined(separator: " ")
         logger.debug("sendCIV: Queuing CI-V frame: [\(hexString)]")
         NSLog("[UDPSerial] sendCIV: Queuing CI-V frame: [%@]", hexString)
+        DebugTrace.write("UDPSerial", "queue sendCIV expectsReply=\(expectsReply) payload=[\(hexString)]")
 
         queue.async { [weak self] in
             guard let self else { return }
-            self.commandQueue.append((data: data, completion: completion))
+            self.commandQueue.append((data: data, expectsReply: expectsReply, completion: completion))
             logger.debug("sendCIV: Queue depth now: \(self.commandQueue.count)")
             NSLog("[UDPSerial] Queue depth: %d", self.commandQueue.count)
             self.processQueue()
@@ -106,8 +114,8 @@ public final class UDPSerial: UDPBase {
         }
 
         let entry = commandQueue.removeFirst()
-        waitingForReply = true
         civSequence &+= 1
+        suspendBackgroundTrafficIfNeeded(for: entry.data)
 
         let packet = PacketBuilder.civPacket(
             sequence: nextSequence(),
@@ -120,7 +128,20 @@ public final class UDPSerial: UDPBase {
         let civDataHex = entry.data.map { String(format: "%02X", $0) }.joined(separator: " ")
         logger.debug("processQueue: Sending packet (civSeq=\(self.civSequence)): UDP packet [\(packetHex)]")
         logger.debug("processQueue: CI-V payload: [\(civDataHex)]")
-        sendTracked(packet)
+        DebugTrace.write("UDPSerial", "processQueue civSeq=\(self.civSequence) expectsReply=\(entry.expectsReply) payload=[\(civDataHex)]")
+        send(packet)
+
+        guard entry.expectsReply else {
+            logger.debug("processQueue: civSeq=\(self.civSequence) is fire-and-forget")
+            DebugTrace.write("UDPSerial", "processQueue civSeq=\(self.civSequence) fire-and-forget")
+            DispatchQueue.main.async {
+                entry.completion?(true)
+            }
+            processQueue()
+            return
+        }
+
+        waitingForReply = true
 
         // Timeout: if no response in 3 seconds, mark as failed and move on
         let timeoutSeq = civSequence
@@ -128,7 +149,9 @@ public final class UDPSerial: UDPBase {
             guard let self, self.waitingForReply, self.civSequence == timeoutSeq else { return }
             logger.warning("CI-V command timeout (civSeq=\(timeoutSeq))")
             NSLog("[UDPSerial] TIMEOUT for civSeq=%d", timeoutSeq)
+            DebugTrace.write("UDPSerial", "timeout civSeq=\(timeoutSeq)")
             self.waitingForReply = false
+            self.resumeBackgroundTrafficIfNeeded()
             DispatchQueue.main.async {
                 entry.completion?(false)
             }
@@ -146,36 +169,70 @@ public final class UDPSerial: UDPBase {
     // MARK: - Receive CI-V
 
     override func handleDataPacket(_ data: Data) {
-        NSLog("[UDPSerial] handleDataPacket called with %d bytes", data.count)
+        NSLog("[UDPSerial:%@] handleDataPacket called with %d bytes", socketLabel, data.count)
         guard data.count > Int(PacketSize.civHeader) else {
-            NSLog("[UDPSerial] Packet too short (%d bytes), passing to super", data.count)
-            super.handleDataPacket(data)
+            NSLog("[UDPSerial:%@] Packet too short (%d bytes), ignoring non-CI-V serial packet",
+                  socketLabel, data.count)
             return
         }
 
         // Check for CI-V marker
         let marker = data[CIVPacketOffset.cmd]
-        NSLog("[UDPSerial] CI-V marker at 0x10: 0x%02X (expected 0xC1)", marker)
+        NSLog("[UDPSerial:%@] CI-V marker at 0x10: 0x%02X (expected 0xC1)", socketLabel, marker)
         guard marker == 0xC1 else {
-            NSLog("[UDPSerial] Not a CI-V packet, passing to super")
-            super.handleDataPacket(data)
+            NSLog("[UDPSerial:%@] Not a CI-V packet, ignoring on serial channel", socketLabel)
             return
         }
 
         // Extract CI-V data
         let civLength = Int(data.readUInt16(at: CIVPacketOffset.length))
         let civStart = CIVPacketOffset.data
-        NSLog("[UDPSerial] CI-V length: %d, start: %d, data.count: %d", civLength, civStart, data.count)
+        NSLog("[UDPSerial:%@] CI-V length: %d, start: %d, data.count: %d",
+              socketLabel, civLength, civStart, data.count)
         guard civStart + civLength <= data.count else {
-            NSLog("[UDPSerial] CI-V data exceeds packet size")
+            NSLog("[UDPSerial:%@] CI-V data exceeds packet size", socketLabel)
             return
         }
 
         let civData = data.subdata(in: civStart..<civStart + civLength)
         let civHex = civData.map { String(format: "%02X", $0) }.joined(separator: " ")
-        NSLog("[UDPSerial] CI-V payload received: [%@]", civHex)
+        NSLog("[UDPSerial:%@] CI-V payload received: [%@]", socketLabel, civHex)
+        DebugTrace.write("UDPSerial", "received CI-V payload=[\(civHex)]")
         onStage?("CI-V payload received (\(civData.count) bytes)")
         handleCIVResponse(civData)
+    }
+
+    override func handlePacket(_ data: Data) {
+        guard data.count >= Int(PacketSize.control) else {
+            DebugTrace.write("UDPSerial", "handlePacket short=\(data.count)")
+            return
+        }
+
+        let type = data.readUInt16(at: ControlOffset.type)
+        let seq = data.readUInt16(at: ControlOffset.sequence)
+        let marker = data.count > 0x10 ? String(format: "%02X", data[0x10]) : "--"
+        DebugTrace.write("UDPSerial", "handlePacket type=0x\(String(format: "%04X", type)) seq=\(seq) marker=0x\(marker) bytes=\(data.count)")
+
+        switch type {
+        case PacketType.iAmHere:
+            handleIAmHere(data)
+
+        case PacketType.areYouReady:
+            handleIAmReady(data)
+
+        case PacketType.ping:
+            handleSerialPing(data)
+
+        case PacketType.disconnect:
+            logger.info("Received serial disconnect")
+            handleDisconnect()
+
+        case PacketType.idle:
+            handleSerialIdle(data)
+
+        default:
+            logger.debug("Ignoring serial packet type=0x\(String(format: "%04X", type))")
+        }
     }
 
     private func handleCIVResponse(_ civData: Data) {
@@ -210,6 +267,7 @@ public final class UDPSerial: UDPBase {
             NSLog("[UDPSerial] pendingCompletion is %@", completion != nil ? "set" : "nil")
             self.pendingCompletion = nil
             self.waitingForReply = false
+            self.resumeBackgroundTrafficIfNeeded()
             DispatchQueue.main.async {
                 logger.debug("handleCIVResponse: Calling completion(true) on main queue")
                 NSLog("[UDPSerial] Calling completion(true)")
@@ -226,6 +284,7 @@ public final class UDPSerial: UDPBase {
             NSLog("[UDPSerial] pendingCompletion is %@", completion != nil ? "set" : "nil")
             self.pendingCompletion = nil
             self.waitingForReply = false
+            self.resumeBackgroundTrafficIfNeeded()
             DispatchQueue.main.async {
                 logger.debug("handleCIVResponse: Calling completion(false) on main queue")
                 NSLog("[UDPSerial] Calling completion(false)")
@@ -248,6 +307,7 @@ public final class UDPSerial: UDPBase {
             let completion = self.pendingCompletion
             self.pendingCompletion = nil
             self.waitingForReply = false
+            self.resumeBackgroundTrafficIfNeeded()
             DispatchQueue.main.async {
                 completion?(true)
             }
@@ -268,5 +328,47 @@ public final class UDPSerial: UDPBase {
         commandQueue.removeAll()
         waitingForReply = false
         pendingCompletion = nil
+        keepaliveSuspendedForCIV = false
+    }
+
+    private func suspendBackgroundTrafficIfNeeded(for civData: Data) {
+        guard isCWCommand(civData), !keepaliveSuspendedForCIV else { return }
+        keepaliveSuspendedForCIV = true
+        logger.debug("Suspending serial background traffic for CW command")
+        suspendBackgroundTraffic()
+    }
+
+    private func resumeBackgroundTrafficIfNeeded() {
+        guard keepaliveSuspendedForCIV else { return }
+        keepaliveSuspendedForCIV = false
+        logger.debug("Resuming serial background traffic after CW command")
+        resumeBackgroundTraffic()
+    }
+
+    private func isCWCommand(_ civData: Data) -> Bool {
+        civData.count >= 6 && civData[4] == CIV.Command.sendCW
+    }
+
+    private func handleSerialPing(_ data: Data) {
+        guard data.count >= Int(PacketSize.ping) else { return }
+        let isRequest = data[PingOffset.request] == 0x00
+        DebugTrace.write("UDPSerial", "handleSerialPing isRequest=\(isRequest)")
+        guard isRequest else { return }
+
+        let reply = PacketBuilder.pongReply(from: data, sendId: myId, recvId: remoteId)
+        send(reply)
+    }
+
+    private func handleSerialIdle(_ data: Data) {
+        guard data.count > 0x10 else { return }
+        let marker = data[0x10]
+        switch marker {
+        case 0xC1:
+            handleDataPacket(data)
+        case 0xC0:
+            DebugTrace.write("UDPSerial", "handleSerialIdle openCloseAck bytes=\(data.count)")
+        default:
+            DebugTrace.write("UDPSerial", "handleSerialIdle ignored marker=0x\(String(format: "%02X", marker)) bytes=\(data.count)")
+        }
     }
 }

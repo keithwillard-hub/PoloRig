@@ -11,16 +11,17 @@ import { DXCC_BY_PREFIX } from '@ham2k/lib-dxcc-data'
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 import { Platform } from 'react-native'
 import { withIC705Defaults } from '../../extensions/other/ic705/defaults'
+import { withDevelopmentSettingsDefaults } from '../../dev/developmentDefaults'
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useBuiltinCountryFile()
 
-const initialState = {
+const initialState = withDevelopmentSettingsDefaults({
   operatorCall: '',
   onboarded: false,
   accounts: {},
   flags: {}
-}
+})
 
 export const settingsSlice = createSlice({
   name: 'settings',
@@ -63,7 +64,7 @@ export const settingsSlice = createSlice({
 
 export const { setOperatorCall, setOnboarded, setAccountInfo, setSettings, setExtensionSettings, setExportSettings, mergeSettings } = settingsSlice.actions
 
-function deepMergeState(state, data, visited = undefined) {
+function deepMergeState (state, data, visited = undefined) {
   visited = visited || new Set()
   visited.add(data)
 
@@ -86,7 +87,7 @@ function deepMergeState(state, data, visited = undefined) {
 export const selectSettings = createSelector(
   (state) => state?.settings,
   (settings) => {
-    settings = { ...settings }
+    settings = withDevelopmentSettingsDefaults({ ...settings })
 
     if (settings.showNumbersRow === undefined) {
       settings.showNumbersRow = Platform.OS === 'ios'
@@ -156,12 +157,15 @@ export const selectExportSettings = createSelector(
 )
 
 export const selectOperatorCall = createSelector(
-  (state) => state?.settings,
+  (state) => withDevelopmentSettingsDefaults(state?.settings ?? {}),
   (settings) => settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
 )
 
 export const selectOperatorCallInfo = createSelector(
-  (state) => state?.settings?.operatorCall === 'N0CALL' ? '' : (state?.settings?.operatorCall ?? ''),
+  (state) => {
+    const settings = withDevelopmentSettingsDefaults(state?.settings ?? {})
+    return settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
+  },
   (settingsCall) => {
     let info = {}
     if (settingsCall) {

@@ -7,6 +7,8 @@ private let logger = Logger(subsystem: "com.ic705cwlogger", category: "UDPContro
 /// Manages the control port (50001) connection.
 /// Handles authentication handshake, token management, and keepalive.
 public final class UDPControl: UDPBase {
+    private static let defaultCIVPort: UInt16 = 50002
+    private static let defaultAudioPort: UInt16 = 50003
 
     // MARK: - Configuration
 
@@ -49,17 +51,8 @@ public final class UDPControl: UDPBase {
     }
 
     private func allocateLocalStreamPorts() {
-        func reservePort() -> UInt16 {
-            let listener = try? NWListener(using: .udp, on: .any)
-            defer { listener?.cancel() }
-            listener?.start(queue: queue)
-            return listener?.port?.rawValue ?? 0
-        }
-
-        localCIVPort = reservePort()
-        localAudioPort = reservePort()
-        if localCIVPort == 0 { localCIVPort = 50002 }
-        if localAudioPort == 0 || localAudioPort == localCIVPort { localAudioPort = localCIVPort &+ 1 }
+        localCIVPort = Self.defaultCIVPort
+        localAudioPort = Self.defaultAudioPort
     }
 
     // MARK: - Handshake State Machine
@@ -175,6 +168,7 @@ public final class UDPControl: UDPBase {
     private func sendConnInfo() {
         innerSequence &+= 1
         onStage?("Sending ConnInfo with local CI-V port \(localCIVPort)")
+        NSLog("[UDPControl] sendConnInfo localCIVPort=%u localAudioPort=%u", localCIVPort, localAudioPort)
         let packet = PacketBuilder.connInfo(
             innerSeq: innerSequence,
             sendId: myId,
@@ -227,6 +221,7 @@ public final class UDPControl: UDPBase {
         if remoteAudioPort == 0 { remoteAudioPort = 50003 }
         isConnected = true
         logger.info("Received status from radio, remote CI-V port=\(self.remoteCIVPort)")
+        NSLog("[UDPControl] handleStatus remoteCIVPort=%u remoteAudioPort=%u", remoteCIVPort, remoteAudioPort)
         onStage?("Control status received; remote CI-V port \(remoteCIVPort)")
         DispatchQueue.main.async { [weak self] in
             self?.onAuthenticated?()

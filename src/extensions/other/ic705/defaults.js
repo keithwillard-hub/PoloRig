@@ -1,15 +1,15 @@
 import Config from 'react-native-config'
 
-function envString(value, fallback = '') {
+function envString (value, fallback = '') {
   return value === undefined || value === null || value === '' ? fallback : value
 }
 
-function envNumber(value, fallback) {
+function envNumber (value, fallback) {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : fallback
 }
 
-function envBoolean(value, fallback) {
+function envBoolean (value, fallback) {
   if (value === undefined || value === null || value === '') return fallback
   return ['1', 'true', 'yes', 'on'].includes(String(value).toLowerCase())
 }
@@ -42,19 +42,30 @@ export const IC705_DEFAULTS = {
   }
 }
 
-export function withIC705Defaults(ic705 = {}) {
+export function withIC705Defaults (ic705 = {}) {
+  const homeLAN = {
+    ...IC705_DEFAULTS.homeLAN,
+    ...ic705.homeLAN
+  }
+  const fieldAP = {
+    ...IC705_DEFAULTS.fieldAP,
+    ...ic705.fieldAP
+  }
+
   return {
     ...IC705_DEFAULTS,
     ...ic705,
     homeLAN: {
-      ...IC705_DEFAULTS.homeLAN,
-      ...ic705.homeLAN,
-      radioIPAddress: ic705.homeLAN?.radioIPAddress ?? ic705.homeLAN?.ip ?? IC705_DEFAULTS.homeLAN.radioIPAddress
+      ...homeLAN,
+      radioIPAddress: envString(homeLAN.radioIPAddress || ic705.homeLAN?.ip, IC705_DEFAULTS.homeLAN.radioIPAddress),
+      username: envString(homeLAN.username, IC705_DEFAULTS.homeLAN.username),
+      password: envString(homeLAN.password, IC705_DEFAULTS.homeLAN.password)
     },
     fieldAP: {
-      ...IC705_DEFAULTS.fieldAP,
-      ...ic705.fieldAP,
-      radioIPAddress: ic705.fieldAP?.radioIPAddress ?? ic705.fieldAP?.ip ?? IC705_DEFAULTS.fieldAP.radioIPAddress
+      ...fieldAP,
+      radioIPAddress: envString(fieldAP.radioIPAddress || ic705.fieldAP?.ip, IC705_DEFAULTS.fieldAP.radioIPAddress),
+      username: envString(fieldAP.username, IC705_DEFAULTS.fieldAP.username),
+      password: envString(fieldAP.password, IC705_DEFAULTS.fieldAP.password)
     },
     civ: {
       ...IC705_DEFAULTS.civ,

@@ -6,6 +6,8 @@
  */
 
 import { IC705 } from '../../../native/IC705RigControl'
+import { traceIC705UI } from './trace'
+import { interpolateCWTemplate } from './interpolateCWTemplate'
 
 export const Info = {
   key: 'ic705',
@@ -73,12 +75,23 @@ const CWCallCommitHook = {
     // Send CW query using configured template (once only)
     cwSentCalls.add(call)
     const template = settings?.ic705?.cwTemplate || '$callsign?'
+    const text = interpolateCWTemplate(template, {
+      callsign: call,
+      mycall: settings.operatorCall || ''
+    })
+    traceIC705UI('ui.logging.cw.auto.request', {
+      call,
+      template,
+      text
+    })
     try {
-      await IC705.sendTemplatedCW(template, {
-        callsign: call,
-        mycall: settings.operatorCall || ''
-      })
+      await IC705.sendCW(text)
     } catch (e) {
+      traceIC705UI('ui.logging.cw.auto.fail', {
+        call,
+        text,
+        error: e?.message || 'send failed'
+      })
       console.warn('IC-705 CW query failed:', e)
       cwSentCalls.delete(call) // Allow retry on failure
     }

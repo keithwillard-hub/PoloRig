@@ -12,6 +12,7 @@ SCRATCHPAD.md
 .bundle/
 .cursor/
 .vscode/
+tmp/
 *.pxd
 
 # react-native-config codegen

@@ -2,6 +2,7 @@ import Foundation
 import os
 
 private let logger = Logger(subsystem: "com.ac0vw.polorig", category: "IC705RigControl")
+private let traceLogger = Logger(subsystem: "com.ac0vw.polorig", category: "IC705Trace")
 
 /// React Native Native Module bridging the IC-705 rig control stack.
 /// Wraps UDPControl, UDPSerial, CIVController, CWKeyer, and CWSidetone,
@@ -16,9 +17,15 @@ class IC705RigControl: RCTEventEmitter {
     private let civController = CIVController()
     private let keyer = CWKeyer()
     private let sidetone = CWSidetone()
+    private var activeDirectCWSender: DirectCWSender?
     private var isConnected = false
     private var hasListeners = false
     private var connectTimeoutWorkItem: DispatchWorkItem?
+    private var currentHost = ""
+    private var currentUsername = ""
+    private var currentPassword = ""
+    private let traceSessionId = UUID().uuidString
+    private var traceSequence: UInt64 = 0
 
     // Track previous values to emit only on change
     private var lastFrequencyHz: Int = 0
@@ -29,6 +36,9 @@ class IC705RigControl: RCTEventEmitter {
     override init() {
         super.init()
         IC705RigControl.activeInstance = self
+        DebugTrace.clear()
+        DebugTrace.write("IC705RigControl", "module init session=\(traceSessionId)")
+        logTrace("native.module.init", detail: "session=\(traceSessionId)")
     }
 
     override static func requiresMainQueueSetup() -> Bool { true }
@@ -76,6 +86,9 @@ class IC705RigControl: RCTEventEmitter {
         }
 
         logger.info("Connecting to \(host)...")
+        currentHost = host
+        currentUsername = username
+        currentPassword = password
         emitConnectionState("connecting", detail: "Opening control connection to \(host)")
 
         connectTimeoutWorkItem?.cancel()
@@ -104,30 +117,22 @@ class IC705RigControl: RCTEventEmitter {
             self.emitEvent("onRadioNameChanged", body: ["name": ctrl.radioName])
             self.emitConnectionState("connecting", detail: "Authenticated with \(ctrl.radioName); opening CI-V stream")
 
-            let ser = UDPSerial(host: host, port: ctrl.remoteCIVPort, localPort: ctrl.localCIVPort)
-            self.serial = ser
-            ser.onStage = { [weak self] detail in
-                self?.emitConnectionState("connecting", detail: detail)
-            }
-
-            // Wire CIV controller to serial port
-            self.civController.attach(serial: ser)
-            ser.onCIVReceived = { [weak self] data in
-                self?.civController.handleCIVData(data)
+            self.openSerialStream(connectionState: "connecting") { [weak self] ready in
+                guard let self else { return }
+                guard ready, !promiseSettled else { return }
+                promiseSettled = true
+                self.connectTimeoutWorkItem?.cancel()
+                self.connectTimeoutWorkItem = nil
+                self.startStatePolling()
+                self.isConnected = true
+                self.emitConnectionState("connected", detail: "Connected to \(ctrl.radioName)")
+                resolve(["radioName": ctrl.radioName])
             }
 
             // Wire keyer callbacks
             self.keyer.onSendCW = { [weak self] text, completion in
                 logger.debug("keyer.onSendCW: Sending \"\(text)\"")
-                self?.civController.sendRawCW(text: text) { success in
-                    logger.debug("keyer.onSendCW: Got result success=\(success) for \"\(text)\"")
-                    self?.emitEvent("onCWResult", body: [
-                        "text": text,
-                        "success": success,
-                        "source": "keyer"
-                    ])
-                    completion(success)
-                }
+                self?.sendCWViaDirectSession(text: text, source: "keyer", completion: completion)
             }
             self.keyer.onSetSpeed = { [weak self] wpm in
                 self?.civController.setCWSpeed(wpm: wpm)
@@ -142,18 +147,6 @@ class IC705RigControl: RCTEventEmitter {
                 self?.emitSendingState(false)
             }
 
-            ser.onSerialReady = { [weak self] in
-                guard let self, !promiseSettled else { return }
-                promiseSettled = true
-                self.connectTimeoutWorkItem?.cancel()
-                self.connectTimeoutWorkItem = nil
-                self.civController.startFrequencyPolling()
-                self.startStatePolling()
-                self.isConnected = true
-                self.emitConnectionState("connected", detail: "Connected to \(ctrl.radioName)")
-                resolve(["radioName": ctrl.radioName])
-            }
-            ser.connect()
         }
 
         ctrl.onDisconnect = { [weak self] in
@@ -211,33 +204,40 @@ class IC705RigControl: RCTEventEmitter {
                       resolver resolve: @escaping RCTPromiseResolveBlock,
                       rejecter reject: @escaping RCTPromiseRejectBlock) {
         logger.debug("sendCW: ENTER text=\"\(text)\"")
+        DebugTrace.write("IC705RigControl", "sendCW enter text=\(text)")
         guard isConnected else {
             logger.warning("sendCW: Rejecting - not connected")
+            DebugTrace.write("IC705RigControl", "sendCW reject NOT_CONNECTED")
             reject("NOT_CONNECTED", "Not connected to radio", nil)
             return
         }
 
-        civController.sendRawCW(text: text) { [weak self] success in
-            logger.debug("sendCW: sendRawCW completion success=\(success)")
-            self?.emitEvent("onCWResult", body: [
-                "text": text,
-                "success": success,
-                "source": "direct"
-            ])
+        sendCWViaDirectSession(text: text, source: "direct") { [weak self] success in
             if success {
+                DebugTrace.write("IC705RigControl", "sendCW resolve success")
                 resolve(nil)
             } else {
+                DebugTrace.write("IC705RigControl", "sendCW reject CW_SEND_FAILED")
                 reject("CW_SEND_FAILED", "Radio did not accept CW command", nil)
             }
         }
+    }
+
+    @objc func logUIEvent(_ name: String, detail: String,
+                          resolver resolve: @escaping RCTPromiseResolveBlock,
+                          rejecter reject: @escaping RCTPromiseRejectBlock) {
+        logTrace(name, detail: detail)
+        resolve(nil)
     }
 
     @objc func sendTemplatedCW(_ templateStr: String, variables: NSDictionary,
                                 resolver resolve: @escaping RCTPromiseResolveBlock,
                                 rejecter reject: @escaping RCTPromiseRejectBlock) {
         logger.debug("sendTemplatedCW: ENTER template=\"\(templateStr)\" variables=\(variables)")
+        DebugTrace.write("IC705RigControl", "sendTemplatedCW enter template=\(templateStr)")
         guard isConnected else {
             logger.warning("sendTemplatedCW: Rejecting - not connected")
+            DebugTrace.write("IC705RigControl", "sendTemplatedCW reject NOT_CONNECTED")
             reject("NOT_CONNECTED", "Not connected to radio", nil)
             return
         }
@@ -259,10 +259,23 @@ class IC705RigControl: RCTEventEmitter {
             cwSpeed: civController.cwSpeed
         )
         logger.debug("sendTemplatedCW: Context - callsign=\(context.callsign), myCallsign=\(context.myCallsign), freq=\(context.frequencyHz), speed=\(context.cwSpeed)")
+        let interpolated = CWTemplateEngine.interpolate(templateStr, variables: vars).uppercased()
+        logger.debug("sendTemplatedCW: Interpolated text=\"\(interpolated)\"")
 
-        keyer.sendInterpolatedTemplate(templateStr, variables: vars, context: context)
-        logger.debug("sendTemplatedCW: EXIT (template queued)")
-        resolve(nil)
+        guard !interpolated.isEmpty, interpolated.count <= 30 else {
+            reject("CW_TEMPLATE_INVALID", "Interpolated CW text must be 1-30 characters", nil)
+            return
+        }
+
+        sendCWViaDirectSession(text: interpolated, source: "template") { success in
+            if success {
+                DebugTrace.write("IC705RigControl", "sendTemplatedCW resolve success text=\(interpolated)")
+                resolve(nil)
+            } else {
+                DebugTrace.write("IC705RigControl", "sendTemplatedCW reject CW_SEND_FAILED text=\(interpolated)")
+                reject("CW_SEND_FAILED", "Radio did not accept CW command", nil)
+            }
+        }
     }
 
     @objc func setCWSpeed(_ wpm: NSNumber,
@@ -362,5 +375,112 @@ class IC705RigControl: RCTEventEmitter {
 
     private func emitSendingState(_ isSending: Bool) {
         emitEvent("onSendingStateChanged", body: ["isSending": isSending])
+    }
+
+    private func logTrace(_ name: String, detail: String? = nil) {
+        traceSequence &+= 1
+        let trimmedDetail = detail?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if trimmedDetail.isEmpty {
+            traceLogger.log("[session=\(self.traceSessionId, privacy: .public) seq=\(self.traceSequence)] \(name, privacy: .public)")
+        } else {
+            traceLogger.log("[session=\(self.traceSessionId, privacy: .public) seq=\(self.traceSequence)] \(name, privacy: .public) | \(trimmedDetail, privacy: .public)")
+        }
+    }
+
+    private func openSerialStream(connectionState: String? = nil,
+                                  completion: @escaping (Bool) -> Void) {
+        guard let ctrl = control else {
+            completion(false)
+            return
+        }
+
+        civController.stopFrequencyPolling()
+        serial?.disconnect()
+
+        NSLog("[IC705RigControl] Creating UDPSerial remotePort=%u advertisedLocalCIVPort=%u",
+              ctrl.remoteCIVPort, ctrl.localCIVPort)
+        let ser = UDPSerial(host: currentHost, port: ctrl.remoteCIVPort)
+        serial = ser
+        civController.attach(serial: ser)
+
+        ser.onStage = { [weak self] detail in
+            guard let self, let connectionState else { return }
+            self.emitConnectionState(connectionState, detail: detail)
+        }
+        ser.onCIVReceived = { [weak self] data in
+            self?.civController.handleCIVData(data)
+        }
+        ser.onSerialReady = {
+            completion(true)
+        }
+
+        let timeoutWorkItem = DispatchWorkItem {
+            completion(false)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: timeoutWorkItem)
+        ser.onSerialReady = {
+            timeoutWorkItem.cancel()
+            completion(true)
+        }
+        ser.connect()
+    }
+
+    private func sendCWViaDirectSession(text: String,
+                                        source: String,
+                                        completion: @escaping (Bool) -> Void) {
+        let host = currentHost
+        let username = currentUsername.isEmpty ? (control?.userName ?? "") : currentUsername
+        let password = currentPassword.isEmpty ? (control?.password ?? "") : currentPassword
+
+        guard !host.isEmpty, !username.isEmpty else {
+            DebugTrace.write("IC705RigControl", "sendCWViaDirectSession abort missing credentials hostEmpty=\(host.isEmpty) userEmpty=\(username.isEmpty)")
+            completion(false)
+            return
+        }
+
+        if currentUsername.isEmpty || currentPassword.isEmpty {
+            DebugTrace.write("IC705RigControl", "sendCWViaDirectSession using control credential fallback userFromControl=\(!username.isEmpty) passwordFromControl=\(!password.isEmpty)")
+        }
+
+        DebugTrace.write("IC705RigControl", "sendCWViaDirectSession source=\(source) text=\(text)")
+
+        // Release the persistent session first; the radio accepts only one client at a time.
+        disconnectSync()
+
+        let sender = DirectCWSender(
+            host: host,
+            userName: username,
+            password: password,
+            text: text
+        )
+        activeDirectCWSender = sender
+
+        sender.start { [weak self] success in
+            guard let self else {
+                completion(success)
+                return
+            }
+
+            self.activeDirectCWSender = nil
+
+            logger.debug("sendCWViaDirectSession: success=\(success) source=\(source) text=\"\(text)\"")
+            self.emitEvent("onCWResult", body: [
+                "text": text,
+                "success": success,
+                "source": source
+            ])
+            completion(success)
+
+            // Restore the persistent session for normal app behavior.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.connect(
+                    host,
+                    username: username,
+                    password: password,
+                    resolver: { _ in },
+                    rejecter: { _, _, _ in }
+                )
+            }
+        }
     }
 }

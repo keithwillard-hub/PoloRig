@@ -49,7 +49,7 @@ export const MESSAGES_FOR_SCORING = {
 
 const DEBUG = false
 
-export function CallInfo ({ qso, qsos, activeQSOs, sections, operation, style, styles, themeColor, updateQSO, settings }) {
+export function CallInfo ({ qso, qsos, activeQSOs, sections, operation, style, styles, themeColor, updateQSO, settings, lookupEnabled = true }) {
   const { t } = useTranslation()
 
   const navigation = useNavigation()
@@ -60,7 +60,7 @@ export function CallInfo ({ qso, qsos, activeQSOs, sections, operation, style, s
 
   styles = prepareStyles(styles, { style })
 
-  const { call, guess, lookup, refs, status, when } = useCallLookup(qso)
+  const { call, guess, lookup, refs, status, when } = useCallLookup(qso, { enabled: lookupEnabled })
 
   const { call: theirCall, allCalls } = useMemo(() => parseStackedCalls(qso?.their?.call ?? ''), [qso?.their?.call])
 

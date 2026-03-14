@@ -7,6 +7,11 @@
   "scripts": {
     "android": "react-native run-android --appId com.ham2k.polo.alpha",
     "ios": "react-native run-ios",
+    "ios:build:signal": "./scripts/ios-build-signal.sh",
+    "ic705:trace": "./scripts/ic705-trace.sh start",
+    "ic705:capture": "./scripts/ic705-trace.sh capture",
+    "ic705:trace:stop": "./scripts/ic705-trace.sh stop",
+    "ic705:launch": "./scripts/ic705-trace.sh launch",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",

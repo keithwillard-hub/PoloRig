@@ -10,6 +10,11 @@ import { NativeModules, NativeEventEmitter, Platform } from 'react-native'
 const NativeIC705 = Platform.OS === 'ios' ? NativeModules.IC705RigControl : null
 const emitter = NativeIC705 ? new NativeEventEmitter(NativeIC705) : null
 
+function nativeMethodNames () {
+  if (!NativeIC705) return []
+  return Object.keys(NativeIC705).filter(key => typeof NativeIC705[key] === 'function').sort()
+}
+
 export const IC705 = {
   /** Connect to IC-705 via WiFi. Returns { radioName }. */
   connect: (host, username, password) =>
@@ -20,8 +25,17 @@ export const IC705 = {
     NativeIC705?.disconnect() ?? Promise.resolve(),
 
   /** Send raw CW text (max 30 chars per CI-V command). */
-  sendCW: (text) =>
-    NativeIC705?.sendCW(text) ?? Promise.reject(new Error('iOS only')),
+  sendCW: (text) => {
+    console.log('[IC705] wrapper.sendCW', {
+      text,
+      hasNative: !!NativeIC705,
+      methods: nativeMethodNames()
+    })
+    if (!NativeIC705?.sendCW) {
+      return Promise.reject(new Error('iOS only'))
+    }
+    return NativeIC705.sendCW(text)
+  },
 
   /**
    * Send templated CW with $variable interpolation + {MACRO} expansion.
@@ -42,6 +56,12 @@ export const IC705 = {
   /** Get current status. Returns { isConnected, frequencyHz, mode, cwSpeed, isSending, radioName }. */
   getStatus: () =>
     NativeIC705?.getStatus() ?? Promise.resolve({ isConnected: false }),
+
+  /** Write a UI trace marker into the native iOS log stream. */
+  logUIEvent: (name, detail = '') =>
+    typeof NativeIC705?.logUIEvent === 'function'
+      ? NativeIC705.logUIEvent(name, detail)
+      : Promise.resolve(),
 
   /** @returns {EmitterSubscription} */
   onConnectionStateChanged: (cb) =>
@@ -72,5 +92,6 @@ export const IC705 = {
     emitter?.addListener('onCWResult', cb),
 
   /** Whether the native module is available (iOS only). */
-  isAvailable: !!NativeIC705
+  isAvailable: !!NativeIC705,
+  debugNativeMethods: () => nativeMethodNames()
 }

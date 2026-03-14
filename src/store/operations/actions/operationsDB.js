@@ -17,8 +17,8 @@ import { closeDatabaseAndRestart, dbExecute, dbSelectAll, dbSelectOne } from '..
 import { sendOperationsToSyncService } from '../../sync'
 import { actions } from '../operationsSlice'
 import { selectSettings } from '../../settings'
+import { DEVELOPMENT_DEFAULTS } from '../../../dev/developmentDefaults'
 import { selectLocalData, setLocalData } from '../../local'
-import { computeSizes } from '../../../styles/tools/computeSizes'
 import { fmtTimestamp } from '../../../tools/timeFormats'
 
 const operationFromRow = (row) => {
@@ -46,12 +46,12 @@ const operationFromRow = (row) => {
   if (data.startAtMillisMin) delete data.startAtMillisMin
   if (data.startAtMillisMax) delete data.startAtMillisMax
 
-    ;['mode', 'band', 'power', 'freq', 'operatorCall', 'spottedAt', 'spottedFreq', 'secondaryControls'].forEach((key) => {
-      if (data[key]) {
-        data.local[key] = data[key]
-        delete data[key]
-      }
-    })
+  ;['mode', 'band', 'power', 'freq', 'operatorCall', 'spottedAt', 'spottedFreq', 'secondaryControls'].forEach((key) => {
+    if (data[key]) {
+      data.local[key] = data[key]
+      delete data[key]
+    }
+  })
 
   // Inject values from row into data
   if (row.startAtMillisMin) data.startAtMillisMin = row.startAtMillisMin
@@ -194,7 +194,7 @@ export const mergeSyncOperations = ({ operations }) => async (dispatch, getState
   return { earliestSyncedAtMillis, latestSyncedAtMillis }
 }
 
-export async function markOperationsAsSynced(operations) {
+export async function markOperationsAsSynced (operations) {
   if (!operations || operations.length === 0) return
   await dbExecute(`UPDATE operations SET synced = true WHERE uuid IN (${operations.map(q => `'${q.uuid}'`).join(',')})`, [])
 }
@@ -245,7 +245,7 @@ export const updateOperationInfo = ({ uuid }) => async (dispatch, getState) => {
   dispatch(actions.setOperation(operationInfo))
 }
 
-export async function getSyncCounts() {
+export async function getSyncCounts () {
   const counts = {}
 
   const opCounts = await dbSelectAll('SELECT COUNT(*) as count, synced FROM operations GROUP BY synced')
@@ -284,6 +284,7 @@ export const addNewOperation = (operation) => async (dispatch, getState) => {
 
   operation.title = operation.title || 'New Operation'
   operation.stationCall = operation.stationCall || settings.operatorCall
+  operation.grid = operation.grid || DEVELOPMENT_DEFAULTS.operationGrid || undefined
   operation.refs = operation.refs || []
 
   operation._isNew = operation._isNew ?? true
@@ -360,8 +361,7 @@ export const deleteHistoricalRecords = () => async (dispatch) => {
   await dbExecute('DELETE FROM qsos WHERE operation = ?', ['historical'])
 }
 
-function fingerprintOperationData(operation) {
+function fingerprintOperationData (operation) {
   const sanitized = { ...operation, local: undefined, startAtMillisMin: undefined, startAtMillisMax: undefined, qsoCount: undefined }
   return JSON.stringify(sanitized)
 }
-

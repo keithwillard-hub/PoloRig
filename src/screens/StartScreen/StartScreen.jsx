@@ -27,6 +27,7 @@ import { translatedVersionName } from '../../tools/i18nUtils'
 
 import releaseNotes from '../../../RELEASE-NOTES.json'
 import packageJson from '../../../package.json'
+import { DEVELOPMENT_DEFAULTS } from '../../dev/developmentDefaults'
 
 const SPLASH_IMAGE = require('./img/launch_screen.jpg')
 const POLO_WORDMARK = require('./img/polo-wordmark.png')
@@ -71,6 +72,12 @@ export default function StartScreen ({ setAppState }) {
       dispatch(earlyStartupSequence(() => { setStartupPhase('hold') }))
     } else if (startupPhase === 'hold') {
       // Hold for a second and decide if we need to show onboarding or not
+      if (!onboardedOn && DEVELOPMENT_DEFAULTS.skipOnboarding && settings?.operatorCall) {
+        dispatch(setSystemFlag('onboardedOn', Date.now()))
+        setStartupPhase('start')
+        return
+      }
+
       if (!onboardedOn || !settings?.operatorCall) {
         setTimeout(() => setStartupPhase('onboarding'), 1000) // Let the splash screen show for a moment
       } else {

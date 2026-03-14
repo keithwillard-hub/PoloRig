@@ -33,7 +33,7 @@ export const resetCallLookupCache = () => (dispatch, getState) => {
   CACHE.lookups = {}
 }
 
-export const useCallLookup = (qso) => {
+export const useCallLookup = (qso, { enabled = true } = {}) => {
   const online = useSelector(selectRuntimeOnline)
   const settings = useSelector(selectSettings)
   const dispatch = useDispatch()
@@ -47,6 +47,8 @@ export const useCallLookup = (qso) => {
   if (DEBUG) console.log('\n\nuseCallLookup', { call, cacheKey, baseCacheKey })
 
   useEffect(() => {
+    if (!enabled) return
+
     if (DEBUG) console.log('-- useCallLookup effect', { call, cacheKey, cached: Object.keys(CACHE.lookups) })
 
     if (call && call.length > 2 && (!CACHE.lookups[cacheKey] || CACHE.lookups[cacheKey].status === 'prefilled')) {
@@ -83,7 +85,7 @@ export const useCallLookup = (qso) => {
     } else {
       if (DEBUG) console.log('  -- useCallLookup effect cached', { cacheKey })
     }
-  }, [call, online, dispatch, cacheKey, theirInfo, qso?.refs, settings])
+  }, [enabled, call, online, dispatch, cacheKey, theirInfo, qso?.refs, settings])
 
   if (CACHE.lookups[cacheKey]) {
     if (DEBUG) console.log('-- useCallLookup returns', cacheKey, { name: CACHE.lookups[cacheKey]?.guess?.name, status: CACHE.lookups[cacheKey]?.status })
@@ -106,7 +108,7 @@ export const useCallLookup = (qso) => {
   }
 }
 
-export async function annotateQSO({ qso, online, settings, dispatch, mode = 'full' }) {
+export async function annotateQSO ({ qso, online, settings, dispatch, mode = 'full' }) {
   const { call, theirInfo } = _extractCallInfo(qso?.their?.call, qso?.refs)
 
   const { guess, lookup } = await _performLookup({ qso, call, theirInfo, online, settings, dispatch, mode })
@@ -114,7 +116,7 @@ export async function annotateQSO({ qso, online, settings, dispatch, mode = 'ful
   return { ...qso, their: { ...qso.their, ...theirInfo, guess, lookup } }
 }
 
-function _extractCallInfo(call, refs) {
+function _extractCallInfo (call, refs) {
   // Pick the last call in the list, and ignore any under 3 characters or with a question mark
   const { allCalls } = parseStackedCalls(call)
   const calls = allCalls.filter(x => x && x.length > 2 && x.indexOf('?') < 0) ?? []
@@ -142,7 +144,7 @@ function _extractCallInfo(call, refs) {
   return { call: oneCall, theirInfo, cacheKey, baseCacheKey }
 }
 
-async function _performLookup({ refs, call, theirInfo, online, settings, dispatch, mode = 'full' }) {
+async function _performLookup ({ refs, call, theirInfo, online, settings, dispatch, mode = 'full' }) {
   const { lookups } = await _lookupCall(theirInfo, { online, settings, dispatch, mode })
   const { refs: lookedUpRefs } = await _lookupRefs(refs, { lookups, online, settings, dispatch, mode })
   const { guess, lookup } = _mergeData({ theirInfo, lookups, refs: lookedUpRefs })
@@ -151,7 +153,7 @@ async function _performLookup({ refs, call, theirInfo, online, settings, dispatc
   return { guess, lookup, lookups, theirInfo }
 }
 
-async function _lookupCall(theirInfo, { online, settings, dispatch, mode = 'full' }) {
+async function _lookupCall (theirInfo, { online, settings, dispatch, mode = 'full' }) {
   const lookups = {}
   const lookupHooks = findHooks('lookup')
   const lookedUp = {}
@@ -180,7 +182,7 @@ async function _lookupCall(theirInfo, { online, settings, dispatch, mode = 'full
   return { lookups }
 }
 
-async function _lookupRefs(refs, { online, settings, dispatch, mode = 'full' }) {
+async function _lookupRefs (refs, { online, settings, dispatch, mode = 'full' }) {
   let newRefs = []
   for (const ref of (refs || [])) {
     if (!ref.type) continue
@@ -203,7 +205,7 @@ async function _lookupRefs(refs, { online, settings, dispatch, mode = 'full' }) 
   return { refs: newRefs }
 }
 
-function _mergeData({ theirInfo, lookups, refs }) {
+function _mergeData ({ theirInfo, lookups, refs }) {
   let mergedLookup = {}
   const newGuess = { ...theirInfo }
 

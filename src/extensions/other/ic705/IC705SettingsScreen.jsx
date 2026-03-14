@@ -17,6 +17,7 @@ import ScreenContainer from '../../../screens/components/ScreenContainer'
 import { H2kListItem, H2kListSection, H2kListSubheader } from '../../../ui'
 import { useIC705 } from '../../../hooks/useIC705'
 import { withIC705Defaults } from './defaults'
+import { traceIC705UI } from './trace'
 
 function prepareStyles (baseStyles) {
   return {
@@ -49,13 +50,13 @@ export default function IC705SettingsScreen ({ navigation, splitView }) {
 
   const ic705Settings = useMemo(() => withIC705Defaults(settings?.ic705), [settings?.ic705])
   const wifiMode = ic705Settings.wifiMode || 'homeLAN'
-  const modeConfig = ic705Settings[wifiMode] || {}
+  const modeConfig = useMemo(() => ic705Settings[wifiMode] || {}, [ic705Settings, wifiMode])
 
   const {
     connectionState, isConnected, isConnecting,
     connectionDetail,
     cwResult,
-    radioName, frequency, frequencyDisplay, mode, cwSpeed,
+    radioName, frequencyDisplay, mode, cwSpeed,
     connect, disconnect, isAvailable
   } = useIC705()
 
@@ -77,22 +78,41 @@ export default function IC705SettingsScreen ({ navigation, splitView }) {
   const handleConnect = useCallback(async () => {
     if (isConnected) {
       setConnectError('')
+      traceIC705UI('ui.settings.disconnect.tap', {
+        state: connectionState,
+        radioName
+      })
       await disconnect()
     } else {
       const ip = modeConfig.radioIPAddress || modeConfig.ip || ''
       const user = modeConfig.username || ''
-      const pass = modeConfig.password || ''
       if (!ip) return
+      traceIC705UI('ui.settings.connect.tap', {
+        mode: wifiMode,
+        ip,
+        username: user
+      })
       try {
         setConnectError('')
-        await connect(ip, user, pass)
+        await connect(ip, user, modeConfig.password || '')
+        traceIC705UI('ui.settings.connect.ok', {
+          mode: wifiMode,
+          ip,
+          radioName
+        })
       } catch (e) {
         console.warn('IC-705 connect failed:', e)
         const detail = connectionDetail ? ` - ${connectionDetail}` : ''
         setConnectError(`${e?.message || 'Connection failed'}${detail}`)
+        traceIC705UI('ui.settings.connect.fail', {
+          mode: wifiMode,
+          ip,
+          error: e?.message || 'Connection failed',
+          detail: connectionDetail || ''
+        })
       }
     }
-  }, [isConnected, disconnect, connect, modeConfig, wifiMode, connectionDetail])
+  }, [isConnected, disconnect, connect, modeConfig, wifiMode, connectionDetail, connectionState, radioName])
 
   if (!isAvailable) {
     return (
