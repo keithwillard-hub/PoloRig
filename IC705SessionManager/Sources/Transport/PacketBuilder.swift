@@ -1,12 +1,12 @@
 import Foundation
 
 /// Constructs packets for the Icom RS-BA1 UDP protocol.
-enum PacketBuilder {
+public enum PacketBuilder {
 
     // MARK: - Base Control Packets (16 bytes)
 
     /// Create a base control header packet.
-    static func controlPacket(
+    public static func controlPacket(
         type: UInt16,
         sequence: UInt16,
         sendId: UInt32,
@@ -21,25 +21,25 @@ enum PacketBuilder {
         return data
     }
 
-    static func areYouThere(sendId: UInt32) -> Data {
+    public static func areYouThere(sendId: UInt32) -> Data {
         controlPacket(type: PacketType.areYouThere, sequence: 0, sendId: sendId, recvId: 0)
     }
 
-    static func areYouReady(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
+    public static func areYouReady(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
         controlPacket(type: PacketType.areYouReady, sequence: sequence, sendId: sendId, recvId: recvId)
     }
 
-    static func disconnect(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
+    public static func disconnect(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
         controlPacket(type: PacketType.disconnect, sequence: sequence, sendId: sendId, recvId: recvId)
     }
 
-    static func idle(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
+    public static func idle(sequence: UInt16, sendId: UInt32, recvId: UInt32) -> Data {
         controlPacket(type: PacketType.idle, sequence: sequence, sendId: sendId, recvId: recvId)
     }
 
     // MARK: - Ping Packet (21 bytes)
 
-    static func ping(
+    public static func ping(
         sequence: UInt16,
         sendId: UInt32,
         recvId: UInt32,
@@ -60,7 +60,7 @@ enum PacketBuilder {
     }
 
     /// Build a pong reply to an incoming ping.
-    static func pongReply(from pingData: Data, sendId: UInt32, recvId: UInt32) -> Data {
+    public static func pongReply(from pingData: Data, sendId: UInt32, recvId: UInt32) -> Data {
         var reply = pingData
         // Set length header (in case it's missing)
         reply.writeUInt32(PacketSize.ping, at: ControlOffset.length)
@@ -74,7 +74,7 @@ enum PacketBuilder {
 
     // MARK: - Token Base Packet (64 bytes)
 
-    static func tokenPacket(
+    public static func tokenPacket(
         code: UInt16,
         res: UInt16,
         innerSeq: UInt8,
@@ -100,7 +100,7 @@ enum PacketBuilder {
 
     // MARK: - Login Packet (128 bytes)
 
-    static func login(
+    public static func login(
         innerSeq: UInt8,
         sendId: UInt32,
         recvId: UInt32,
@@ -142,7 +142,7 @@ enum PacketBuilder {
 
     // MARK: - Token Acknowledge
 
-    static func tokenAcknowledge(
+    public static func tokenAcknowledge(
         innerSeq: UInt8,
         sendId: UInt32,
         recvId: UInt32,
@@ -164,7 +164,7 @@ enum PacketBuilder {
 
     // MARK: - Token Renew
 
-    static func tokenRenew(
+    public static func tokenRenew(
         innerSeq: UInt8,
         sendId: UInt32,
         recvId: UInt32,
@@ -186,7 +186,7 @@ enum PacketBuilder {
 
     // MARK: - Token Remove
 
-    static func tokenRemove(
+    public static func tokenRemove(
         innerSeq: UInt8,
         sendId: UInt32,
         recvId: UInt32,
@@ -208,7 +208,7 @@ enum PacketBuilder {
 
     // MARK: - ConnInfo from Host (144 bytes)
 
-    static func connInfo(
+    public static func connInfo(
         innerSeq: UInt8,
         sendId: UInt32,
         recvId: UInt32,
@@ -265,7 +265,7 @@ enum PacketBuilder {
 
     // MARK: - OpenClose Packet (22 bytes, serial port)
 
-    static func openClose(
+    public static func openClose(
         sequence: UInt16,
         sendId: UInt32,
         recvId: UInt32,
@@ -287,7 +287,7 @@ enum PacketBuilder {
 
     // MARK: - CI-V Data Packet
 
-    static func civPacket(
+    public static func civPacket(
         sequence: UInt16,
         sendId: UInt32,
         recvId: UInt32,
@@ -312,12 +312,12 @@ enum PacketBuilder {
 // MARK: - Data Extension for Little-Endian Read/Write
 
 extension Data {
-    func readUInt16(at offset: Int) -> UInt16 {
+    public func readUInt16(at offset: Int) -> UInt16 {
         guard offset + 2 <= count else { return 0 }
         return UInt16(self[offset]) | (UInt16(self[offset + 1]) << 8)
     }
 
-    func readUInt32(at offset: Int) -> UInt32 {
+    public func readUInt32(at offset: Int) -> UInt32 {
         guard offset + 4 <= count else { return 0 }
         return UInt32(self[offset])
             | (UInt32(self[offset + 1]) << 8)
@@ -325,7 +325,7 @@ extension Data {
             | (UInt32(self[offset + 3]) << 24)
     }
 
-    func readUInt32BE(at offset: Int) -> UInt32 {
+    public func readUInt32BE(at offset: Int) -> UInt32 {
         guard offset + 4 <= count else { return 0 }
         return (UInt32(self[offset]) << 24)
             | (UInt32(self[offset + 1]) << 16)
@@ -333,18 +333,18 @@ extension Data {
             | UInt32(self[offset + 3])
     }
 
-    func readUInt16BE(at offset: Int) -> UInt16 {
+    public func readUInt16BE(at offset: Int) -> UInt16 {
         guard offset + 2 <= count else { return 0 }
         return (UInt16(self[offset]) << 8) | UInt16(self[offset + 1])
     }
 
-    mutating func writeUInt16(_ value: UInt16, at offset: Int) {
+    public mutating func writeUInt16(_ value: UInt16, at offset: Int) {
         guard offset + 2 <= count else { return }
         self[offset] = UInt8(value & 0xFF)
         self[offset + 1] = UInt8((value >> 8) & 0xFF)
     }
 
-    mutating func writeUInt32(_ value: UInt32, at offset: Int) {
+    public mutating func writeUInt32(_ value: UInt32, at offset: Int) {
         guard offset + 4 <= count else { return }
         self[offset] = UInt8(value & 0xFF)
         self[offset + 1] = UInt8((value >> 8) & 0xFF)
@@ -352,7 +352,7 @@ extension Data {
         self[offset + 3] = UInt8((value >> 24) & 0xFF)
     }
 
-    mutating func writeUInt32BE(_ value: UInt32, at offset: Int) {
+    public mutating func writeUInt32BE(_ value: UInt32, at offset: Int) {
         guard offset + 4 <= count else { return }
         self[offset] = UInt8((value >> 24) & 0xFF)
         self[offset + 1] = UInt8((value >> 16) & 0xFF)

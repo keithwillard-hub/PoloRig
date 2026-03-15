@@ -15,6 +15,10 @@ let package = Package(
         .executable(
             name: "ic705-cli",
             targets: ["CLI"]
+        ),
+        .executable(
+            name: "ic705-session-cli",
+            targets: ["SequenceCLI"]
         )
     ],
     dependencies: [
@@ -44,6 +48,15 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
             path: "Sources/CLI"
+        ),
+
+        .executableTarget(
+            name: "SequenceCLI",
+            dependencies: [
+                "SessionManager",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ],
+            path: "Sources/SequenceCLI"
         ),
 
         // Tests

@@ -39,7 +39,7 @@ public class UDPBase {
     private var disconnecting = false
     public var onStage: ((String) -> Void)?
 
-    let queue = DispatchQueue(label: "com.ic705.session.udp", qos: .userInitiated)
+    public let queue = DispatchQueue(label: "com.ic705.session.udp", qos: .userInitiated)
 
     var socketLabel: String {
         let localLabel = preferredLocalPort == 0 ? "ephemeral" : String(preferredLocalPort)
@@ -126,6 +126,10 @@ public class UDPBase {
         send(packet)
 
         armIdleTimer()
+    }
+
+    public var isSocketActive: Bool {
+        connection != nil
     }
 
     func handleDisconnect() {

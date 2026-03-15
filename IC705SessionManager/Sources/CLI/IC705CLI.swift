@@ -11,13 +11,14 @@ struct IC705CLI: AsyncParsableCommand {
         Connect to and control an IC-705 radio via the RS-BA1 protocol.
 
         Examples:
-          ic705-cli connect --host 192.168.2.144 --user ADMIN --pass secret
+          ic705-cli connect --host 192.168.2.144 --user ADMIN --pass secret --save
           ic705-cli status
+          ic705-cli speed
           ic705-cli send-cw "CQ CQ DE W1AW K"
           ic705-cli disconnect
         """,
         version: "1.0.0",
-        subcommands: [ConnectCommand.self, StatusCommand.self, SendCWCommand.self, DisconnectCommand.self, WatchCommand.self],
+        subcommands: [ConnectCommand.self, StatusCommand.self, SpeedCommand.self, SendCWCommand.self, DisconnectCommand.self, WatchCommand.self],
         defaultSubcommand: StatusCommand.self
     )
 }

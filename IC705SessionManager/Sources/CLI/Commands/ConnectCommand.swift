@@ -27,7 +27,6 @@ struct ConnectCommand: AsyncParsableCommand {
     var verbose: Bool = false
 
     mutating func run() async throws {
-        // Determine credentials to use
         var targetHost = host
         var targetUser = user
         var targetPass = pass
@@ -60,8 +59,8 @@ struct ConnectCommand: AsyncParsableCommand {
             throw ValidationError("Missing required option: --pass")
         }
 
-        // Connect
         let manager = SessionManager()
+        CLIState.shared.manager = manager
 
         if verbose {
             manager.stageHandler = { message in
@@ -81,7 +80,6 @@ struct ConnectCommand: AsyncParsableCommand {
 
             print("Connected to \(radioName)")
 
-            // Save session if requested
             if save {
                 let session = SessionStore.SessionData(
                     host: host,
@@ -93,13 +91,20 @@ struct ConnectCommand: AsyncParsableCommand {
                 print("Session saved to \(SessionStore.sessionFileURL.path)")
             }
 
-            // Store manager in global for other commands
-            CLIState.shared.manager = manager
+            await manager.disconnect()
+            CLIState.shared.manager = nil
+            if verbose {
+                print("Disconnected cleanly")
+            }
 
         } catch let error as RadioError {
+            await manager.disconnect()
+            CLIState.shared.manager = nil
             print("Connection failed: \(error.description)")
             throw ExitCode.failure
         } catch {
+            await manager.disconnect()
+            CLIState.shared.manager = nil
             print("Connection failed: \(error.localizedDescription)")
             throw ExitCode.failure
         }

@@ -34,6 +34,7 @@ public final class UDPControl: UDPBase {
     public private(set) var localAudioPort: UInt16 = 0
 
     private var tokenRenewTimer: DispatchSourceTimer?
+    private var tokenRemoveRequested = false
 
     /// Called when fully authenticated and ready
     public var onAuthenticated: (() -> Void)?
@@ -200,6 +201,7 @@ public final class UDPControl: UDPBase {
         case TokenRes.remove:
             logger.info("Token removed")
             haveToken = false
+            tokenRemoveRequested = false
         default:
             break
         }
@@ -265,6 +267,7 @@ public final class UDPControl: UDPBase {
         tokenRenewTimer = nil
 
         if haveToken {
+            tokenRemoveRequested = true
             innerSequence &+= 1
             let removePacket = PacketBuilder.tokenRemove(
                 innerSeq: innerSequence,
@@ -285,9 +288,32 @@ public final class UDPControl: UDPBase {
         tokenRenewTimer = nil
         haveToken = false
         token = 0
+        tokenRemoveRequested = false
 
         DispatchQueue.main.async { [weak self] in
             self?.onDisconnect?()
+        }
+    }
+
+    public var hasReleasedToken: Bool {
+        !haveToken
+    }
+
+    public func requestTokenRemove() {
+        queue.async { [weak self] in
+            guard let self, self.haveToken, !self.tokenRemoveRequested else { return }
+            self.tokenRemoveRequested = true
+            self.innerSequence &+= 1
+            let packet = PacketBuilder.tokenRemove(
+                innerSeq: self.innerSequence,
+                sendId: self.myId,
+                recvId: self.remoteId,
+                sequence: self.nextSequence(),
+                tokReq: self.tokReq,
+                token: self.token
+            )
+            self.sendTracked(packet)
+            self.onStage?("Requested token removal")
         }
     }
 

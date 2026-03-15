@@ -10,6 +10,7 @@ public final class UDPSerial: UDPBase {
     private var civSequence: UInt16 = 0
     private var waitingForReply = false
     private var keepaliveSuspendedForCIV = false
+    private var closeAcknowledged = false
 
     /// Queue of CI-V commands waiting to be sent.
     private var commandQueue: [(data: Data, expectsReply: Bool, completion: ((Bool) -> Void)?)] = []
@@ -69,6 +70,9 @@ public final class UDPSerial: UDPBase {
 
     private func sendOpenClose(isOpen: Bool) {
         civSequence &+= 1
+        if !isOpen {
+            closeAcknowledged = false
+        }
         let packet = PacketBuilder.openClose(
             sequence: nextSequence(),
             sendId: myId,
@@ -324,11 +328,22 @@ public final class UDPSerial: UDPBase {
         super.disconnect()
     }
 
+    public var hasCloseAcknowledged: Bool {
+        closeAcknowledged
+    }
+
+    public func requestClose() {
+        queue.async { [weak self] in
+            self?.sendOpenClose(isOpen: false)
+        }
+    }
+
     override func onDisconnected() {
         commandQueue.removeAll()
         waitingForReply = false
         pendingCompletion = nil
         keepaliveSuspendedForCIV = false
+        closeAcknowledged = false
     }
 
     private func suspendBackgroundTrafficIfNeeded(for civData: Data) {
@@ -366,6 +381,7 @@ public final class UDPSerial: UDPBase {
         case 0xC1:
             handleDataPacket(data)
         case 0xC0:
+            closeAcknowledged = true
             DebugTrace.write("UDPSerial", "handleSerialIdle openCloseAck bytes=\(data.count)")
         default:
             DebugTrace.write("UDPSerial", "handleSerialIdle ignored marker=0x\(String(format: "%02X", marker)) bytes=\(data.count)")

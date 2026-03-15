@@ -16,47 +16,29 @@ struct WatchCommand: AsyncParsableCommand {
     var json: Bool = false
 
     mutating func run() async throws {
-        let manager = CLIState.shared.manager ?? SessionManager()
+        let existingManager = CLIState.shared.manager
+        let (manager, _) = try await CLICommandSupport.ensureConnected(
+            existingManager: existingManager,
+            verbose: true,
+            autoConnectMessage: "Auto-connecting using saved session..."
+        )
         CLIState.shared.manager = manager
-
-        // Check if we need to connect first
-        let isConnected = manager.isConnected
-
-        if !isConnected {
-            // Try to load saved session
-            guard let saved = try SessionStore.load() else {
-                print("Error: Not connected and no saved session found")
-                print("Run 'ic705-cli connect --host <ip> --user <user> --pass <pass>' first")
-                throw ExitCode.failure
-            }
-
-            print("Auto-connecting using saved session...")
-
-            do {
-                _ = try await manager.connect(
-                    host: saved.host,
-                    username: saved.username,
-                    password: saved.password,
-                    computerName: saved.computerName
-                )
-                print("Connected")
-            } catch let error as RadioError {
-                print("Auto-connect failed: \(error.description)")
-                throw ExitCode.failure
-            } catch {
-                print("Auto-connect failed: \(error.localizedDescription)")
-                throw ExitCode.failure
-            }
-        }
+        print("Connected")
 
         print("Watching radio status (press Ctrl+C to stop)...")
         print("")
 
-        // Set up signal handler for graceful exit
-        signal(SIGINT) { _ in
+        signal(SIGINT, SIG_IGN)
+        let sigintSource = DispatchSource.makeSignalSource(signal: SIGINT, queue: .main)
+        sigintSource.setEventHandler {
             print("\nStopping...")
-            Darwin.exit(0)
+            Task {
+                await manager.disconnect()
+                CLIState.shared.manager = nil
+                Darwin.exit(0)
+            }
         }
+        sigintSource.resume()
 
         // Loop until interrupted
         while true {

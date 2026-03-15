@@ -15,7 +15,11 @@ struct SendCWCommand: AsyncParsableCommand {
     var verbose: Bool = false
 
     mutating func run() async throws {
-        let manager = CLIState.shared.manager ?? SessionManager()
+        let existingManager = CLIState.shared.manager
+        let (manager, connectedInThisInvocation) = try await CLICommandSupport.ensureConnected(
+            existingManager: existingManager,
+            verbose: verbose
+        )
         CLIState.shared.manager = manager
 
         // Validate text
@@ -29,39 +33,6 @@ struct SendCWCommand: AsyncParsableCommand {
             print("Error: Text must be 30 characters or less (got \(trimmed.count))")
             throw ExitCode.failure
         }
-
-        // Check if we need to connect first
-        let isConnected = manager.isConnected
-
-        if !isConnected {
-            // Try to load saved session
-            guard let saved = try SessionStore.load() else {
-                print("Error: Not connected and no saved session found")
-                print("Run 'ic705-cli connect --host <ip> --user <user> --pass <pass>' first")
-                throw ExitCode.failure
-            }
-
-            if verbose {
-                print("Auto-connecting using saved session...")
-            }
-
-            do {
-                _ = try await manager.connect(
-                    host: saved.host,
-                    username: saved.username,
-                    password: saved.password,
-                    computerName: saved.computerName
-                )
-            } catch let error as RadioError {
-                print("Auto-connect failed: \(error.description)")
-                throw ExitCode.failure
-            } catch {
-                print("Auto-connect failed: \(error.localizedDescription)")
-                throw ExitCode.failure
-            }
-        }
-
-        // Send CW
         if verbose {
             print("Sending CW: '\(trimmed)'")
         }
@@ -74,16 +45,33 @@ struct SendCWCommand: AsyncParsableCommand {
                     print("CW sent successfully")
                 }
             } else {
+                await CLICommandSupport.disconnectIfNeeded(
+                    manager: manager,
+                    connectedInThisInvocation: connectedInThisInvocation
+                )
                 print("Error: CW send failed")
                 throw ExitCode.failure
             }
 
         } catch let error as RadioError {
+            await CLICommandSupport.disconnectIfNeeded(
+                manager: manager,
+                connectedInThisInvocation: connectedInThisInvocation
+            )
             print("CW send failed: \(error.description)")
             throw ExitCode.failure
         } catch {
+            await CLICommandSupport.disconnectIfNeeded(
+                manager: manager,
+                connectedInThisInvocation: connectedInThisInvocation
+            )
             print("CW send failed: \(error.localizedDescription)")
             throw ExitCode.failure
         }
+
+        await CLICommandSupport.disconnectIfNeeded(
+            manager: manager,
+            connectedInThisInvocation: connectedInThisInvocation
+        )
     }
 }

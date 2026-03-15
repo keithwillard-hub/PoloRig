@@ -2,17 +2,14 @@ import ArgumentParser
 import Foundation
 import SessionManager
 
-struct StatusCommand: AsyncParsableCommand {
+struct SpeedCommand: AsyncParsableCommand {
     static var configuration = CommandConfiguration(
-        commandName: "status",
-        abstract: "Query radio status (frequency and mode)"
+        commandName: "speed",
+        abstract: "Query CW speed"
     )
 
     @Flag(name: .long, help: "Verbose output")
     var verbose: Bool = false
-
-    @Flag(name: .long, help: "Output as JSON")
-    var json: Bool = false
 
     mutating func run() async throws {
         let existingManager = CLIState.shared.manager
@@ -23,32 +20,21 @@ struct StatusCommand: AsyncParsableCommand {
         CLIState.shared.manager = manager
 
         do {
-            let result = try await manager.queryStatus()
-
-            if json {
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-                let data = try encoder.encode(result)
-                print(String(data: data, encoding: .utf8)!)
-            } else {
-                let freqMHz = Double(result.frequencyHz) / 1_000_000.0
-                print(String(format: "Frequency: %.3f MHz", freqMHz))
-                print("Mode: \(result.mode)")
-            }
-
+            let speed = try await manager.queryCWSpeed()
+            print("CW Speed: \(speed) WPM")
         } catch let error as RadioError {
             await CLICommandSupport.disconnectIfNeeded(
                 manager: manager,
                 connectedInThisInvocation: connectedInThisInvocation
             )
-            print("Status query failed: \(error.description)")
+            print("CW speed query failed: \(error.description)")
             throw ExitCode.failure
         } catch {
             await CLICommandSupport.disconnectIfNeeded(
                 manager: manager,
                 connectedInThisInvocation: connectedInThisInvocation
             )
-            print("Status query failed: \(error.localizedDescription)")
+            print("CW speed query failed: \(error.localizedDescription)")
             throw ExitCode.failure
         }
 

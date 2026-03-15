@@ -2,152 +2,152 @@ import Foundation
 
 // MARK: - Packet Sizes
 
-enum PacketSize {
-    static let control: UInt32    = 0x10  // 16 bytes - base header
-    static let watchdog: UInt32   = 0x14  // 20 bytes
-    static let ping: UInt32       = 0x15  // 21 bytes
-    static let openClose: UInt32  = 0x16  // 22 bytes
-    static let retransmit: UInt32 = 0x18  // 24 bytes
-    static let token: UInt32      = 0x40  // 64 bytes
-    static let status: UInt32     = 0x50  // 80 bytes
-    static let loginResponse: UInt32 = 0x60  // 96 bytes
-    static let login: UInt32      = 0x80  // 128 bytes
-    static let connInfo: UInt32   = 0x90  // 144 bytes
-    static let capabilities: UInt32 = 0xA8 // 168 bytes
-    static let civHeader: UInt32  = 0x15  // 21 bytes before CI-V data
+public enum PacketSize {
+    public static let control: UInt32    = 0x10
+    public static let watchdog: UInt32   = 0x14
+    public static let ping: UInt32       = 0x15
+    public static let openClose: UInt32  = 0x16
+    public static let retransmit: UInt32 = 0x18
+    public static let token: UInt32      = 0x40
+    public static let status: UInt32     = 0x50
+    public static let loginResponse: UInt32 = 0x60
+    public static let login: UInt32      = 0x80
+    public static let connInfo: UInt32   = 0x90
+    public static let capabilities: UInt32 = 0xA8
+    public static let civHeader: UInt32  = 0x15
 }
 
 // MARK: - Packet Type Codes (offset 0x04)
 
-enum PacketType {
-    static let idle: UInt16         = 0x0000
-    static let retransmit: UInt16   = 0x0001
-    static let areYouThere: UInt16  = 0x0003
-    static let iAmHere: UInt16      = 0x0004
-    static let disconnect: UInt16   = 0x0005
-    static let areYouReady: UInt16  = 0x0006
-    static let ping: UInt16         = 0x0007
+public enum PacketType {
+    public static let idle: UInt16         = 0x0000
+    public static let retransmit: UInt16   = 0x0001
+    public static let areYouThere: UInt16  = 0x0003
+    public static let iAmHere: UInt16      = 0x0004
+    public static let disconnect: UInt16   = 0x0005
+    public static let areYouReady: UInt16  = 0x0006
+    public static let ping: UInt16         = 0x0007
 }
 
 // MARK: - Control Header Offsets (16-byte header)
 
-enum ControlOffset {
-    static let length: Int   = 0x00  // UInt32
-    static let type: Int     = 0x04  // UInt16
-    static let sequence: Int = 0x06  // UInt16
-    static let sendId: Int   = 0x08  // UInt32
-    static let recvId: Int   = 0x0C  // UInt32
+public enum ControlOffset {
+    public static let length: Int   = 0x00
+    public static let type: Int     = 0x04
+    public static let sequence: Int = 0x06
+    public static let sendId: Int   = 0x08
+    public static let recvId: Int   = 0x0C
 }
 
 // MARK: - Ping Offsets (21 bytes)
 
-enum PingOffset {
-    static let request: Int = 0x10  // UInt8 - 0=request, 1=response
-    static let dataA: Int   = 0x11  // UInt16
-    static let dataB: Int   = 0x13  // UInt16
+public enum PingOffset {
+    public static let request: Int = 0x10
+    public static let dataA: Int   = 0x11
+    public static let dataB: Int   = 0x13
 }
 
 // MARK: - Token Offsets (64 bytes, extends control header)
 
-enum TokenOffset {
+public enum TokenOffset {
     // 0x10-0x12 padding
-    static let code: Int        = 0x13  // UInt16
-    static let res: Int         = 0x15  // UInt16
-    static let innerSeq: Int    = 0x17  // UInt8
+    public static let code: Int        = 0x13
+    public static let res: Int         = 0x15
+    public static let innerSeq: Int    = 0x17
     // 0x18-0x19 padding
-    static let tokReq: Int      = 0x1A  // UInt16
-    static let token: Int       = 0x1C  // UInt32
+    public static let tokReq: Int      = 0x1A
+    public static let token: Int       = 0x1C
     // 0x20-0x26 padding
-    static let commCap: Int     = 0x27  // UInt16
-    static let reqRep: Int      = 0x29  // UInt8
-    static let macAddr: Int     = 0x2A  // 6 bytes
+    public static let commCap: Int     = 0x27
+    public static let reqRep: Int      = 0x29
+    public static let macAddr: Int     = 0x2A
 }
 
 // MARK: - Token Code/Res Values
 
-enum TokenCode {
-    static let loginRequest: UInt16       = 0x0170
-    static let loginResponse: UInt16      = 0x0250
-    static let tokenAck: UInt16           = 0x0130
-    static let tokenAckResponse: UInt16   = 0x0230
-    static let connInfoFromHost: UInt16   = 0x0180
-    static let connInfoFromRadio: UInt16  = 0x0380
-    static let status: UInt16             = 0x0240
-    static let capabilities: UInt16       = 0x0298
+public enum TokenCode {
+    public static let loginRequest: UInt16       = 0x0170
+    public static let loginResponse: UInt16      = 0x0250
+    public static let tokenAck: UInt16           = 0x0130
+    public static let tokenAckResponse: UInt16   = 0x0230
+    public static let connInfoFromHost: UInt16   = 0x0180
+    public static let connInfoFromRadio: UInt16  = 0x0380
+    public static let status: UInt16             = 0x0240
+    public static let capabilities: UInt16       = 0x0298
 }
 
-enum TokenRes {
-    static let login: UInt16        = 0x0000
-    static let ack: UInt16          = 0x0002
-    static let connInfo: UInt16     = 0x0003
-    static let renew: UInt16        = 0x0005
-    static let remove: UInt16       = 0x0001
+public enum TokenRes {
+    public static let login: UInt16        = 0x0000
+    public static let ack: UInt16          = 0x0002
+    public static let connInfo: UInt16     = 0x0003
+    public static let renew: UInt16        = 0x0005
+    public static let remove: UInt16       = 0x0001
 }
 
 // MARK: - Login Offsets (128 bytes)
 
-enum LoginOffset {
-    static let userName: Int   = 0x40  // 16 bytes, encoded
-    static let password: Int   = 0x50  // 16 bytes, encoded
-    static let computer: Int   = 0x60  // 16 bytes, plaintext
+public enum LoginOffset {
+    public static let userName: Int   = 0x40
+    public static let password: Int   = 0x50
+    public static let computer: Int   = 0x60
 }
 
 // MARK: - ConnInfo Offsets (144 bytes)
 
-enum ConnInfoOffset {
-    static let radioName: Int  = 0x40  // 16 bytes
+public enum ConnInfoOffset {
+    public static let radioName: Int  = 0x40
     // 0x50-0x5F padding
-    static let userName: Int   = 0x60  // 16 bytes, encoded
-    static let enableRx: Int   = 0x70  // UInt8
-    static let enableTx: Int   = 0x71  // UInt8
-    static let rxCodec: Int    = 0x72  // UInt8
-    static let txCodec: Int    = 0x73  // UInt8
-    static let rxSample: Int   = 0x74  // UInt32 big-endian
-    static let txSample: Int   = 0x78  // UInt32 big-endian
-    static let civPort: Int    = 0x7C  // UInt32 big-endian
-    static let audioPort: Int  = 0x80  // UInt32 big-endian
-    static let txBuffer: Int   = 0x84  // UInt32 big-endian
-    static let convert: Int    = 0x88  // UInt8
+    public static let userName: Int   = 0x60
+    public static let enableRx: Int   = 0x70
+    public static let enableTx: Int   = 0x71
+    public static let rxCodec: Int    = 0x72
+    public static let txCodec: Int    = 0x73
+    public static let rxSample: Int   = 0x74
+    public static let txSample: Int   = 0x78
+    public static let civPort: Int    = 0x7C
+    public static let audioPort: Int  = 0x80
+    public static let txBuffer: Int   = 0x84
+    public static let convert: Int    = 0x88
 }
 
 // MARK: - Capabilities Offsets (168 bytes)
 
-enum CapabilitiesOffset {
-    static let macAddr: Int    = 0x4C  // 6 bytes
-    static let radioName: Int  = 0x52  // 16 bytes
-    static let civAddr: Int    = 0x94  // UInt8
+public enum CapabilitiesOffset {
+    public static let macAddr: Int    = 0x4C
+    public static let radioName: Int  = 0x52
+    public static let civAddr: Int    = 0x94
 }
 
 // MARK: - OpenClose Offsets (22 bytes)
 
-enum OpenCloseOffset {
-    static let cmd: Int      = 0x10  // UInt8, always 0xC0
-    static let length: Int   = 0x11  // UInt16
-    static let sequence: Int = 0x13  // UInt16
-    static let request: Int  = 0x15  // UInt8 - 0x04=open, 0x00=close
+public enum OpenCloseOffset {
+    public static let cmd: Int      = 0x10
+    public static let length: Int   = 0x11
+    public static let sequence: Int = 0x13
+    public static let request: Int  = 0x15
 }
 
 // MARK: - CIV Packet Offsets (header = 21 bytes before CI-V data)
 
-enum CIVPacketOffset {
-    static let cmd: Int      = 0x10  // UInt8, always 0xC1
-    static let length: Int   = 0x11  // UInt16 LE
-    static let sequence: Int = 0x13  // UInt16 (LE from host, BE from radio)
-    static let data: Int     = 0x15  // CI-V frame starts here
+public enum CIVPacketOffset {
+    public static let cmd: Int      = 0x10
+    public static let length: Int   = 0x11
+    public static let sequence: Int = 0x13
+    public static let data: Int     = 0x15
 }
 
 // MARK: - Timing Constants
 
-enum Timing {
-    static let pingInterval: TimeInterval    = 0.5
-    static let idleInterval: TimeInterval    = 0.1
-    static let resendInterval: TimeInterval  = 0.1
-    static let tokenRenewInterval: TimeInterval = 60.0
+public enum Timing {
+    public static let pingInterval: TimeInterval    = 0.5
+    public static let idleInterval: TimeInterval    = 0.1
+    public static let resendInterval: TimeInterval  = 0.1
+    public static let tokenRenewInterval: TimeInterval = 60.0
 }
 
 // MARK: - Credential Encoding
 
-enum CredentialCodec {
+public enum CredentialCodec {
     static let encodeKey: [UInt8] = [
         0x47, 0x5d, 0x4c, 0x42, 0x66, 0x20, 0x23, 0x46,
         0x4e, 0x57, 0x45, 0x3d, 0x67, 0x76, 0x60, 0x41,
