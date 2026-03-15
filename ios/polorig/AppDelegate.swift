@@ -3,6 +3,7 @@ import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import react_native_splash_screen
+import Foundation
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, RNAppAuthAuthorizationFlowManager {
@@ -60,9 +61,14 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 
   override func bundleURL() -> URL? {
 #if DEBUG
-    RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    if Bundle.main.bundleIdentifier == "com.ac0vw.polorig.dev" {
+      RCTBundleURLProvider.sharedSettings().jsLocation = "localhost:8082"
+    }
+    let url = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+    NSLog("PoloRig ReactNativeDelegate.bundleURL() -> %@", url?.absoluteString ?? "nil")
+    return url
 #else
-    Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+    return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
   }
 }

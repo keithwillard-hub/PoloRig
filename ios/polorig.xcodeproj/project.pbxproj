@@ -20,9 +20,9 @@
 		338C874E957D494590B61D27 /* Roboto Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD1310A006D4D6ABEB15303 /* Roboto Condensed.ttf */; };
 		35451DE812E14517B56C86EC /* CWSidetone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B5A55CFB2A74218ABBC56BA /* CWSidetone.swift */; };
 		3E4B7B98A1334F4E8F722331 /* DebugTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8D4C0C18D946F2AB0F56D1 /* DebugTrace.swift */; };
-		4E63A85C3A444C0DA627D6C4 /* DirectCWSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B152FE605543D7844F49D0 /* DirectCWSender.swift */; };
 		456A42C3E6052EE69BD37B21 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = EAEEA1DF5608CEBDB7C04460 /* PrivacyInfo.xcprivacy */; };
 		4941F40FC5A6497DB2D1F76C /* UDPControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A600B462649EEBB7B44D2 /* UDPControl.swift */; };
+		4E63A85C3A444C0DA627D6C4 /* DirectCWSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B152FE605543D7844F49D0 /* DirectCWSender.swift */; };
 		547C6D2E8A864A0EA2664E86 /* Roboto Condensed ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52E51D689542480FA9E55C4C /* Roboto Condensed ExtraBold.ttf */; };
 		594668748840B97B93F0B172 /* UDPBaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F374BC0A000F218AEC03576E /* UDPBaseTests.swift */; };
 		5C2AFBACD3C741EEA619B61D /* Roboto Condensed Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C66C002B48D24A32BC280E2D /* Roboto Condensed Medium.ttf */; };
@@ -854,6 +854,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = DevDebug;
@@ -868,7 +869,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = polorig/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo 𝛼";
+				INFOPLIST_KEY_CFBundleDisplayName = "PoloRig Feature";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -985,6 +986,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = BetaDebug;
@@ -1116,6 +1118,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
 				USE_HERMES = true;
 			};
 			name = ProdDebug;
@@ -1130,7 +1133,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				INFOPLIST_FILE = polorig/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo";
+				INFOPLIST_KEY_CFBundleDisplayName = "PoloRig Main";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1142,7 +1145,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ac0vw.polorig.prod;
 				PRODUCT_NAME = PoloRig;
 				SWIFT_OBJC_BRIDGING_HEADER = "polorig/polorig-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1255,7 +1258,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = T56H72Q4W5;
 				INFOPLIST_FILE = polorig/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo 𝛼";
+				INFOPLIST_KEY_CFBundleDisplayName = "PoloRig Feature";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1503,7 +1506,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = T56H72Q4W5;
 				INFOPLIST_FILE = polorig/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Ham2K PoLo";
+				INFOPLIST_KEY_CFBundleDisplayName = "PoloRig Main";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
