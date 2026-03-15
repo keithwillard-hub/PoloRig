@@ -1,0 +1,8 @@
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/CLIState.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/ConnectCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/DisconnectCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/SendCWCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/StatusCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/WatchCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/IC705CLI.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/SessionStore.swift

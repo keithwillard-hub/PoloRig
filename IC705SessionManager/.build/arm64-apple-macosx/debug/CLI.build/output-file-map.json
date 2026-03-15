@@ -1,0 +1,61 @@
+{
+  "": {
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/master.swiftdeps"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/CLIState.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/CLIState.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/CLIState.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/CLIState~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/CLIState.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/CLIState.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/ConnectCommand.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/ConnectCommand.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/ConnectCommand.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/ConnectCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/ConnectCommand.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/ConnectCommand.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/DisconnectCommand.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/DisconnectCommand.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/DisconnectCommand.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/DisconnectCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/DisconnectCommand.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/DisconnectCommand.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/SendCWCommand.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SendCWCommand.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SendCWCommand.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SendCWCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SendCWCommand.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SendCWCommand.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/StatusCommand.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/StatusCommand.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/StatusCommand.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/StatusCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/StatusCommand.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/StatusCommand.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/Commands/WatchCommand.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/WatchCommand.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/WatchCommand.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/WatchCommand~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/WatchCommand.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/WatchCommand.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/IC705CLI.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/IC705CLI.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/IC705CLI.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/IC705CLI~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/IC705CLI.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/IC705CLI.dia"
+  },
+  "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/Sources/CLI/SessionStore.swift": {
+    "dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SessionStore.d",
+    "object": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SessionStore.swift.o",
+    "swiftmodule": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SessionStore~partial.swiftmodule",
+    "swift-dependencies": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SessionStore.swiftdeps",
+    "diagnostics": "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/CLI.build/SessionStore.dia"
+  }
+}

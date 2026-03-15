@@ -1,0 +1,51 @@
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Completions/BashCompletionsGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Completions/CompletionsGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Completions/FishCompletionsGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Completions/ZshCompletionsGenerator.swift
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/Argument.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/ArgumentDiscussion.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/ArgumentHelp.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/ArgumentVisibility.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/CompletionKind.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/Errors.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/Flag.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/NameSpecification.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/Option.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/OptionGroup.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Properties/ParentCommand.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/AsyncParsableCommand.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/CommandConfiguration.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/CommandGroup.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/EnumerableFlag.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/ExpressibleByArgument.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/ParsableArguments.swift'
+'/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsable Types/ParsableCommand.swift'
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/ArgumentDecoder.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/ArgumentDefinition.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/ArgumentSet.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/CommandParser.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/InputKey.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/InputOrigin.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/Name.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/Parsed.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/ParsedValues.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/ParserError.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Parsing/SplitArguments.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Usage/DumpHelpGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Usage/HelpCommand.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Usage/HelpGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Usage/MessageInfo.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Usage/UsageGenerator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/CollectionExtensions.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/Foundation.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/Mutex.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/Platform.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/SequenceExtensions.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/StringExtensions.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/SwiftExtensions.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Utilities/Tree.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Validators/CodingKeyValidator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Validators/NonsenseFlagsValidator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Validators/ParsableArgumentsValidation.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Validators/PositionalArgumentsValidator.swift
+/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/checkouts/swift-argument-parser/Sources/ArgumentParser/Validators/UniqueNamesValidator.swift
