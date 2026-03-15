@@ -34,9 +34,15 @@ kill_metro_by_port() {
   fi
 }
 
+shutdown_simulator() {
+  echo "Shutting down booted simulator"
+  xcrun simctl shutdown booted >/dev/null 2>&1 || true
+}
+
 terminate_app
 sleep "${DISCONNECT_WAIT_SECONDS}"
 kill_metro_by_pid_file
 kill_metro_by_port
+shutdown_simulator
 
 echo "Shutdown complete"
