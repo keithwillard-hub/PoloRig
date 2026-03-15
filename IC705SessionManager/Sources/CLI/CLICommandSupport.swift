@@ -41,6 +41,13 @@ enum CLICommandSupport {
             computerName: saved.computerName
         )
 
+        _ = try await manager.connect(
+            host: saved.host,
+            username: saved.username,
+            password: saved.password,
+            computerName: saved.computerName
+        )
+
         return (manager, true)
     }
 
