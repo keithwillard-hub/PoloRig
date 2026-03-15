@@ -1,3 +1,0 @@
-module SessionManager {
-    header "/Users/keithwillard/projects/iphone_dev/PoloRig/IC705SessionManager/.build/arm64-apple-macosx/debug/SessionManager.build/include/SessionManager-Swift.h"
-}
