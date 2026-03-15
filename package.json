@@ -17,6 +17,8 @@
     "test": "jest",
     "polorig:start:prod": "./start_polorig_prod.sh",
     "polorig:start:dev": "./start_polorig_dev.sh",
+    "polorig:stop:prod": "./stop_polorig_prod.sh",
+    "polorig:stop:dev": "./stop_polorig_dev.sh",
     "clean:js": "rm -rf node_modules && npm install",
     "clean:android": "(cd android && rm -rf app/.cxx && rm -rf build && ./gradlew clean)",
     "clean:ios": "(cd ios && rm -rf ~/Library/Caches/CocoaPods &&rm -rf Pods && rm -rf Podfile.lock && rm -rf build && pod install)",
