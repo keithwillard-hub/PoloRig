@@ -5,9 +5,9 @@
  * with promise-based methods and event subscriptions.
  */
 
-import { NativeModules, NativeEventEmitter, Platform } from 'react-native'
+import { NativeEventEmitter, Platform, TurboModuleRegistry } from 'react-native'
 
-const NativeIC705 = Platform.OS === 'ios' ? NativeModules.IC705RigControl : null
+const NativeIC705 = Platform.OS === 'ios' ? TurboModuleRegistry.get('IC705RigControl') : null
 const emitter = NativeIC705 ? new NativeEventEmitter(NativeIC705) : null
 
 function nativeMethodNames () {
