@@ -181,6 +181,51 @@ Direct one-shot sessions are now responsible for the operations that must be cor
 
 This is the key architectural shift.
 
+## Operational Findings From The 2026-03-14 Resume
+
+Two practical findings turned out to matter as much as the transport code:
+
+### Build-time env consistency matters
+
+The simulator app can be built through more than one local path. If the build path does not explicitly use `.env.local`, the installed app may pick up placeholder `.env` values instead of the local IC-705 credentials.
+
+That can produce misleading symptoms:
+
+- the source commit is unchanged
+- the app launches normally
+- IC-705 connect/status/CW fail because runtime config differs across builds
+
+The local launcher was updated so simulator builds default to `.env.local`.
+
+### Persisted blank settings can override working defaults
+
+The app persists IC-705 settings in app storage. If blank username/password values are saved there, later launches can continue using those blanks unless the settings are normalized before persistence.
+
+The settings reducer was hardened so `withIC705Defaults()` is applied on the reducer/persistence path, not only when selectors read settings for UI.
+
+Practical effect:
+
+- blank persisted IC-705 credentials are less likely to survive and override local defaults
+
+### Logging-panel refresh storms can destabilize radio behavior
+
+The direct status reader itself was returning correct values, but the logging panel had a refresh trigger loop:
+
+1. `refreshStatus()` disconnected the persistent session
+2. direct status read succeeded
+3. the persistent session reconnected
+4. UI logic treated that reconnect as a reason to refresh again
+5. the cycle repeated roughly once per second
+
+In logs, that showed up as repeated `Creating UDPSerial ...` entries even while the radio was already returning valid frequency/mode data.
+
+Practical effect:
+
+- frequency and mode were correct in native logs but did not settle reliably in the UI
+- CW had to compete with repeated teardown/reconnect churn
+
+The logging panel was hardened so the focus-triggered direct refresh runs once per focused QSO selection instead of retriggering on every reconnect bounce.
+
 ## Original Understanding Versus Actual Behavior
 
 ### Original understanding
@@ -247,7 +292,7 @@ The currently verified working CW baseline is commit `d7b9cec` on `main`.
 ## Remaining Architectural Risks
 
 - The refresh trigger logic in the logging panel is still more complicated than it should be.
-- The direct refresh path is correct, but it has recently been firing more often than desired.
+- The direct refresh path is now materially safer, but multiple UI trigger paths still exist and can regress into refresh churn if expanded casually.
 - Persistent-session status and direct-session status still coexist, which increases state-merging complexity.
 
 ## Recommended Simplification

@@ -16,7 +16,17 @@ import { withDevelopmentSettingsDefaults } from '../../dev/developmentDefaults'
 // eslint-disable-next-line react-hooks/rules-of-hooks
 useBuiltinCountryFile()
 
-const initialState = withDevelopmentSettingsDefaults({
+function normalizeSettingsState (settings = {}) {
+  const normalized = withDevelopmentSettingsDefaults({ ...settings })
+
+  if (normalized.ic705 !== undefined) {
+    normalized.ic705 = withIC705Defaults(normalized.ic705)
+  }
+
+  return normalized
+}
+
+const initialState = normalizeSettingsState({
   operatorCall: '',
   onboarded: false,
   accounts: {},
@@ -45,6 +55,10 @@ export const settingsSlice = createSlice({
       Object.keys(action.payload || {}).forEach(key => {
         state[key] = action.payload[key]
       })
+
+      if (action.payload?.ic705 !== undefined) {
+        state.ic705 = withIC705Defaults(state.ic705)
+      }
     },
     setExtensionSettings: (state, action) => {
       const { key, ...rest } = action.payload
@@ -58,6 +72,9 @@ export const settingsSlice = createSlice({
     },
     mergeSettings: (state, action) => {
       deepMergeState(state, action.payload)
+      if (action.payload?.ic705 !== undefined) {
+        state.ic705 = withIC705Defaults(state.ic705)
+      }
     }
   }
 })
@@ -87,7 +104,7 @@ function deepMergeState (state, data, visited = undefined) {
 export const selectSettings = createSelector(
   (state) => state?.settings,
   (settings) => {
-    settings = withDevelopmentSettingsDefaults({ ...settings })
+    settings = normalizeSettingsState(settings)
 
     if (settings.showNumbersRow === undefined) {
       settings.showNumbersRow = Platform.OS === 'ios'
@@ -128,8 +145,6 @@ export const selectSettings = createSelector(
       settings.bands = ['80m', '40m', '30m', '20m', '17m', '15m', '12m', '10m', '6m', '2m']
     }
 
-    settings.ic705 = withIC705Defaults(settings.ic705)
-
     return settings
   }
 )
@@ -157,13 +172,13 @@ export const selectExportSettings = createSelector(
 )
 
 export const selectOperatorCall = createSelector(
-  (state) => withDevelopmentSettingsDefaults(state?.settings ?? {}),
+  (state) => normalizeSettingsState(state?.settings),
   (settings) => settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
 )
 
 export const selectOperatorCallInfo = createSelector(
   (state) => {
-    const settings = withDevelopmentSettingsDefaults(state?.settings ?? {})
+    const settings = normalizeSettingsState(state?.settings)
     return settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
   },
   (settingsCall) => {

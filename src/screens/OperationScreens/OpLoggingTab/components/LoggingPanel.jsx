@@ -101,6 +101,7 @@ export default function LoggingPanel ({
 
   const mainFieldRef = useRef()
   const lastRadioSyncRef = useRef({})
+  const focusRefreshRef = useRef({})
 
   const [currentSecondaryControl, reallySetCurrentSecondaryControl] = useState({})
   const setCurrentSecondaryControl = useCallback((control) => {
@@ -303,6 +304,10 @@ export default function LoggingPanel ({
   useEffect(() => {
     if (!isFocused || !isIC705Connected || !qso?.uuid || qso?.event) return
 
+    const refreshKey = `${selectedUUID ?? 'none'}:${qso.uuid}`
+    if (focusRefreshRef.current[refreshKey]) return
+    focusRefreshRef.current[refreshKey] = true
+
     let cancelled = false
 
     setImmediate(async () => {
@@ -343,6 +348,15 @@ export default function LoggingPanel ({
       cancelled = true
     }
   }, [isFocused, isIC705Connected, selectedUUID, qso?.uuid, qso?.event, qso?.freq, qso?.mode, refreshIC705Status, updateQSO, dispatch])
+
+  useEffect(() => {
+    if (!qso?.uuid) return
+
+    const refreshKey = `${selectedUUID ?? 'none'}:${qso.uuid}`
+    return () => {
+      delete focusRefreshRef.current[refreshKey]
+    }
+  }, [selectedUUID, qso?.uuid])
 
   const [commandInfo, actualSetCommandInfo] = useState()
   const setCommandInfo = useCallback((info) => {
