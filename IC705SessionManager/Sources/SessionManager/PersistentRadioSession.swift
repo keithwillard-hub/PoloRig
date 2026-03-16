@@ -33,6 +33,10 @@ public final class PersistentRadioSession {
         try await core.setCWSpeed(wpm)
     }
 
+    public func stopCW() async throws {
+        try await core.stopCW()
+    }
+
     public func disconnect() async {
         await core.disconnect()
     }
@@ -54,6 +58,7 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
         case cwSpeed
         case setCWSpeed(Int)
         case sendCW(String)
+        case stopCW
     }
 
     private let config: ConnectionConfig
@@ -129,6 +134,13 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
     func setCWSpeed(_ wpm: Int) async throws {
         let result = try await beginOperation(.setCWSpeed(wpm), timeout: 10.0)
         guard case .setCWSpeed = result else {
+            throw RadioError.invalidResponse
+        }
+    }
+
+    func stopCW() async throws {
+        let result = try await beginOperation(.stopCW, timeout: 10.0)
+        guard case .stopCW = result else {
             throw RadioError.invalidResponse
         }
     }
@@ -353,6 +365,22 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
                     }
                 }
             }
+
+        case .stopCW:
+            stageHandler?("Persistent stop CW")
+            serial.sendCIV(
+                data: CIV.buildFrame(command: CIV.Command.sendCW, data: [0xFF]),
+                expectsReply: false
+            ) { [weak self] success in
+                self?.queue.async {
+                    guard let self else { return }
+                    guard success else {
+                        self.finishOperation(.failure(.invalidResponse))
+                        return
+                    }
+                    self.finishOperation(.success(.stopCW))
+                }
+            }
         }
     }
 
@@ -506,6 +534,8 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
             return "send-cw"
         case .setCWSpeed:
             return "set-cw-speed"
+        case .stopCW:
+            return "stop-cw"
         }
     }
 }
@@ -515,4 +545,5 @@ private enum OperationResult {
     case cwSpeed(Int)
     case setCWSpeed(Int)
     case sendCW(Bool)
+    case stopCW
 }

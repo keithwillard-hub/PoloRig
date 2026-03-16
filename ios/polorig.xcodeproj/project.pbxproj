@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0196DA8A1B8F4BCA8481AEDB /* PacketBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD88D587AFFE4803B07BB3F5 /* PacketBuilder.swift */; };
+		02B10A69C8D34F57A78F74AF /* IC705SessionManager in Frameworks */ = {isa = PBXBuildFile; productRef = 02B10A68C8D34F57A78F74AF /* IC705SessionManager */; };
 		07A0902DFB974D1CB3152257 /* Roboto Condensed Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD16A78FD39D4B129049E76A /* Roboto Condensed Light.ttf */; };
 		0A22A3007B4E477BB0B7A498 /* Roboto Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F99153778C1418285DADE13 /* Roboto Light.ttf */; };
 		0F80D62E977D4D87ADC28752 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 136015CF8403421FA231F743 /* Roboto.ttf */; };
@@ -158,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02B10A69C8D34F57A78F74AF /* IC705SessionManager in Frameworks */,
 				BD0A8CDB92C5D9DDF2B317D4 /* Pods_polorig.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,6 +363,9 @@
 			dependencies = (
 			);
 			name = polorig;
+			packageProductDependencies = (
+				02B10A68C8D34F57A78F74AF /* IC705SessionManager */,
+			);
 			productName = polorig;
 			productReference = 13B07F961A680F5B00A75B9A /* PoloRig.app */;
 			productType = "com.apple.product-type.application";
@@ -416,6 +421,9 @@
 				"pt-BR",
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+				02B10A67C8D34F57A78F74AF /* XCLocalSwiftPackageReference "../IC705SessionManager" */,
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -425,6 +433,21 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		02B10A67C8D34F57A78F74AF /* XCLocalSwiftPackageReference "../IC705SessionManager" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../IC705SessionManager;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		02B10A68C8D34F57A78F74AF /* IC705SessionManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02B10A67C8D34F57A78F74AF /* XCLocalSwiftPackageReference "../IC705SessionManager" */;
+			productName = IC705SessionManager;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		13B07F8E1A680F5B00A75B9A /* Resources */ = {

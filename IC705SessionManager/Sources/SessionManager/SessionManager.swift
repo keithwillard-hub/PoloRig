@@ -57,6 +57,10 @@ public final class SessionManager {
         try await ensureSession().setCWSpeed(wpm)
     }
 
+    public func stopCW() async throws {
+        try await ensureSession().stopCW()
+    }
+
     public func disconnect() async {
         if let session {
             await session.disconnect()
