@@ -23,6 +23,7 @@ class IC705RigControl: RCTEventEmitter {
     private var currentPassword = ""
 
     private var connectTask: Task<Void, Never>?
+    private var sendCWTask: Task<Void, Never>?
     private var pollTask: Task<Void, Never>?
     private var pollTimer: DispatchSourceTimer?
     private var pollGeneration: Int = 0
@@ -50,6 +51,8 @@ class IC705RigControl: RCTEventEmitter {
     func disconnectSync() {
         stopStatePolling()
         keyer.cancelSend()
+        sendCWTask?.cancel()
+        sendCWTask = nil
 
         let semaphore = DispatchSemaphore(value: 0)
         let manager = radioManager
@@ -170,42 +173,84 @@ class IC705RigControl: RCTEventEmitter {
                       resolver resolve: @escaping RCTPromiseResolveBlock,
                       rejecter reject: @escaping RCTPromiseRejectBlock) {
         let trimmed = text.uppercased()
+        logger.debug("sendCW called text=\"\(trimmed)\" connected=\(self.isConnected) manager=\(self.radioManager != nil)")
+        DebugTrace.write("IC705RigControl", "sendCW called text=\(trimmed) connected=\(self.isConnected)")
+
         guard !trimmed.isEmpty, trimmed.count <= 30 else {
+            logger.warning("sendCW rejected: invalid text length \(trimmed.count)")
             reject("CW_INVALID", "CW text must be 1-30 characters", nil)
             return
         }
-        guard let manager = radioManager, isConnected else {
+        guard let manager = self.radioManager, self.isConnected else {
+            logger.warning("sendCW rejected: not connected (isConnected=\(self.isConnected), manager=\(self.radioManager != nil))")
             reject("NOT_CONNECTED", "Not connected to radio", nil)
             return
         }
 
-        logger.debug("sendCW text=\"\(trimmed)\"")
-        DebugTrace.write("IC705RigControl", "sendCW persistent text=\(trimmed)")
+        // Cancel any previous pending send to avoid conflicts
+        sendCWTask?.cancel()
 
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let success = try await manager.sendCW(trimmed)
+        logger.debug("sendCW starting task text=\"\(trimmed)\"")
+        DebugTrace.write("IC705RigControl", "sendCW starting task text=\(trimmed)")
+
+        sendCWTask = Task { [weak self] in
+            guard let self else {
+                logger.error("sendCW task: self is nil")
                 await MainActor.run {
+                    reject("CW_SEND_FAILED", "Internal error: module deallocated", nil)
+                }
+                return
+            }
+
+            // Check for cancellation before starting
+            guard !Task.isCancelled else {
+                logger.debug("sendCW task cancelled before starting")
+                await MainActor.run {
+                    reject("CW_CANCELLED", "Send cancelled", nil)
+                }
+                return
+            }
+
+            do {
+                logger.debug("sendCW calling manager.sendCW for \"\(trimmed)\"")
+                let success = try await manager.sendCW(trimmed)
+
+                // Check for cancellation after await
+                guard !Task.isCancelled else {
+                    logger.debug("sendCW task cancelled after send")
+                    await MainActor.run {
+                        reject("CW_CANCELLED", "Send cancelled", nil)
+                    }
+                    return
+                }
+
+                await MainActor.run {
+                    self.sendCWTask = nil
                     self.emitEvent("onCWResult", body: [
                         "text": trimmed,
                         "success": success,
                         "source": "persistent"
                     ])
                     if success {
+                        logger.debug("sendCW success for \"\(trimmed)\"")
                         resolve(nil)
                     } else {
+                        logger.warning("sendCW failed: radio did not accept command")
                         reject("CW_SEND_FAILED", "Radio did not accept CW command", nil)
                     }
                 }
             } catch {
                 await MainActor.run {
+                    self.sendCWTask = nil
+                    let errorDesc = self.errorDescription(error)
+                    logger.error("sendCW error: \(errorDesc)")
                     self.emitEvent("onCWResult", body: [
                         "text": trimmed,
                         "success": false,
+                        "error": errorDesc,
                         "source": "persistent"
                     ])
-                    reject("CW_SEND_FAILED", self.errorDescription(error), error as NSError)
+                    reject("CW_SEND_FAILED", errorDesc, error as NSError)
                 }
             }
         }

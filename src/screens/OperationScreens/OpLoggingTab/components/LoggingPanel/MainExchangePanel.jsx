@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Image, Pressable, View, findNodeHandle } from 'react-native'
@@ -26,7 +26,13 @@ export const MainExchangePanel = ({
   allowSpacesInCallField, onCallCommitted
 }) => {
   const { t } = useTranslation()
-  const { cwResult } = useIC705()
+  const { cwResult, isConnected, connectionState } = useIC705()
+  const [cwSending, setCwSending] = useState(false)
+
+  // Debug logging
+  useEffect(() => {
+    console.log('[IC705 Debug] connectionState:', connectionState, 'isConnected:', isConnected)
+  }, [connectionState, isConnected])
 
   // We need to pre-allocate a ref for the main field, in case `mainFieldRef` is not provided
   // but since hooks cannot be called conditionally, we just need to create it whether we need it or not
@@ -142,38 +148,63 @@ export const MainExchangePanel = ({
   )
 
   if (IC705.isAvailable && (qso?.their?.call?.trim()?.length ?? 0) >= 3) {
-    const sendCWQuery = () => {
+    const sendCWQuery = async () => {
+      if (cwSending) {
+        console.log('[IC705] sendCWQuery ignored: already sending')
+        return
+      }
+
       const call = qso?.their?.call?.trim()
+      if (!call || call.length < 3) return
+
+      if (!isConnected) {
+        console.log('[IC705] sendCWQuery warning: not connected, attempting anyway')
+      }
+
       const template = settings?.ic705?.cwTemplate || '$callsign?'
       const text = interpolateCWTemplate(template, {
         callsign: call,
         mycall: settings.operatorCall || ''
       })
-      console.log('[IC705] sendCWQuery tap', { call, template, text })
+
+      console.log('[IC705] sendCWQuery starting', { call, template, text })
       traceIC705UI('ui.logging.cw.manual.tap', {
         call,
         template,
         text
       })
-      IC705.sendCW(text).catch(e => {
-        console.warn('[IC705] sendCWQuery rejected', e)
+
+      setCwSending(true)
+
+      try {
+        await IC705.sendCW(text)
+        console.log('[IC705] sendCWQuery succeeded')
+      } catch (e) {
+        console.warn('[IC705] sendCWQuery failed', e)
         traceIC705UI('ui.logging.cw.manual.fail', {
           call,
           text,
           error: e?.message || 'send failed'
         })
-        console.warn('IC-705 CW send failed:', e)
-      })
+      } finally {
+        // Keep sending state for a short delay to prevent rapid clicks
+        setTimeout(() => {
+          setCwSending(false)
+        }, 500)
+      }
     }
+
     const keySize = styles.oneSpace * 4
+    const cwButtonDisabled = disabled || cwSending
+
     fields.push(
       <View key="cw-query" style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Pressable
           onPress={sendCWQuery}
-          disabled={disabled}
+          disabled={cwButtonDisabled}
           accessibilityLabel={t('screens.opLoggingTab.sendCW', 'Send CW Query')}
           style={({ pressed }) => ({
-            opacity: disabled ? 0.3 : pressed ? 0.5 : 1,
+            opacity: cwButtonDisabled ? 0.3 : pressed ? 0.5 : 1,
             justifyContent: 'center',
             alignItems: 'center',
             width: keySize,
@@ -186,9 +217,13 @@ export const MainExchangePanel = ({
             resizeMode="contain"
           />
         </Pressable>
-        {!!cwResult?.text && (
-          <Text style={{ fontSize: styles.normalFontSize * 0.55, color: cwResult.success ? '#4CAF50' : '#F44336', marginTop: styles.halfSpace / 2 }}>
-            {cwResult.success ? 'CW OK' : 'CW FAIL'}
+        {(cwSending || cwResult?.text) && (
+          <Text style={{
+            fontSize: styles.normalFontSize * 0.55,
+            color: cwSending ? '#FFC107' : (cwResult?.success ? '#4CAF50' : '#F44336'),
+            marginTop: styles.halfSpace / 2
+          }}>
+            {cwSending ? 'SENDING...' : (cwResult?.success ? 'CW OK' : 'CW FAIL')}
           </Text>
         )}
       </View>
