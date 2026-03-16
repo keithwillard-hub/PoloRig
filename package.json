@@ -15,7 +15,6 @@
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
-    "polorig:start:prod": "./start_polorig_prod.sh",
     "polorig:start:dev": "./start_polorig_dev.sh",
     "polorig:stop:prod": "./stop_polorig_prod.sh",
     "polorig:stop:dev": "./stop_polorig_dev.sh",

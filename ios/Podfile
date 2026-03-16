@@ -50,6 +50,21 @@ target 'polorig' do
     )
     # __apply_Xcode_12_5_M1_post_install_workaround(installer)
 
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'React-hermes'
+
+      target.build_configurations.each do |config|
+        next unless config.name.downcase.include?('debug')
+
+        defs = Array(config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'])
+        inherited = defs.empty? ? ['$(inherited)'] : defs
+        unless inherited.include?('HERMES_ENABLE_DEBUGGER=1')
+          inherited << 'HERMES_ENABLE_DEBUGGER=1'
+        end
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = inherited
+      end
+    end
+
 
     # See https://github.com/facebook/folly/issues/2297
     # Modify RCT-Folly Portability.h to disable coroutines
