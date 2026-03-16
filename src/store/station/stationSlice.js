@@ -61,15 +61,15 @@ export const stationSlice = createSlice({
 
 export const { setTransceiverState, setCurrentTransceiver, setVFO } = stationSlice.actions
 
+const EMPTY_TRANSCEIVER = Object.freeze({})
+const DEFAULT_VFO = Object.freeze({ band: '20m', mode: 'USB' })
+
 export const selectTransceiver = createSelector(
   (state) => state?.station?.devices || state?.station?.transceivers,
   (state, transceiver) => transceiver || state?.station?.currentTransceiver || 'default',
-  (devices, name) => (devices && devices[name]) ?? {}
+  (devices, name) => (devices && devices[name]) ?? EMPTY_TRANSCEIVER
 )
 
-export const selectVFO = createSelector(
-  (state, transceiver) => selectTransceiver(state, transceiver),
-  (transceiver) => transceiver.vfo || { band: '20m', mode: 'USB' }
-)
+export const selectVFO = (state, transceiver) => selectTransceiver(state, transceiver).vfo || DEFAULT_VFO
 
 export default stationSlice.reducer

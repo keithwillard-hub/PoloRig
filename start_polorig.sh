@@ -22,6 +22,12 @@ metro_status_ok() {
   curl -fsS "http://127.0.0.1:${METRO_PORT}/status" 2>/dev/null | rg -q "^packager-status:running$"
 }
 
+metro_bundle_ok() {
+  curl -fsSI \
+    "http://127.0.0.1:${METRO_PORT}/index.bundle?platform=ios&dev=true&lazy=true&minify=false&inlineSourceMap=false&modulesOnly=false&runModule=true&app=${APP_BUNDLE_ID}" \
+    >/dev/null 2>&1
+}
+
 ensure_metro() {
   if lsof -iTCP:"${METRO_PORT}" -sTCP:LISTEN -n -P >/dev/null 2>&1 && metro_status_ok; then
     echo "Metro already running on :${METRO_PORT}"
@@ -32,7 +38,8 @@ ensure_metro() {
   ensure_tmp_dir
   (
     cd "${ROOT_DIR}"
-    nohup npx react-native start --port "${METRO_PORT}" > "${METRO_LOG}" 2>&1 &
+    nohup /bin/zsh -lc "exec npx react-native start --no-interactive --port '${METRO_PORT}'" \
+      </dev/null > "${METRO_LOG}" 2>&1 &
     echo $! > "${METRO_PID_FILE}"
   )
 
@@ -59,6 +66,24 @@ ensure_metro() {
   done
 
   echo "Metro is running and responding"
+}
+
+ensure_metro_bundle() {
+  local attempts=0
+
+  while true; do
+    attempts=$((attempts + 1))
+    if metro_bundle_ok; then
+      echo "Metro bundle endpoint is reachable"
+      return
+    fi
+
+    if [[ "${attempts}" -ge 30 ]]; then
+      echo "Metro bundle endpoint did not become reachable on :${METRO_PORT}" >&2
+      exit 1
+    fi
+    sleep 1
+  done
 }
 
 ensure_simulator() {
@@ -107,5 +132,6 @@ launch_app() {
 }
 
 ensure_metro
+ensure_metro_bundle
 ensure_simulator
 launch_app

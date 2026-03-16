@@ -41,6 +41,18 @@ public final class SessionManager {
         return try await ensureSession().connect().radioName
     }
 
+    public func connect() async throws -> String {
+        guard let config else {
+            throw RadioError.notConnected
+        }
+        return try await connect(
+            host: config.host,
+            username: config.username,
+            password: config.password,
+            computerName: config.computerName
+        )
+    }
+
     public func queryStatus() async throws -> StatusResult {
         try await ensureSession().queryStatus()
     }
@@ -74,7 +86,7 @@ public final class SessionManager {
     }
 
     public var isConnected: Bool {
-        session != nil
+        session?.isConnected ?? false
     }
 
     private func ensureSession() throws -> PersistentRadioSession {

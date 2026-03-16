@@ -72,15 +72,10 @@ function deepMergeState(state, data, visited = undefined) {
 export const { actions } = uiSlice
 export const { setStateForComponent, updateStateForComponent, setGlobalDialog, resetGlobalDialog } = uiSlice.actions
 
-export const selectStateForComponent = createSelector(
-  (state, component) => state?.ui,
-  (state, component) => component,
-  (ui, component) => ui?.[component]
-)
+const EMPTY_GLOBAL_DIALOG = Object.freeze({})
 
-export const selectGlobalDialog = createSelector(
-  (state) => state?.ui,
-  (ui) => ui?.globalDialog
-)
+export const selectStateForComponent = (state, component) => state?.ui?.[component]
+
+export const selectGlobalDialog = (state) => state?.ui?.globalDialog ?? EMPTY_GLOBAL_DIALOG
 
 export default uiSlice.reducer

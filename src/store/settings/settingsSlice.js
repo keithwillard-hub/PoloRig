@@ -81,6 +81,9 @@ export const settingsSlice = createSlice({
 
 export const { setOperatorCall, setOnboarded, setAccountInfo, setSettings, setExtensionSettings, setExportSettings, mergeSettings } = settingsSlice.actions
 
+const EMPTY_SETTINGS = Object.freeze({})
+const EMPTY_OBJECT = Object.freeze({})
+
 function deepMergeState (state, data, visited = undefined) {
   visited = visited || new Set()
   visited.add(data)
@@ -102,9 +105,9 @@ function deepMergeState (state, data, visited = undefined) {
 }
 
 export const selectSettings = createSelector(
-  (state) => state?.settings,
-  (settings) => {
-    settings = normalizeSettingsState(settings)
+  (state) => state?.settings ?? EMPTY_SETTINGS,
+  (rawSettings) => {
+    const settings = normalizeSettingsState(rawSettings)
 
     if (settings.showNumbersRow === undefined) {
       settings.showNumbersRow = Platform.OS === 'ios'
@@ -156,7 +159,7 @@ export const selectExtensionSettings = createSelector(
   (state, key) => key,
   (extensionsSettings, key) => {
     extensionsSettings = extensionsSettings || {}
-    return extensionsSettings[key] || {}
+    return extensionsSettings[key] || EMPTY_OBJECT
   }
 )
 
@@ -166,21 +169,18 @@ export const selectExportSettings = createSelector(
   (state, key, defaults) => defaults,
   (exportsSettings, key, defaults) => {
     const settings = exportsSettings?.[key] ?? {}
-    if (Object.keys(settings).length === 0) return defaults ?? {}
+    if (Object.keys(settings).length === 0) return defaults ?? EMPTY_OBJECT
     else return settings
   }
 )
 
-export const selectOperatorCall = createSelector(
-  (state) => normalizeSettingsState(state?.settings),
-  (settings) => settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
-)
+export const selectOperatorCall = (state) => {
+  const operatorCall = state?.settings?.operatorCall
+  return operatorCall === 'N0CALL' ? '' : (operatorCall ?? '')
+}
 
 export const selectOperatorCallInfo = createSelector(
-  (state) => {
-    const settings = normalizeSettingsState(state?.settings)
-    return settings?.operatorCall === 'N0CALL' ? '' : (settings?.operatorCall ?? '')
-  },
+  (state) => selectOperatorCall(state),
   (settingsCall) => {
     let info = {}
     if (settingsCall) {

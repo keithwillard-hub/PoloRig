@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 const INITIAL_STATE = {
   status: 'ready',
@@ -30,15 +30,8 @@ export const dataFilesSlice = createSlice({
 
 export const { actions } = dataFilesSlice
 
-export const selectDataFileInfo = createSelector(
-  (state, key) => state?.dataFiles,
-  (state, key) => key,
-  (dataFiles, key) => dataFiles?.files[key]
-)
+export const selectDataFileInfo = (state, key) => state?.dataFiles?.files?.[key]
 
-export const selectAllDataFileInfos = createSelector(
-  (state) => state?.dataFiles,
-  (dataFiles) => dataFiles?.files
-)
+export const selectAllDataFileInfos = (state) => state?.dataFiles?.files
 
 export default dataFilesSlice.reducer

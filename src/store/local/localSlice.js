@@ -7,6 +7,8 @@
 
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 
+const EMPTY_LOCAL_EXTENSION = Object.freeze({})
+
 const initialState = {
   extensions: {}
 }
@@ -48,13 +50,6 @@ export const selectLocalData = createSelector(
 
 export const selectRawLocalData = (state) => state?.local
 
-export const selectLocalExtensionData = createSelector(
-  (state, key) => state?.local?.extensions,
-  (state, key) => key,
-  (extensionsSettings, key) => {
-    extensionsSettings = extensionsSettings || {}
-    return extensionsSettings[key] || {}
-  }
-)
+export const selectLocalExtensionData = (state, key) => state?.local?.extensions?.[key] || EMPTY_LOCAL_EXTENSION
 
 export default localSlice.reducer

@@ -5,7 +5,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import UUID from 'react-native-uuid'
 
 const initialState = {
@@ -82,36 +82,23 @@ export const systemSlice = createSlice({
 export const { actions } = systemSlice
 export const { addNotice, dismissNotice, clearMatchingNotices, clearNoticesDismissed, setFeatureFlags } = systemSlice.actions
 
+const EMPTY_FLAGS = Object.freeze({})
+const EMPTY_FEATURE_FLAGS = Object.freeze({})
+const EMPTY_NOTICES = Object.freeze([])
+const EMPTY_DISMISSED_NOTICES = Object.freeze({})
+
 export const setSystemFlag = (flag, value) => (dispatch) => {
   dispatch(actions.setSystemFlag({ [flag]: value }))
 }
 
-export const selectSystemFlag = createSelector(
-  (state, flag, defaultValue) => state?.system?.flags || {},
-  (_state, flag, _defaultValue) => flag,
-  (_state, _flag, defaultValue) => defaultValue,
-  (flags, flag, defaultValue) => flags[flag] ?? defaultValue
-)
+export const selectSystemFlag = (state, flag, defaultValue) => (state?.system?.flags || EMPTY_FLAGS)[flag] ?? defaultValue
 
-export const selectNotices = createSelector(
-  (state) => state?.system,
-  (system) => system.notices ?? []
-)
+export const selectNotices = (state) => state?.system?.notices ?? EMPTY_NOTICES
 
-export const selectDismissedNotices = createSelector(
-  (state) => state?.system,
-  (system) => system.dismissedNotices ?? {}
-)
+export const selectDismissedNotices = (state) => state?.system?.dismissedNotices ?? EMPTY_DISMISSED_NOTICES
 
-export const selectFeatureFlag = createSelector(
-  (state, flag) => state?.system?.featureFlags || {},
-  (_state, flag) => flag,
-  (featureFlags, flag) => featureFlags[flag]
-)
+export const selectFeatureFlag = (state, flag) => (state?.system?.featureFlags || EMPTY_FEATURE_FLAGS)[flag]
 
-export const selectFeatureFlags = createSelector(
-  (state) => state?.system,
-  (system) => system.featureFlags ?? {}
-)
+export const selectFeatureFlags = (state) => state?.system?.featureFlags ?? EMPTY_FEATURE_FLAGS
 
 export default systemSlice.reducer

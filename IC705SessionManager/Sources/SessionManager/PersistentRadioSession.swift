@@ -7,6 +7,10 @@ public final class PersistentRadioSession {
         set { core.stageHandler = newValue }
     }
 
+    public var isConnected: Bool {
+        core.isConnected
+    }
+
     private let core: PersistentRadioSessionCore
 
     public init(config: ConnectionConfig) {
@@ -44,6 +48,10 @@ public final class PersistentRadioSession {
 
 private final class PersistentRadioSessionCore: @unchecked Sendable {
     var stageHandler: (@Sendable (String) -> Void)?
+
+    var isConnected: Bool {
+        queue.sync { state == .connected }
+    }
 
     private enum SessionState {
         case disconnected
@@ -237,8 +245,10 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
 
         switch result {
         case .success(let connection):
+            stageHandler?("Persistent session connected")
             continuation.resume(returning: connection)
         case .failure(let error):
+            stageHandler?("Persistent session connect failed: \(error.description)")
             teardownTransport()
             state = .disconnected
             continuation.resume(throwing: error)
@@ -453,13 +463,16 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
 
         switch result {
         case .success(let value):
+            stageHandler?("Completed \(describeOperationResult(value))")
             continuation.resume(returning: value)
         case .failure(let error):
+            stageHandler?("Operation failed: \(error.description)")
             continuation.resume(throwing: error)
         }
     }
 
     private func startDisconnect(completion: CheckedContinuation<Void, Never>) {
+        stageHandler?("Starting persistent disconnect")
         disconnectContinuation = completion
         state = .disconnecting
         cancelTimeout()
@@ -477,6 +490,7 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
             guard let self else { return }
             self.teardownTransport()
             self.state = .disconnected
+            self.stageHandler?("Persistent session disconnected")
             self.disconnectContinuation?.resume()
             self.disconnectContinuation = nil
         }
@@ -490,8 +504,10 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
     private func handleUnexpectedDisconnect() {
         switch state {
         case .connecting:
+            stageHandler?("Unexpected disconnect while connecting")
             finishConnect(.failure(.radioBusy))
         case .connected:
+            stageHandler?("Unexpected disconnect while connected")
             if operationContinuation != nil {
                 finishOperation(.failure(.radioBusy))
             }
@@ -500,6 +516,7 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
         case .disconnecting:
             teardownTransport()
             state = .disconnected
+            stageHandler?("Disconnect completed during teardown")
             disconnectContinuation?.resume()
             disconnectContinuation = nil
         case .disconnected:
@@ -534,6 +551,21 @@ private final class PersistentRadioSessionCore: @unchecked Sendable {
             return "send-cw"
         case .setCWSpeed:
             return "set-cw-speed"
+        case .stopCW:
+            return "stop-cw"
+        }
+    }
+
+    private func describeOperationResult(_ result: OperationResult) -> String {
+        switch result {
+        case .status(let status):
+            return "status \(status.frequencyHz)Hz \(status.mode)"
+        case .cwSpeed(let speed):
+            return "cw-speed \(speed) WPM"
+        case .setCWSpeed(let speed):
+            return "set-cw-speed \(speed) WPM"
+        case .sendCW(let success):
+            return "send-cw success=\(success)"
         case .stopCW:
             return "stop-cw"
         }

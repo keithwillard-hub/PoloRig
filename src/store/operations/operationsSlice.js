@@ -78,6 +78,9 @@ export const operationsSlice = createSlice({
 
 export const { actions } = operationsSlice
 
+const EMPTY_OPERATION = Object.freeze({})
+const EMPTY_OPERATION_CALL = ''
+
 export const selectOperationsStatus = (state) => {
   return state?.operations?.status
 }
@@ -86,17 +89,9 @@ export const selectAllOperations = (state) => {
   return state?.operations?.info
 }
 
-export const selectOperation = createSelector(
-  (state, uuid) => state?.operations?.info,
-  (state, uuid) => uuid,
-  (info, uuid) => info?.[uuid] ?? {}
-)
+export const selectOperation = (state, uuid) => state?.operations?.info?.[uuid] ?? EMPTY_OPERATION
 
-export const selectOperationCall = createSelector(
-  (state, uuid) => state?.operations?.info,
-  (state, uuid) => uuid,
-  (info, uuid) => info?.[uuid]?.stationCall ?? ''
-)
+export const selectOperationCall = (state, uuid) => state?.operations?.info?.[uuid]?.stationCall ?? EMPTY_OPERATION_CALL
 
 export const selectOperationsList = createSelector(
   (state) => state?.operations?.info,

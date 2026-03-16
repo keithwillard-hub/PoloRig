@@ -13,7 +13,7 @@ class IC705RigControl: RCTEventEmitter {
     private let keyer = CWKeyer()
     private let sidetone = CWSidetone()
 
-    private var radioSession: PersistentRadioSession?
+    private var radioManager: SessionManager?
     private var radioConfig: ConnectionConfig?
     private var isConnected = false
     private var hasListeners = false
@@ -52,13 +52,13 @@ class IC705RigControl: RCTEventEmitter {
         keyer.cancelSend()
 
         let semaphore = DispatchSemaphore(value: 0)
-        let session = radioSession
+        let manager = radioManager
         connectTask?.cancel()
         connectTask = nil
 
-        if let session {
+        if let manager {
             Task {
-                await session.disconnect()
+                await manager.disconnect()
                 semaphore.signal()
             }
             _ = semaphore.wait(timeout: .now() + 2.5)
@@ -90,7 +90,7 @@ class IC705RigControl: RCTEventEmitter {
     @objc func connect(_ host: String, username: String, password: String,
                        resolver resolve: @escaping RCTPromiseResolveBlock,
                        rejecter reject: @escaping RCTPromiseRejectBlock) {
-        guard !isConnected, radioSession == nil else {
+        guard !isConnected, radioManager == nil else {
             reject("ALREADY_CONNECTED", "Already connected to radio", nil)
             return
         }
@@ -107,37 +107,47 @@ class IC705RigControl: RCTEventEmitter {
         )
         radioConfig = config
 
-        let session = PersistentRadioSession(config: config)
-        session.stageHandler = { [weak self] detail in
+        let manager = SessionManager()
+        manager.stageHandler = { [weak self] detail in
             DispatchQueue.main.async {
                 guard let self else { return }
                 let state = self.isConnected ? "connected" : "connecting"
+                logger.debug("Session stage: \(detail, privacy: .public)")
+                self.logTrace("radio.stage", detail: detail)
                 self.emitConnectionState(state, detail: detail)
             }
         }
-        radioSession = session
+        manager.configure(
+            host: host,
+            username: username,
+            password: password,
+            computerName: "PoloRig"
+        )
+        radioManager = manager
 
         emitConnectionState("connecting", detail: "Opening unified persistent session to \(host)")
         logger.info("Connecting to \(host)")
+        logTrace("radio.connect.begin", detail: "host=\(host)")
 
         connectTask = Task { [weak self] in
             guard let self else { return }
             do {
-                let result = try await session.connect()
+                let radioName = try await manager.connect()
                 try Task.checkCancellation()
 
                 await MainActor.run {
                     self.connectTask = nil
                     self.isConnected = true
-                    self.currentRadioName = result.radioName
-                    self.emitEvent("onRadioNameChanged", body: ["name": result.radioName])
-                    self.emitConnectionState("connected", detail: "Connected to \(result.radioName)")
+                    self.currentRadioName = radioName
+                    self.emitEvent("onRadioNameChanged", body: ["name": radioName])
+                    self.emitConnectionState("connected", detail: "Connected to \(radioName)")
                 }
 
                 await self.refreshCachedState(includeSpeed: true, emitChanges: true, allowBusyFailure: true)
                 await MainActor.run {
                     self.startStatePolling()
-                    resolve(["radioName": result.radioName])
+                    self.logTrace("radio.connect.success", detail: "radio=\(radioName)")
+                    resolve(["radioName": radioName])
                 }
             } catch {
                 await MainActor.run {
@@ -164,7 +174,7 @@ class IC705RigControl: RCTEventEmitter {
             reject("CW_INVALID", "CW text must be 1-30 characters", nil)
             return
         }
-        guard let session = radioSession, isConnected else {
+        guard let manager = radioManager, isConnected else {
             reject("NOT_CONNECTED", "Not connected to radio", nil)
             return
         }
@@ -175,7 +185,7 @@ class IC705RigControl: RCTEventEmitter {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let success = try await session.sendCW(trimmed)
+                let success = try await manager.sendCW(trimmed)
                 await MainActor.run {
                     self.emitEvent("onCWResult", body: [
                         "text": trimmed,
@@ -242,7 +252,7 @@ class IC705RigControl: RCTEventEmitter {
     @objc func setCWSpeed(_ wpm: NSNumber,
                           resolver resolve: @escaping RCTPromiseResolveBlock,
                           rejecter reject: @escaping RCTPromiseRejectBlock) {
-        guard let session = radioSession, isConnected else {
+        guard let manager = radioManager, isConnected else {
             reject("NOT_CONNECTED", "Not connected to radio", nil)
             return
         }
@@ -250,7 +260,7 @@ class IC705RigControl: RCTEventEmitter {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await session.setCWSpeed(wpm.intValue)
+                try await manager.setCWSpeed(wpm.intValue)
                 await MainActor.run {
                     self.civController.cwSpeed = min(max(wpm.intValue, CIV.CWSpeed.minWPM), CIV.CWSpeed.maxWPM)
                     self.checkAndEmitStateChanges()
@@ -264,11 +274,11 @@ class IC705RigControl: RCTEventEmitter {
         }
     }
 
-    @objc func cancelCW() {
+        @objc func cancelCW() {
         keyer.cancelSend()
-        guard let session = radioSession, isConnected else { return }
+        guard let manager = radioManager, isConnected else { return }
         Task {
-            try? await session.stopCW()
+            try? await manager.stopCW()
         }
     }
 
@@ -279,7 +289,7 @@ class IC705RigControl: RCTEventEmitter {
 
     @objc func refreshStatus(_ resolve: @escaping RCTPromiseResolveBlock,
                              rejecter reject: @escaping RCTPromiseRejectBlock) {
-        guard radioSession != nil, isConnected else {
+        guard radioManager != nil, isConnected else {
             resolve(statusPayload())
             return
         }
@@ -295,12 +305,12 @@ class IC705RigControl: RCTEventEmitter {
 
     private func configureKeyerCallbacks() {
         keyer.onSendCW = { [weak self] text, completion in
-            guard let self, let session = self.radioSession, self.isConnected else {
+            guard let self, let manager = self.radioManager, self.isConnected else {
                 completion(false)
                 return
             }
             Task {
-                let success = (try? await session.sendCW(text.uppercased())) ?? false
+                let success = (try? await manager.sendCW(text.uppercased())) ?? false
                 await MainActor.run {
                     self.emitEvent("onCWResult", body: [
                         "text": text.uppercased(),
@@ -313,9 +323,9 @@ class IC705RigControl: RCTEventEmitter {
         }
 
         keyer.onSetSpeed = { [weak self] wpm in
-            guard let self, let session = self.radioSession, self.isConnected else { return }
+            guard let self, let manager = self.radioManager, self.isConnected else { return }
             Task {
-                try? await session.setCWSpeed(wpm)
+                try? await manager.setCWSpeed(wpm)
                 await MainActor.run {
                     self.civController.cwSpeed = wpm
                     self.checkAndEmitStateChanges()
@@ -337,8 +347,8 @@ class IC705RigControl: RCTEventEmitter {
     private func startStatePolling() {
         stopStatePolling()
         pollGeneration &+= 1
+        pollCounter = 0
         let generation = pollGeneration
-
         let timer = DispatchSource.makeTimerSource(queue: .main)
         timer.schedule(deadline: .now() + 1.0, repeating: 1.0)
         timer.setEventHandler { [weak self] in
@@ -351,7 +361,9 @@ class IC705RigControl: RCTEventEmitter {
                 guard let self else { return }
                 await self.refreshCachedState(includeSpeed: includeSpeed, emitChanges: true, allowBusyFailure: true)
                 await MainActor.run {
-                    self.pollTask = nil
+                    if generation == self.pollGeneration {
+                        self.pollTask = nil
+                    }
                 }
             }
         }
@@ -360,6 +372,7 @@ class IC705RigControl: RCTEventEmitter {
     }
 
     private func stopStatePolling() {
+        pollGeneration &+= 1
         pollTimer?.cancel()
         pollTimer = nil
         pollTask?.cancel()
@@ -367,10 +380,10 @@ class IC705RigControl: RCTEventEmitter {
     }
 
     private func refreshCachedState(includeSpeed: Bool, emitChanges: Bool, allowBusyFailure: Bool) async {
-        guard let session = radioSession, isConnected else { return }
+        guard let manager = radioManager, isConnected else { return }
 
         do {
-            let status = try await session.queryStatus()
+            let status = try await manager.queryStatus()
             await MainActor.run {
                 self.applyStatus(status)
                 if emitChanges {
@@ -386,7 +399,7 @@ class IC705RigControl: RCTEventEmitter {
         guard includeSpeed else { return }
 
         do {
-            let speed = try await session.queryCWSpeed()
+            let speed = try await manager.queryCWSpeed()
             await MainActor.run {
                 self.civController.cwSpeed = speed
                 if emitChanges {
@@ -410,14 +423,18 @@ class IC705RigControl: RCTEventEmitter {
         connectTask = nil
         stopStatePolling()
         isConnected = false
-        radioSession = nil
+        radioManager = nil
         radioConfig = nil
         currentRadioName = nil
+        currentHost = ""
+        currentUsername = ""
+        currentPassword = ""
         civController.stopFrequencyPolling()
         lastFrequencyHz = 0
         lastMode = nil
         lastCWSpeed = 0
         lastIsSending = false
+        logTrace("radio.disconnect.cleanup")
         emitConnectionState("disconnected")
     }
 
